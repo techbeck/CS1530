@@ -1,6 +1,6 @@
 .gradle
 /build/
-.class
+*.class
 
 # Ignore Gradle GUI config
 gradle-app.setting
