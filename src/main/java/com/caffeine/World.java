@@ -1,6 +1,4 @@
-package caffeine;
-
-import java.util.*;
+package com.caffeine;
 
 public class World {
     public static void main(String args){
