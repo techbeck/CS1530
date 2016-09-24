@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
-mainClassName = 'com.caffeine.World'
+mainClassName = 'com.caffeine.Chess'
 
 repositories {
     mavenCentral()
@@ -11,10 +11,6 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
     testCompile 'junit:junit:4.12'
 }
-
-
-
-
 
 
 //Example Custom Task
