@@ -1,20 +1,28 @@
 # CS1530 Project - Team Caffeine
 
-A project assigned by @Laboon.
+A Team Caffeine project assigned by @laboon.
 
-# How To Contribute
+# Team Resources
 
-1. Fork this repository into your own account (Link on CS1530 Repo page).
-2. Make a new branch (`git checkout -b my-branch-name`).
-3. Make your code changes and run any manual tests validating those changes.
-4. Review Your Changes (*IMPORTANT*)
-    - Get summary (`git status`)
-    - Review each file's changes (`git diff <filename>`)
-5. Once reviewed, add your files (`git add <filename>`)
-6. Commit your changes with a message (`git commit -m "My message"`)
-7. When connected to the internet, sync with your branch (`git push origin my-branch-name`)
-    - **NOTE**, if this is your *first* push to the branch (you're creating the branch on the remote server), use `git push --set-upstream origin my-branch-name`)
-8. On GitHub, go to your Forked CS1530 Repository and initiate a pull request.
-9. Fill out the form with some detail for your fellow developers.
-10. Issue a PR request.
-11. Once at least one other person has reviewed the code and any/all tests are passing, we can merge it back into `TeamCaffeine/CS1530/master`.
+  - [Google Drive](https://drive.google.com/drive/folders/0B4yNvwkqZ_goN0pxNGlCaFo1aFE)
+  - [Slack Channel](https://teamkaffeine.slack.com)
+  - [Team GitHub Page](https://github.com/TeamCaffeine)
+  - [Trello Board](https://trello.com/team_caffeine)
+
+# Branching and Pull Requests
+
+For safety's concern, changes will not be made to the Team Caffeine repo until
+a pull request from a child repo branch (e.g. `feature/feature-name`) has been
+issued and that code has passed all tests.
+
+To issue a change to the Team Caffeine project repository:
+
+  1. Fork this repository for your own account.
+  2. If you've already forked this repository, [synchronize your fork](https://help.github.com/articles/syncing-a-fork/)'s `master` branch with Team Caffeine's.
+  2. Make the branch for your feature (`git checkout -b feature/feature-name`).
+  3. Make your changes and run tests.
+  4. Run `gradle build`. Your code is ready for a PR when (and only when) it passes.
+  5. Diff, Add, and Commit your files as necessary, then push to your forked repo.
+  6. On the GitHub website, create a PR.
+  7. Other team members will review and comment on the code.
+  8. Once the code is validated _and_ verified, @jwarner112 will merge into the Project's `master` branch.
