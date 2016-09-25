@@ -1,6 +1,6 @@
 # CS1530 Project - Team Caffeine
 
-A Team Caffeine project assigned by @laboon.
+A Team Caffeine project assigned by [@laboon](http://www.github.com/laboon).
 
 # Team Resources
 
@@ -25,4 +25,4 @@ To issue a change to the Team Caffeine project repository:
   5. Diff, Add, and Commit your files as necessary, then push to your forked repo.
   6. On the GitHub website, create a PR.
   7. Other team members will review and comment on the code.
-  8. Once the code is validated _and_ verified, @jwarner112 will merge into the Project's `master` branch.
+  8. Once the code is validated _and_ verified, [@jwarner112](http://www.github.com/jwarner112) will merge into the Project's `master` branch.
