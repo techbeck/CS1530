@@ -4,10 +4,10 @@ A Team Caffeine project assigned by @laboon.
 
 # Team Resources
 
-  - [Google Drive](https://drive.google.com/drive/folders/0B4yNvwkqZ_goN0pxNGlCaFo1aFE)
-  - [Slack Channel](https://teamkaffeine.slack.com)
-  - [Team GitHub Page](https://github.com/TeamCaffeine)
-  - [Trello Board](https://trello.com/team_caffeine)
+  - ![Drive](https://raw.githubusercontent.com/encharm/Font-Awesome-SVG-PNG/master/black/png/32/google.png) [Google Drive](https://drive.google.com/drive/folders/0B4yNvwkqZ_goN0pxNGlCaFo1aFE)
+  - ![Slack](https://raw.githubusercontent.com/encharm/Font-Awesome-SVG-PNG/master/black/png/32/slack.png) [Slack Channel](https://teamkaffeine.slack.com)
+  - ![GitHub](https://raw.githubusercontent.com/encharm/Font-Awesome-SVG-PNG/master/black/png/32/github.png) [Team GitHub Page](https://github.com/TeamCaffeine)
+  - ![Trello](https://raw.githubusercontent.com/encharm/Font-Awesome-SVG-PNG/master/black/png/32/trello.png) [Trello Board](https://trello.com/team_caffeine)
 
 # Branching and Pull Requests
 
