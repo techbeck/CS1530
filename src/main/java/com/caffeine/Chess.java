@@ -15,9 +15,9 @@ public class Chess {
 	}
 
 	// remove this later. I just don't want to fix tests.
-	public static String echo(String phrase){
+	/*public static String echo(String phrase){
 		return(phrase);
-	}
+	}*/
 
 	public Chess() {
 		JFrame window = new JFrame("Laboon Chess");
@@ -93,22 +93,22 @@ public class Chess {
 		c.weightx = 0.5;
 		c.weighty = 0.5;
 		panel2A.add(new JLabel("timer goes here", SwingConstants.CENTER));
-		panel2A.setPreferredSize(new Dimension(800, 100));
+		//panel2A.setPreferredSize(new Dimension(800, 100));
 		panel2.add(panel2A, c);
 
 		JPanel panel2B = new JPanel();
-		panel2B.setBackground(Color.WHITE);
 		c.gridx = 0;
 		c.gridy = 3;
 		c.gridwidth = 13;
 		c.gridheight = 12;
 		c.weightx = 0.5;
 		c.weighty = 0.5;
-		panel2B.setPreferredSize(new Dimension(800, 800));
+		//panel2B.setPreferredSize(new Dimension(800, 800));
 		formatBoard(panel2B);
 		panel2.add(panel2B, c);
 
 		JPanel panel2C = new JPanel();
+		panel2C.setBackground(Color.WHITE);
 		c.gridx = 0;
 		c.gridy = 15;
 		c.gridwidth = 13;
@@ -116,22 +116,23 @@ public class Chess {
 		c.weightx = 0.5;
 		c.weighty = 0.5;
 		panel2C.add(new JLabel("buttons go here", SwingConstants.CENTER));
-		panel2C.setPreferredSize(new Dimension(800, 100));
+		//panel2C.setPreferredSize(new Dimension(800, 100));
 		panel2.add(panel2C, c);
 	}
 
 	public void formatBoard(JPanel panel2B) {
 		panel2B.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-
 		squares = new JButton[8][8];
-		boolean toggle = true;
+		boolean cellColor = true;
 		for (byte i = 0; i < 8; i++) {
 			for (byte j = 0; j < 8; j++) {
 				squares[i][j] = createSimpleButton("");
-				squares[i][j].setSize(new Dimension(100,100));
+				squares[i][j].setMinimumSize(new Dimension(60,60));
+				squares[i][j].setMaximumSize(new Dimension(60,60));
+				squares[i][j].setPreferredSize(new Dimension(60,60));
 				squares[i][j].setOpaque(true);
-				if (toggle)
+				if (cellColor)
 				{
 					squares[i][j].setBackground(Color.WHITE);
 				}
@@ -139,7 +140,7 @@ public class Chess {
 				{
 					squares[i][j].setBackground(Color.GRAY);
 				}
-				toggle = !toggle;
+				cellColor = !cellColor;
 				squares[i][j].setName((char)(j+65) + "," + (8-i));
 				c.fill = GridBagConstraints.BOTH;
 				c.gridx = j;
@@ -149,7 +150,7 @@ public class Chess {
 				squares[i][j].addActionListener(new Listener());
 				panel2B.add(squares[i][j], c);
 			}
-			toggle = !toggle;
+			cellColor = !cellColor;
 		}
 	}
 
@@ -157,7 +158,7 @@ public class Chess {
 		JButton button = new JButton(text);
 		button.setForeground(Color.BLACK);
 		button.setBackground(Color.WHITE);
-		Border line = new LineBorder(Color.BLACK);
+		Border line = new LineBorder(Color.BLACK, 0);
 		Border margin = new EmptyBorder(5, 15, 5, 15);
 		Border compound = new CompoundBorder(line, margin);
 		button.setBorder(compound);
