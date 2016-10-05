@@ -15,9 +15,9 @@ public class Chess {
 	}
 
 	// remove this later. I just don't want to fix tests.
-	/*public static String echo(String phrase){
+	public static String echo(String phrase){
 		return(phrase);
-	}*/
+	}
 
 	public Chess() {
 		JFrame window = new JFrame("Laboon Chess");
@@ -127,20 +127,7 @@ public class Chess {
 		boolean cellColor = true;
 		for (byte i = 0; i < 8; i++) {
 			for (byte j = 0; j < 8; j++) {
-				squares[i][j] = createSimpleButton("");
-				squares[i][j].setMinimumSize(new Dimension(60,60));
-				squares[i][j].setMaximumSize(new Dimension(60,60));
-				squares[i][j].setPreferredSize(new Dimension(60,60));
-				squares[i][j].setOpaque(true);
-				if (cellColor)
-				{
-					squares[i][j].setBackground(Color.WHITE);
-				}
-				else
-				{
-					squares[i][j].setBackground(Color.GRAY);
-				}
-				cellColor = !cellColor;
+				squares[i][j] = createSimpleButton(cellColor);
 				squares[i][j].setName((char)(j+65) + "," + (8-i));
 				c.fill = GridBagConstraints.BOTH;
 				c.gridx = j;
@@ -149,32 +136,66 @@ public class Chess {
 				c.weighty = 0.5;
 				squares[i][j].addActionListener(new Listener());
 				panel2B.add(squares[i][j], c);
+				cellColor = !cellColor;
 			}
 			cellColor = !cellColor;
 		}
+		squares[0][7].setText(Character.toString('♜'));
+		squares[0][0].setText(Character.toString('♜'));
+		squares[0][1].setText(Character.toString('♞'));
+		squares[0][6].setText(Character.toString('♞'));
+		squares[0][2].setText(Character.toString('♝'));
+		squares[0][5].setText(Character.toString('♝'));
+		squares[0][3].setText(Character.toString('♛'));
+		squares[0][4].setText(Character.toString('♚'));
+		for (int i = 0; i < 8; i++) {
+			squares[1][i].setText(Character.toString('♟'));
+			squares[6][i].setText(Character.toString('♙'));
+		}
+		squares[7][0].setText(Character.toString('♖'));
+		squares[7][7].setText(Character.toString('♖'));
+		squares[7][1].setText(Character.toString('♘'));
+		squares[7][6].setText(Character.toString('♘'));
+		squares[7][2].setText(Character.toString('♗'));
+		squares[7][5].setText(Character.toString('♗'));
+		squares[7][3].setText(Character.toString('♕'));
+		squares[7][4].setText(Character.toString('♔'));
 	}
 
-	private JButton createSimpleButton(String text) {
-		JButton button = new JButton(text);
+	private JButton createSimpleButton(boolean cellColor) {
+		JButton button = new JButton("");
 		button.setForeground(Color.BLACK);
-		button.setBackground(Color.WHITE);
+		button.setOpaque(true);
+		if (cellColor)
+		{
+			button.setBackground(Color.WHITE);
+		}
+		else
+		{
+			button.setBackground(Color.GRAY);
+		}
+		button.setFont(new Font("Arial", Font.PLAIN, 25));
 		Border line = new LineBorder(Color.BLACK, 0);
 		Border margin = new EmptyBorder(5, 15, 5, 15);
 		Border compound = new CompoundBorder(line, margin);
 		button.setBorder(compound);
+		button.setMinimumSize(new Dimension(60,60));
+		button.setMaximumSize(new Dimension(60,60));
+		button.setPreferredSize(new Dimension(60,60));
 		return button;
 	}
 
 	private class Listener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			JButton newReference = (JButton) e.getSource();
-			String name = newReference.getName();
-			if (newReference.isSelected()) {
-				newReference.setSelected(false);
-				newReference.setText("");
+			JButton button = (JButton) e.getSource();
+			String name = button.getName();
+			if (button.isSelected()) {
+				button.setSelected(false);
+				button.setText("");
 			} else {
-				newReference.setSelected(true);
-				newReference.setText(name);
+				button.setSelected(true);
+				button.setFont(new Font("Arial", Font.PLAIN, 16));
+				button.setText(name);
 			}
 		}
 	}
