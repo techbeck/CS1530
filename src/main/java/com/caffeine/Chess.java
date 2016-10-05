@@ -15,9 +15,9 @@ public class Chess {
 	}
 
 	// remove this later. I just don't want to fix tests.
-	/*public static String echo(String phrase){
+	public static String echo(String phrase){
 		return(phrase);
-	}*/
+	}
 
 	public Chess() {
 		JFrame window = new JFrame("Laboon Chess");
@@ -31,7 +31,7 @@ public class Chess {
 		Container pane = window.getContentPane();
 		pane.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		
+
 		JPanel panel1 = new JPanel();
 		panel1.setBackground(Color.BLUE);
 		c.gridx = 0;
