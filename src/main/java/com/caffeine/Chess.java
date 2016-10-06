@@ -8,7 +8,7 @@ import java.awt.event.*;
 import java.awt.*;
 
 public class Chess {
-    private static JButton[][] squares;
+    private JButton selected = null;
 
     public static void main(String[] args){
         new Chess();
@@ -27,7 +27,7 @@ public class Chess {
         window.setVisible(true);
     }
 
-    public void addMainPanels(JFrame window) {
+    private void addMainPanels(JFrame window) {
         Container pane = window.getContentPane();
         pane.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -46,11 +46,9 @@ public class Chess {
         c.weightx = 0.5;
         c.weighty = 0.5;
         panel1.add(new JLabel("Move History", SwingConstants.CENTER));
-        //panel1.setPreferredSize(new Dimension(120, 800));
         pane.add(panel1, c);
 
         JPanel panel2 = new JPanel();
-        //panel2.setBackground(Color.RED);
         c.gridx = 1;
         c.gridy = 0;
         c.gridwidth = 6;
@@ -58,7 +56,6 @@ public class Chess {
         c.insets = new Insets(0,0,0,0);
         c.weightx = 0.7;
         c.weighty = 0.5;
-        //panel2.setPreferredSize(new Dimension(800, 800));
         formatCenterPanel(panel2);
         pane.add(panel2, c);
 
@@ -76,7 +73,6 @@ public class Chess {
         c.weightx = 0.5;
         c.weighty = 0.5;
         panel3.add(new JLabel("Taken Pieces", SwingConstants.CENTER));
-        //panel3.setPreferredSize(new Dimension(120, 800));
         pane.add(panel3, c);
 
         JPanel panel4 = new JPanel();
@@ -93,11 +89,10 @@ public class Chess {
         c.weightx = 0.4;
         c.weighty = 0.4;
         panel4.add(new JLabel("Status bar", SwingConstants.CENTER));
-        //panel4.setPreferredSize(new Dimension(1040, 50));
         pane.add(panel4, c);
     }
 
-    public void formatCenterPanel(JPanel panel2) {
+    private void formatCenterPanel(JPanel panel2) {
         panel2.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
@@ -115,7 +110,6 @@ public class Chess {
         c.weightx = 0.5;
         c.weighty = 0.5;
         panel2A.add(new JLabel("timer goes here", SwingConstants.CENTER));
-        //panel2A.setPreferredSize(new Dimension(800, 100));
         panel2.add(panel2A, c);
 
         JPanel panel2B = new JPanel();
@@ -126,7 +120,6 @@ public class Chess {
         c.insets = new Insets(0,0,0,0);
         c.weightx = 0.5;
         c.weighty = 0.5;
-        //panel2B.setPreferredSize(new Dimension(800, 800));
         formatBoard(panel2B);
         panel2.add(panel2B, c);
 
@@ -144,14 +137,13 @@ public class Chess {
         c.weightx = 0.5;
         c.weighty = 0.5;
         panel2C.add(new JLabel("buttons go here", SwingConstants.CENTER));
-        //panel2C.setPreferredSize(new Dimension(800, 100));
         panel2.add(panel2C, c);
     }
 
-    public void formatBoard(JPanel panel2B) {
+    private void formatBoard(JPanel panel2B) {
         panel2B.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        squares = new JButton[8][8];
+        JButton[][] squares = new JButton[8][8];
         boolean cellColor = true;
         for (byte i = 0; i < 8; i++) {
             //row name
@@ -213,7 +205,7 @@ public class Chess {
     }
 
     private JButton createBoardSquare(boolean cellColor) {
-        JButton button = new JButton("");
+        JButton button = new JButton(" ");
         button.setForeground(Color.BLACK);
         button.setOpaque(true);
         if (cellColor)
@@ -239,14 +231,24 @@ public class Chess {
     private class Listener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             JButton button = (JButton) e.getSource();
-            String name = button.getName();
+            /*String name = button.getName();
             if (button.isSelected()) {
                 button.setSelected(false);
-                button.setText("");
+                button.setText(" ");
             } else {
                 button.setSelected(true);
                 button.setFont(new Font("Arial", Font.PLAIN, 16));
                 button.setText(name);
+            }*/
+            if (selected == null && !button.getText().equals(" ")) {
+                selected = button;
+                selected.setForeground(Color.YELLOW);
+            } else { //if (selected != button) {
+                String text = selected.getText();
+                selected.setForeground(Color.BLACK);
+                selected.setText(" ");
+                button.setText(text);
+                selected = null;
             }
         }
     }
