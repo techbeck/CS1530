@@ -33,7 +33,7 @@ public class Chess {
 		GridBagConstraints c = new GridBagConstraints();
 		
 		JPanel panel1 = new JPanel();
-		panel1.setBackground(Color.BLUE);
+		//panel1.setBackground(Color.BLUE);
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth = 1;
@@ -45,7 +45,7 @@ public class Chess {
 		pane.add(panel1, c);
 
 		JPanel panel2 = new JPanel();
-		panel2.setBackground(Color.RED);
+		//panel2.setBackground(Color.RED);
 		c.gridx = 1;
 		c.gridy = 0;
 		c.gridwidth = 6;
@@ -57,7 +57,7 @@ public class Chess {
 		pane.add(panel2, c);
 
 		JPanel panel3 = new JPanel();
-		panel3.setBackground(Color.WHITE);
+		//panel3.setBackground(Color.WHITE);
 		c.gridx = 7;
 		c.gridy = 0;
 		c.gridwidth = 1;
@@ -85,7 +85,7 @@ public class Chess {
 		GridBagConstraints c = new GridBagConstraints();
 
 		JPanel panel2A = new JPanel();
-		panel2A.setBackground(Color.BLUE);
+		//panel2A.setBackground(Color.BLUE);
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth = 13;
@@ -108,7 +108,7 @@ public class Chess {
 		panel2.add(panel2B, c);
 
 		JPanel panel2C = new JPanel();
-		panel2C.setBackground(Color.WHITE);
+		//panel2C.setBackground(Color.WHITE);
 		c.gridx = 0;
 		c.gridy = 15;
 		c.gridwidth = 13;
