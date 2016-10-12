@@ -308,9 +308,9 @@ public class Chess {
                     null, options, options[0]);
                 switch(playerColor){
                     case -1: break;
-                    case 0: statusBar.setText("[Upcoming Feature] - Now playing as White");
+                    case 0: statusBar.setText("[Upcoming Feature] - Now playing as Black");
                     break;
-                    case 1: statusBar.setText("[Upcoming Feature] - Now playing as Black");
+                    case 1: statusBar.setText("[Upcoming Feature] - Now playing as White");
                     break;
                     case 2: break;
                 }
