@@ -14,6 +14,20 @@ public class Chess {
         new Chess();
     }
 
+    String whiteKing = "\u2654";
+    String whiteQueen = "\u2655";
+    String whiteBishop = "\u2656";
+    String whiteKnight = "\u2657";
+    String whiteRook = "\u2654";
+    String whitePawn = "\u2659";
+
+    String blackKing = "\u265A";
+    String blackQueen = "\u265B";
+    String blackBishop = "\u265C";
+    String blackKnight = "\u265D";
+    String blackRook = "\u265E";
+    String blackPawn = "\u265F";
+
     // remove this later. I just don't want to fix tests.
     public static String echo(String phrase){
         return(phrase);
@@ -136,7 +150,19 @@ public class Chess {
         c.insets = new Insets(5,0,5,0);
         c.weightx = 0.5;
         c.weighty = 0.5;
-        panel2C.add(new JLabel("buttons go here", SwingConstants.CENTER));
+        // panel2C.add(new JLabel("buttons go here", SwingConstants.CENTER));
+        JButton loadButton = new JButton("Load");
+        loadButton.addActionListener(new PanelButtonListener());
+        JButton saveButton = new JButton("Save");
+        saveButton.addActionListener(new PanelButtonListener());
+        JButton chooseSiteButton = new JButton("Choose Side");
+        chooseSiteButton.addActionListener(new PanelButtonListener());
+        JButton tutorialButton = new JButton("Tutorial");
+        tutorialButton.addActionListener(new PanelButtonListener());
+        panel2C.add(loadButton);
+        panel2C.add(saveButton);
+        panel2C.add(chooseSiteButton);
+        panel2C.add(tutorialButton);
         panel2.add(panel2C, c);
     }
 
@@ -182,26 +208,26 @@ public class Chess {
             c.weighty = 0.5;
             panel2B.add(label, c);
         }
-        squares[0][7].setText(Character.toString('♜'));
-        squares[0][0].setText(Character.toString('♜'));
-        squares[0][1].setText(Character.toString('♞'));
-        squares[0][6].setText(Character.toString('♞'));
-        squares[0][2].setText(Character.toString('♝'));
-        squares[0][5].setText(Character.toString('♝'));
-        squares[0][3].setText(Character.toString('♛'));
-        squares[0][4].setText(Character.toString('♚'));
+        squares[0][7].setText(whiteRook);
+        squares[0][0].setText(whiteRook);
+        squares[0][1].setText(whiteKnight);
+        squares[0][6].setText(whiteKnight);
+        squares[0][2].setText(whiteBishop);
+        squares[0][5].setText(whiteBishop);
+        squares[0][3].setText(whiteQueen);
+        squares[0][4].setText(whiteKing);
         for (int i = 0; i < 8; i++) {
-            squares[1][i].setText(Character.toString('♟'));
-            squares[6][i].setText(Character.toString('♙'));
+            squares[1][i].setText(whitePawn);
+            squares[6][i].setText(blackPawn);
         }
-        squares[7][0].setText(Character.toString('♖'));
-        squares[7][7].setText(Character.toString('♖'));
-        squares[7][1].setText(Character.toString('♘'));
-        squares[7][6].setText(Character.toString('♘'));
-        squares[7][2].setText(Character.toString('♗'));
-        squares[7][5].setText(Character.toString('♗'));
-        squares[7][3].setText(Character.toString('♕'));
-        squares[7][4].setText(Character.toString('♔'));
+        squares[7][0].setText(blackRook);
+        squares[7][7].setText(blackRook);
+        squares[7][1].setText(blackKnight);
+        squares[7][6].setText(blackKnight);
+        squares[7][2].setText(blackBishop);
+        squares[7][5].setText(blackBishop);
+        squares[7][3].setText(blackQueen);
+        squares[7][4].setText(blackKing);
     }
 
     private JButton createBoardSquare(boolean cellColor) {
@@ -249,6 +275,22 @@ public class Chess {
                 selected.setText(" ");
                 button.setText(text);
                 selected = null;
+            }
+        }
+    }
+
+    private class PanelButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            JButton button = (JButton) e.getSource();
+
+            if (button.getText().equals("Load")){
+                System.out.println("LoadYo Swag");
+            } else if (button.getText().equals("Save")) {
+
+            } else if (button.getText().equals("Choose Side")) {
+                
+            } else if (button.getText().equals("Tutorial")) {
+                
             }
         }
     }
