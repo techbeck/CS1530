@@ -9,6 +9,8 @@ import java.awt.*;
 
 public class Chess {
     private JButton selected = null;
+    private JLabel statusBar = new JLabel("Status Bar");
+    private JFrame window;
 
     public static void main(String[] args){
         new Chess();
@@ -16,16 +18,16 @@ public class Chess {
 
     String whiteKing = "\u2654";
     String whiteQueen = "\u2655";
-    String whiteBishop = "\u2656";
-    String whiteKnight = "\u2657";
-    String whiteRook = "\u2654";
+    String whiteRook = "\u2656";
+    String whiteBishop = "\u2657";
+    String whiteKnight = "\u2658";
     String whitePawn = "\u2659";
 
     String blackKing = "\u265A";
     String blackQueen = "\u265B";
-    String blackBishop = "\u265C";
-    String blackKnight = "\u265D";
-    String blackRook = "\u265E";
+    String blackRook = "\u265C";
+    String blackBishop = "\u265D";
+    String blackKnight = "\u265E";
     String blackPawn = "\u265F";
 
     // remove this later. I just don't want to fix tests.
@@ -34,7 +36,7 @@ public class Chess {
     }
 
     public Chess() {
-        JFrame window = new JFrame("Laboon Chess");
+        window = new JFrame("Laboon Chess");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addMainPanels(window);
         window.pack();
@@ -102,7 +104,7 @@ public class Chess {
         c.insets = new Insets(5,0,5,0);
         c.weightx = 0.4;
         c.weighty = 0.4;
-        panel4.add(new JLabel("Status bar", SwingConstants.CENTER));
+        panel4.add(statusBar, SwingConstants.CENTER);
         pane.add(panel4, c);
     }
 
@@ -123,7 +125,7 @@ public class Chess {
         c.insets = new Insets(5,0,5,0);
         c.weightx = 0.5;
         c.weighty = 0.5;
-        panel2A.add(new JLabel("timer goes here", SwingConstants.CENTER));
+        panel2A.add(new JLabel("Timer", SwingConstants.CENTER));
         panel2.add(panel2A, c);
 
         JPanel panel2B = new JPanel();
@@ -208,26 +210,27 @@ public class Chess {
             c.weighty = 0.5;
             panel2B.add(label, c);
         }
-        squares[0][7].setText(whiteRook);
-        squares[0][0].setText(whiteRook);
-        squares[0][1].setText(whiteKnight);
-        squares[0][6].setText(whiteKnight);
-        squares[0][2].setText(whiteBishop);
-        squares[0][5].setText(whiteBishop);
-        squares[0][3].setText(whiteQueen);
-        squares[0][4].setText(whiteKing);
+        squares[0][7].setText(blackRook);
+        squares[0][0].setText(blackRook);
+        squares[0][1].setText(blackKnight);
+        squares[0][6].setText(blackKnight);
+        squares[0][2].setText(blackBishop);
+        squares[0][5].setText(blackBishop);
+        squares[0][3].setText(blackQueen);
+        squares[0][4].setText(blackKing);
         for (int i = 0; i < 8; i++) {
-            squares[1][i].setText(whitePawn);
-            squares[6][i].setText(blackPawn);
+            squares[1][i].setText(blackPawn);
+            squares[6][i].setText(whitePawn);
         }
-        squares[7][0].setText(blackRook);
-        squares[7][7].setText(blackRook);
-        squares[7][1].setText(blackKnight);
-        squares[7][6].setText(blackKnight);
-        squares[7][2].setText(blackBishop);
-        squares[7][5].setText(blackBishop);
-        squares[7][3].setText(blackQueen);
-        squares[7][4].setText(blackKing);
+        squares[7][0].setText(whiteRook);
+        squares[7][7].setText(whiteRook);
+        squares[7][1].setText(whiteKnight);
+        squares[7][6].setText(whiteKnight);
+        squares[7][2].setText(whiteBishop);
+        squares[7][5].setText(whiteBishop);
+        squares[7][3].setText(whiteQueen);
+        squares[7][4].setText(whiteKing);
+
     }
 
     private JButton createBoardSquare(boolean cellColor) {
@@ -284,13 +287,36 @@ public class Chess {
             JButton button = (JButton) e.getSource();
 
             if (button.getText().equals("Load")){
-                System.out.println("LoadYo Swag");
+                String fileName = JOptionPane.showInputDialog(window, "Please enter file name to load a game: ", "Load Game", JOptionPane.PLAIN_MESSAGE);
+                if (fileName != null && fileName.length() != 0) {
+                    if(fileName.toLowerCase().endsWith(".pgn")){
+                        statusBar.setText("[Upcoming Feature] - Loading game from file: " + fileName);
+                    }
+                    else{
+                        statusBar.setText("[Upcoming Feature] - Loading game from file: " + fileName + ".pgn");
+                    }
+                }
             } else if (button.getText().equals("Save")) {
-
+                String fileName = JOptionPane.showInputDialog(window, "Please enter a file name to save your game: ", "Save Game", JOptionPane.PLAIN_MESSAGE);
+                if (fileName != null && fileName.length() != 0) {
+                    statusBar.setText("[Upcoming Feature] - Saving game to file: " + fileName + ".pgn");
+                }
             } else if (button.getText().equals("Choose Side")) {
-                
+                String[] options = new String[] {"Black", "White", "Cancel"};
+                int playerColor = JOptionPane.showOptionDialog(window, "Please choose a side", "Choose Side",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                    null, options, options[0]);
+                switch(playerColor){
+                    case -1: break;
+                    case 0: statusBar.setText("[Upcoming Feature] - Now playing as White");
+                    break;
+                    case 1: statusBar.setText("[Upcoming Feature] - Now playing as Black");
+                    break;
+                    case 2: break;
+                }
             } else if (button.getText().equals("Tutorial")) {
-                
+                JOptionPane.showMessageDialog(window, "This is a simple walking skeleton, but does have some basic functionality.\n" +
+                        "Simply click on a piece and then another tile to move the piece to that tile.", "Tutorial", JOptionPane.PLAIN_MESSAGE);
             }
         }
     }
