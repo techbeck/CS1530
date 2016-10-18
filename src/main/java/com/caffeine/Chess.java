@@ -193,7 +193,7 @@ public class Chess {
                 c.gridy = i;
                 c.weightx = 0.5;
                 c.weighty = 0.5;
-                squares[i][j].addActionListener(new Listener());
+                squares[i][j].addActionListener(new BoardListener());
                 panel2B.add(squares[i][j], c);
                 cellColor = !cellColor;
             }
@@ -257,7 +257,7 @@ public class Chess {
         return button;
     }
 
-    private class Listener implements ActionListener {
+    private class BoardListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             JButton button = (JButton) e.getSource();
             /*String name = button.getName();
@@ -269,10 +269,15 @@ public class Chess {
                 button.setFont(new Font("Arial", Font.PLAIN, 16));
                 button.setText(name);
             }*/
-            if (selected == null && !button.getText().equals(" ")) {
-                selected = button;
-                selected.setForeground(Color.YELLOW);
-            } else { //if (selected != button) {
+            if (selected == null) {
+                if (!button.getText().equals(" ")) {
+                    selected = button;
+                    selected.setForeground(Color.YELLOW);
+                } else {
+                    // no selected button and button clicked is empty
+                    return;
+                }
+            } else {
                 String text = selected.getText();
                 selected.setForeground(Color.BLACK);
                 selected.setText(" ");
