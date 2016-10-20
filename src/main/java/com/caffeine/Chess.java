@@ -1,48 +1,14 @@
 package com.caffeine;
 
-import java.util.*;
-import java.io.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import java.awt.event.*;
-import java.awt.*;
 
 public class Chess {
-    private JButton selected = null;
-    private JLabel statusBar = new JLabel("Status Bar");
-    private JFrame window;
 
     public static void main(String[] args) {
-        new Chess();
+        com.caffeine.view.Core mainWindow = new com.caffeine.view.Core();
     }
 
-    String whiteKing = "\u2654";
-    String whiteQueen = "\u2655";
-    String whiteRook = "\u2656";
-    String whiteBishop = "\u2657";
-    String whiteKnight = "\u2658";
-    String whitePawn = "\u2659";
 
-    String blackKing = "\u265A";
-    String blackQueen = "\u265B";
-    String blackRook = "\u265C";
-    String blackBishop = "\u265D";
-    String blackKnight = "\u265E";
-    String blackPawn = "\u265F";
 
-    // remove this later. I just don't want to fix tests.
-    public static String echo(String phrase) {
-        return(phrase);
-    }
-
-    public Chess() {
-        window = new JFrame("Laboon Chess");
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        addMenu(window);
-        addMainPanels(window);
-        window.pack();
-        window.setVisible(true);
-    }
 
     private void addMenu(JFrame window) {
         JMenuBar menuBar = new JMenuBar();
@@ -67,7 +33,7 @@ public class Chess {
         Container pane = window.getContentPane();
         pane.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        
+
         JPanel panel1 = new JPanel();
         panel1.setBackground(Color.WHITE);
         Dimension panel1Size = new Dimension(150,500);
@@ -359,5 +325,10 @@ public class Chess {
                 statusBar.setText("[Upcoming Feature] - Show possible moves");
             }
         }
+    }
+
+    // remove this later. I just don't want to fix tests.
+    public static String echo(String phrase) {
+        return(phrase);
     }
 }
