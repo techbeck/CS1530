@@ -12,7 +12,7 @@ public class Chess {
     private JLabel statusBar = new JLabel("Status Bar");
     private JFrame window;
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         new Chess();
     }
 
@@ -31,16 +31,36 @@ public class Chess {
     String blackPawn = "\u265F";
 
     // remove this later. I just don't want to fix tests.
-    public static String echo(String phrase){
+    public static String echo(String phrase) {
         return(phrase);
     }
 
     public Chess() {
         window = new JFrame("Laboon Chess");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addMenu(window);
         addMainPanels(window);
         window.pack();
         window.setVisible(true);
+    }
+
+    private void addMenu(JFrame window) {
+        JMenuBar menuBar = new JMenuBar();
+        window.setJMenuBar(menuBar);
+        JMenu menu = new JMenu("Menu");
+        menuBar.add(menu);
+        JMenuItem setGameTimer = new JMenuItem("Set game timer");
+        JMenuItem setMoveTimer = new JMenuItem("Set move timer");
+        JMenuItem undo = new JMenuItem("Undo last move");
+        JMenuItem showPossMoves = new JMenuItem("Show possible moves");
+        menu.add(setGameTimer);
+        menu.add(setMoveTimer);
+        menu.add(undo);
+        menu.add(showPossMoves);
+        setGameTimer.addActionListener(new MenuListener());
+        setMoveTimer.addActionListener(new MenuListener());
+        undo.addActionListener(new MenuListener());
+        showPossMoves.addActionListener(new MenuListener());
     }
 
     private void addMainPanels(JFrame window) {
@@ -61,7 +81,7 @@ public class Chess {
         c.insets = new Insets(0,5,0,5);
         c.weightx = 0.5;
         c.weighty = 0.5;
-        panel1.add(new JLabel("Move History", SwingConstants.CENTER));
+        panel1.add(new JLabel("<html>[Upcoming Feature]<br>Move History</html>", SwingConstants.CENTER));
         pane.add(panel1, c);
 
         JPanel panel2 = new JPanel();
@@ -88,7 +108,7 @@ public class Chess {
         c.insets = new Insets(0,5,0,5);
         c.weightx = 0.5;
         c.weighty = 0.5;
-        panel3.add(new JLabel("Taken Pieces", SwingConstants.CENTER));
+        panel3.add(new JLabel("<html>[Upcoming Feature]<br>Taken Pieces</html>", SwingConstants.CENTER));
         pane.add(panel3, c);
 
         JPanel panel4 = new JPanel();
@@ -125,7 +145,7 @@ public class Chess {
         c.insets = new Insets(5,0,5,0);
         c.weightx = 0.5;
         c.weighty = 0.5;
-        panel2A.add(new JLabel("Timer", SwingConstants.CENTER));
+        panel2A.add(new JLabel("[Upcoming Feature] - Timer", SwingConstants.CENTER));
         panel2.add(panel2A, c);
 
         JPanel panel2B = new JPanel();
@@ -322,6 +342,21 @@ public class Chess {
             } else if (button.getText().equals("Tutorial")) {
                 JOptionPane.showMessageDialog(window, "This is a simple walking skeleton, but does have some basic functionality.\n" +
                         "Simply click on a piece and then another tile to move the piece to that tile.", "Tutorial", JOptionPane.PLAIN_MESSAGE);
+            }
+        }
+    }
+
+    private class MenuListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            JMenuItem menuItem = (JMenuItem) e.getSource();
+            if (menuItem.getText().equals("Set game timer")) {
+                statusBar.setText("[Upcoming Feature] - Set game timer");
+            } else if (menuItem.getText().equals("Set move timer")) {
+                statusBar.setText("[Upcoming Feature] - Set move timer");
+            } else if (menuItem.getText().equals("Undo last move")) {
+                statusBar.setText("[Upcoming Feature] - Undo last move");
+            } else if (menuItem.getText().equals("Show possible moves")) {
+                statusBar.setText("[Upcoming Feature] - Show possible moves");
             }
         }
     }
