@@ -1,0 +1,355 @@
+package com.caffeine.view;
+
+import java.util.*;
+import java.io.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import java.awt.event.*;
+import java.awt.*;
+
+public class Core {
+    private JButton selected = null;
+    private JLabel statusBar = new JLabel("Status Bar");
+    private JFrame window;
+
+    // Unicode Pieces
+    public static final String whiteKing = "\u2654";
+    public static final String whiteQueen = "\u2655";
+    public static final String whiteRook = "\u2656";
+    public static final String whiteBishop = "\u2657";
+    public static final String whiteKnight = "\u2658";
+    public static final String whitePawn = "\u2659";
+    public static final String blackKing = "\u265A";
+    public static final String blackQueen = "\u265B";
+    public static final String blackRook = "\u265C";
+    public static final String blackBishop = "\u265D";
+    public static final String blackKnight = "\u265E";
+    public static final String blackPawn = "\u265F";
+
+    public Core() {
+        window = new JFrame("Laboon Chess");
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addMenu(window);
+        addMainPanels(window);
+        window.pack();
+        window.setVisible(true);
+    }
+
+    private void addMenu(JFrame window) {
+        JMenuBar menuBar = new JMenuBar();
+        window.setJMenuBar(menuBar);
+        JMenu menu = new JMenu("Menu");
+        menuBar.add(menu);
+        JMenuItem setGameTimer = new JMenuItem("Set game timer");
+        JMenuItem setMoveTimer = new JMenuItem("Set move timer");
+        JMenuItem undo = new JMenuItem("Undo last move");
+        JMenuItem showPossMoves = new JMenuItem("Show possible moves");
+        menu.add(setGameTimer);
+        menu.add(setMoveTimer);
+        menu.add(undo);
+        menu.add(showPossMoves);
+        setGameTimer.addActionListener(new MenuListener());
+        setMoveTimer.addActionListener(new MenuListener());
+        undo.addActionListener(new MenuListener());
+        showPossMoves.addActionListener(new MenuListener());
+    }
+
+    private void addMainPanels(JFrame window) {
+        Container pane = window.getContentPane();
+        pane.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        JPanel panel1 = new JPanel();
+        panel1.setBackground(Color.WHITE);
+        Dimension panel1Size = new Dimension(150,500);
+        panel1.setMinimumSize(panel1Size);
+        panel1.setMaximumSize(panel1Size);
+        panel1.setPreferredSize(panel1Size);
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 1;
+        c.gridheight = 12;
+        c.insets = new Insets(0,5,0,5);
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        panel1.add(new JLabel("<html>[Upcoming Feature]<br>Move History</html>", SwingConstants.CENTER));
+        pane.add(panel1, c);
+
+        JPanel panel2 = new JPanel();
+        c.gridx = 1;
+        c.gridy = 0;
+        c.gridwidth = 6;
+        c.gridheight = 12;
+        c.insets = new Insets(0,0,0,0);
+        c.weightx = 0.7;
+        c.weighty = 0.5;
+        formatCenterPanel(panel2);
+        pane.add(panel2, c);
+
+        JPanel panel3 = new JPanel();
+        panel3.setBackground(Color.WHITE);
+        Dimension panel3Size = new Dimension(150,500);
+        panel3.setMinimumSize(panel3Size);
+        panel3.setMaximumSize(panel3Size);
+        panel3.setPreferredSize(panel3Size);
+        c.gridx = 7;
+        c.gridy = 0;
+        c.gridwidth = 1;
+        c.gridheight = 12;
+        c.insets = new Insets(0,5,0,5);
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        panel3.add(new JLabel("<html>[Upcoming Feature]<br>Taken Pieces</html>", SwingConstants.CENTER));
+        pane.add(panel3, c);
+
+        JPanel panel4 = new JPanel();
+        panel4.setBackground(Color.WHITE);
+        Dimension panel4Size = new Dimension(800,30);
+        panel4.setMinimumSize(panel4Size);
+        panel4.setMaximumSize(panel4Size);
+        panel4.setPreferredSize(panel4Size);
+        c.gridx = 0;
+        c.gridy = 12;
+        c.gridwidth = 8;
+        c.gridheight = 1;
+        c.insets = new Insets(5,0,5,0);
+        c.weightx = 0.4;
+        c.weighty = 0.4;
+        panel4.add(statusBar, SwingConstants.CENTER);
+        pane.add(panel4, c);
+    }
+
+    private void formatCenterPanel(JPanel panel2) {
+        panel2.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        JPanel panel2A = new JPanel();
+        panel2A.setBackground(Color.WHITE);
+        Dimension panel2ASize = new Dimension(200,40);
+        panel2A.setMinimumSize(panel2ASize);
+        panel2A.setMaximumSize(panel2ASize);
+        panel2A.setPreferredSize(panel2ASize);
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 13;
+        c.gridheight = 3;
+        c.insets = new Insets(5,0,5,0);
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        panel2A.add(new JLabel("[Upcoming Feature] - Timer", SwingConstants.CENTER));
+        panel2.add(panel2A, c);
+
+        JPanel panel2B = new JPanel();
+        c.gridx = 0;
+        c.gridy = 3;
+        c.gridwidth = 13;
+        c.gridheight = 12;
+        c.insets = new Insets(0,0,0,0);
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        formatBoard(panel2B);
+        panel2.add(panel2B, c);
+
+        JPanel panel2C = new JPanel();
+        panel2C.setBackground(Color.WHITE);
+        Dimension panel2CSize = new Dimension(500,70);
+        panel2C.setMinimumSize(panel2CSize);
+        panel2C.setMaximumSize(panel2CSize);
+        panel2C.setPreferredSize(panel2CSize);
+        c.gridx = 0;
+        c.gridy = 15;
+        c.gridwidth = 13;
+        c.gridheight = 4;
+        c.insets = new Insets(5,0,5,0);
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        // panel2C.add(new JLabel("buttons go here", SwingConstants.CENTER));
+        JButton loadButton = new JButton("Load");
+        loadButton.addActionListener(new PanelButtonListener());
+        JButton saveButton = new JButton("Save");
+        saveButton.addActionListener(new PanelButtonListener());
+        JButton chooseSiteButton = new JButton("Choose Side");
+        chooseSiteButton.addActionListener(new PanelButtonListener());
+        JButton tutorialButton = new JButton("Tutorial");
+        tutorialButton.addActionListener(new PanelButtonListener());
+        panel2C.add(loadButton);
+        panel2C.add(saveButton);
+        panel2C.add(chooseSiteButton);
+        panel2C.add(tutorialButton);
+        panel2.add(panel2C, c);
+    }
+
+    private void formatBoard(JPanel panel2B) {
+        panel2B.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        JButton[][] squares = new JButton[8][8];
+        boolean cellColor = true;
+        for (byte i = 0; i < 8; i++) {
+            //row name
+            JLabel label = new JLabel(String.valueOf(i+1), SwingConstants.CENTER);
+            c.fill = GridBagConstraints.BOTH;
+            c.gridx = 0;
+            c.gridy = i;
+            c.insets = new Insets(0,2,0,2);
+            c.weightx = 0.5;
+            c.weighty = 0.5;
+            panel2B.add(label, c);
+            c.insets = new Insets(0,0,0,0);
+            //row of buttons
+            for (byte j = 0; j < 8; j++) {
+                squares[i][j] = createBoardSquare(cellColor);
+                squares[i][j].setName((char)(j+65) + "," + (8-i));
+                c.fill = GridBagConstraints.BOTH;
+                c.gridx = j+1;
+                c.gridy = i;
+                c.weightx = 0.5;
+                c.weighty = 0.5;
+                squares[i][j].addActionListener(new BoardListener());
+                panel2B.add(squares[i][j], c);
+                cellColor = !cellColor;
+            }
+            cellColor = !cellColor;
+        }
+        //column names
+        for (byte i = 0; i < 8; i++) {
+            JLabel label = new JLabel(String.valueOf((char)(i+65)), SwingConstants.CENTER);
+            c.fill = GridBagConstraints.BOTH;
+            c.gridx = i+1;
+            c.gridy = 8;
+            c.insets = new Insets(2,0,2,0);
+            c.weightx = 0.5;
+            c.weighty = 0.5;
+            panel2B.add(label, c);
+        }
+        squares[0][7].setText(blackRook);
+        squares[0][0].setText(blackRook);
+        squares[0][1].setText(blackKnight);
+        squares[0][6].setText(blackKnight);
+        squares[0][2].setText(blackBishop);
+        squares[0][5].setText(blackBishop);
+        squares[0][3].setText(blackQueen);
+        squares[0][4].setText(blackKing);
+        for (int i = 0; i < 8; i++) {
+            squares[1][i].setText(blackPawn);
+            squares[6][i].setText(whitePawn);
+        }
+        squares[7][0].setText(whiteRook);
+        squares[7][7].setText(whiteRook);
+        squares[7][1].setText(whiteKnight);
+        squares[7][6].setText(whiteKnight);
+        squares[7][2].setText(whiteBishop);
+        squares[7][5].setText(whiteBishop);
+        squares[7][3].setText(whiteQueen);
+        squares[7][4].setText(whiteKing);
+
+    }
+
+    private JButton createBoardSquare(boolean cellColor) {
+        JButton button = new JButton(" ");
+        button.setForeground(Color.BLACK);
+        button.setOpaque(true);
+        if (cellColor)
+        {
+            button.setBackground(Color.WHITE);
+        }
+        else
+        {
+            button.setBackground(Color.GRAY);
+        }
+        button.setFont(new Font("Arial", Font.PLAIN, 25));
+        Border line = new LineBorder(Color.BLACK, 0);
+        Border margin = new EmptyBorder(5, 15, 5, 15);
+        Border compound = new CompoundBorder(line, margin);
+        button.setBorder(compound);
+        Dimension buttonSize = new Dimension(60,60);
+        button.setMinimumSize(buttonSize);
+        button.setMaximumSize(buttonSize);
+        button.setPreferredSize(buttonSize);
+        return button;
+    }
+
+    private class BoardListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            JButton button = (JButton) e.getSource();
+            /*String name = button.getName();
+            if (button.isSelected()) {
+                button.setSelected(false);
+                button.setText(" ");
+            } else {
+                button.setSelected(true);
+                button.setFont(new Font("Arial", Font.PLAIN, 16));
+                button.setText(name);
+            }*/
+            if (selected == null) {
+                if (!button.getText().equals(" ")) {
+                    selected = button;
+                    selected.setForeground(Color.YELLOW);
+                } else {
+                    // no selected button and button clicked is empty
+                    return;
+                }
+            } else {
+                String text = selected.getText();
+                selected.setForeground(Color.BLACK);
+                selected.setText(" ");
+                button.setText(text);
+                selected = null;
+            }
+        }
+    }
+
+    private class PanelButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            JButton button = (JButton) e.getSource();
+
+            if (button.getText().equals("Load")){
+                String fileName = JOptionPane.showInputDialog(window, "Please enter file name to load a game: ", "Load Game", JOptionPane.PLAIN_MESSAGE);
+                if (fileName != null && fileName.length() != 0) {
+                    if(fileName.toLowerCase().endsWith(".pgn")){
+                        statusBar.setText("[Upcoming Feature] - Loading game from file: " + fileName);
+                    }
+                    else{
+                        statusBar.setText("[Upcoming Feature] - Loading game from file: " + fileName + ".pgn");
+                    }
+                }
+            } else if (button.getText().equals("Save")) {
+                String fileName = JOptionPane.showInputDialog(window, "Please enter a file name to save your game: ", "Save Game", JOptionPane.PLAIN_MESSAGE);
+                if (fileName != null && fileName.length() != 0) {
+                    statusBar.setText("[Upcoming Feature] - Saving game to file: " + fileName + ".pgn");
+                }
+            } else if (button.getText().equals("Choose Side")) {
+                String[] options = new String[] {"Black", "White", "Cancel"};
+                int playerColor = JOptionPane.showOptionDialog(window, "Please choose a side", "Choose Side",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                    null, options, options[0]);
+                switch(playerColor){
+                    case -1: break;
+                    case 0: statusBar.setText("[Upcoming Feature] - Now playing as Black");
+                    break;
+                    case 1: statusBar.setText("[Upcoming Feature] - Now playing as White");
+                    break;
+                    case 2: break;
+                }
+            } else if (button.getText().equals("Tutorial")) {
+                JOptionPane.showMessageDialog(window, "This is a simple walking skeleton, but does have some basic functionality.\n" +
+                        "Simply click on a piece and then another tile to move the piece to that tile.", "Tutorial", JOptionPane.PLAIN_MESSAGE);
+            }
+        }
+    }
+
+    private class MenuListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            JMenuItem menuItem = (JMenuItem) e.getSource();
+            if (menuItem.getText().equals("Set game timer")) {
+                statusBar.setText("[Upcoming Feature] - Set game timer");
+            } else if (menuItem.getText().equals("Set move timer")) {
+                statusBar.setText("[Upcoming Feature] - Set move timer");
+            } else if (menuItem.getText().equals("Undo last move")) {
+                statusBar.setText("[Upcoming Feature] - Undo last move");
+            } else if (menuItem.getText().equals("Show possible moves")) {
+                statusBar.setText("[Upcoming Feature] - Show possible moves");
+            }
+        }
+    }
+
+}
