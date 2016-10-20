@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import com.caffeine.utils.Platform;
+import com.caffeine.utils.*;
 
-public class PlatformTest {
+public class UtilsTest {
 
     @Test
-    public void testPlatformDetectsOS(){
+    public void testPlatformVerifyDetectsOperatingSystem(){
         String os = System.getProperty("os.name").split("\\s+")[0];
 
         switch(os){
@@ -29,7 +29,7 @@ public class PlatformTest {
     }
 
     @Test
-    public void testPlatformDetectsBitWidth(){
+    public void testPlatformVerifyDetectsBitWidth(){
         String arch = System.getProperty("os.arch");
 
         ArrayList<String> possible_64 = new ArrayList<String>();
@@ -46,7 +46,7 @@ public class PlatformTest {
     }
 
     @Test
-    public void testPlatformStringIsCorrect(){
+    public void testPlatformVerifyGetPlatformString(){
         String os = System.getProperty("os.name").split("\\s+")[0].toLowerCase();
         String arch = System.getProperty("os.arch");
 
