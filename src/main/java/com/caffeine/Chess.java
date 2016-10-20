@@ -47,7 +47,7 @@ public class Chess {
         Container pane = window.getContentPane();
         pane.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        
+
         JPanel panel1 = new JPanel();
         panel1.setBackground(Color.WHITE);
         Dimension panel1Size = new Dimension(150,500);
