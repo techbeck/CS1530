@@ -59,12 +59,12 @@ public class Core {
         pane.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
-        JPanel panel1 = new JPanel();
-        panel1.setBackground(Color.WHITE);
-        Dimension panel1Size = new Dimension(150,500);
-        panel1.setMinimumSize(panel1Size);
-        panel1.setMaximumSize(panel1Size);
-        panel1.setPreferredSize(panel1Size);
+        JPanel historyPanel = new JPanel();
+        historyPanel.setBackground(Color.WHITE);
+        Dimension historyPanelSize = new Dimension(150,500);
+        historyPanel.setMinimumSize(historyPanelSize);
+        historyPanel.setMaximumSize(historyPanelSize);
+        historyPanel.setPreferredSize(historyPanelSize);
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 1;
@@ -72,10 +72,11 @@ public class Core {
         c.insets = new Insets(0,5,0,5);
         c.weightx = 0.5;
         c.weighty = 0.5;
-        panel1.add(new JLabel("<html>[Upcoming Feature]<br>Move History</html>", SwingConstants.CENTER));
-        pane.add(panel1, c);
+        historyPanel.add(new JLabel("<html>[Upcoming Feature]<br>Move History</html>", SwingConstants.CENTER));
+        // eventually, formatHistoryPanel(historyPanel);
+        pane.add(historyPanel, c);
 
-        JPanel panel2 = new JPanel();
+        JPanel centerPanel = new JPanel();
         c.gridx = 1;
         c.gridy = 0;
         c.gridwidth = 6;
@@ -83,15 +84,15 @@ public class Core {
         c.insets = new Insets(0,0,0,0);
         c.weightx = 0.7;
         c.weighty = 0.5;
-        formatCenterPanel(panel2);
-        pane.add(panel2, c);
+        formatCenterPanel(centerPanel);
+        pane.add(centerPanel, c);
 
-        JPanel panel3 = new JPanel();
-        panel3.setBackground(Color.WHITE);
-        Dimension panel3Size = new Dimension(150,500);
-        panel3.setMinimumSize(panel3Size);
-        panel3.setMaximumSize(panel3Size);
-        panel3.setPreferredSize(panel3Size);
+        JPanel takenPanel = new JPanel();
+        takenPanel.setBackground(Color.WHITE);
+        Dimension takenPanelSize = new Dimension(150,500);
+        takenPanel.setMinimumSize(takenPanelSize);
+        takenPanel.setMaximumSize(takenPanelSize);
+        takenPanel.setPreferredSize(takenPanelSize);
         c.gridx = 7;
         c.gridy = 0;
         c.gridwidth = 1;
@@ -99,15 +100,16 @@ public class Core {
         c.insets = new Insets(0,5,0,5);
         c.weightx = 0.5;
         c.weighty = 0.5;
-        panel3.add(new JLabel("<html>[Upcoming Feature]<br>Taken Pieces</html>", SwingConstants.CENTER));
-        pane.add(panel3, c);
+        takenPanel.add(new JLabel("<html>[Upcoming Feature]<br>Taken Pieces</html>", SwingConstants.CENTER));
+        // eventually, formatTakenPanel(takenPanel);
+        pane.add(takenPanel, c);
 
-        JPanel panel4 = new JPanel();
-        panel4.setBackground(Color.WHITE);
-        Dimension panel4Size = new Dimension(800,30);
-        panel4.setMinimumSize(panel4Size);
-        panel4.setMaximumSize(panel4Size);
-        panel4.setPreferredSize(panel4Size);
+        JPanel statusPanel = new JPanel();
+        statusPanel.setBackground(Color.WHITE);
+        Dimension statusPanelSize = new Dimension(800,30);
+        statusPanel.setMinimumSize(statusPanelSize);
+        statusPanel.setMaximumSize(statusPanelSize);
+        statusPanel.setPreferredSize(statusPanelSize);
         c.gridx = 0;
         c.gridy = 12;
         c.gridwidth = 8;
@@ -115,20 +117,20 @@ public class Core {
         c.insets = new Insets(5,0,5,0);
         c.weightx = 0.4;
         c.weighty = 0.4;
-        panel4.add(statusBar, SwingConstants.CENTER);
-        pane.add(panel4, c);
+        statusPanel.add(statusBar, SwingConstants.CENTER);
+        pane.add(statusPanel, c);
     }
 
-    private void formatCenterPanel(JPanel panel2) {
-        panel2.setLayout(new GridBagLayout());
+    private void formatCenterPanel(JPanel centerPanel) {
+        centerPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
-        JPanel panel2A = new JPanel();
-        panel2A.setBackground(Color.WHITE);
-        Dimension panel2ASize = new Dimension(200,40);
-        panel2A.setMinimumSize(panel2ASize);
-        panel2A.setMaximumSize(panel2ASize);
-        panel2A.setPreferredSize(panel2ASize);
+        JPanel timerPanel = new JPanel();
+        timerPanel.setBackground(Color.WHITE);
+        Dimension timerPanelSize = new Dimension(200,40);
+        timerPanel.setMinimumSize(timerPanelSize);
+        timerPanel.setMaximumSize(timerPanelSize);
+        timerPanel.setPreferredSize(timerPanelSize);
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 13;
@@ -136,10 +138,11 @@ public class Core {
         c.insets = new Insets(5,0,5,0);
         c.weightx = 0.5;
         c.weighty = 0.5;
-        panel2A.add(new JLabel("[Upcoming Feature] - Timer", SwingConstants.CENTER));
-        panel2.add(panel2A, c);
+        timerPanel.add(new JLabel("[Upcoming Feature] - Timer", SwingConstants.CENTER));
+        // eventually, formatTimerPanel(timerPanel);
+        centerPanel.add(timerPanel, c);
 
-        JPanel panel2B = new JPanel();
+        JPanel boardPanel = new JPanel();
         c.gridx = 0;
         c.gridy = 3;
         c.gridwidth = 13;
@@ -147,15 +150,15 @@ public class Core {
         c.insets = new Insets(0,0,0,0);
         c.weightx = 0.5;
         c.weighty = 0.5;
-        formatBoard(panel2B);
-        panel2.add(panel2B, c);
+        formatBoard(boardPanel);
+        centerPanel.add(boardPanel, c);
 
-        JPanel panel2C = new JPanel();
-        panel2C.setBackground(Color.WHITE);
-        Dimension panel2CSize = new Dimension(500,70);
-        panel2C.setMinimumSize(panel2CSize);
-        panel2C.setMaximumSize(panel2CSize);
-        panel2C.setPreferredSize(panel2CSize);
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(Color.WHITE);
+        Dimension buttonPanelSize = new Dimension(500,70);
+        buttonPanel.setMinimumSize(buttonPanelSize);
+        buttonPanel.setMaximumSize(buttonPanelSize);
+        buttonPanel.setPreferredSize(buttonPanelSize);
         c.gridx = 0;
         c.gridy = 15;
         c.gridwidth = 13;
@@ -163,29 +166,17 @@ public class Core {
         c.insets = new Insets(5,0,5,0);
         c.weightx = 0.5;
         c.weighty = 0.5;
-        // panel2C.add(new JLabel("buttons go here", SwingConstants.CENTER));
-        JButton loadButton = new JButton("Load");
-        loadButton.addActionListener(new PanelButtonListener());
-        JButton saveButton = new JButton("Save");
-        saveButton.addActionListener(new PanelButtonListener());
-        JButton chooseSiteButton = new JButton("Choose Side");
-        chooseSiteButton.addActionListener(new PanelButtonListener());
-        JButton tutorialButton = new JButton("Tutorial");
-        tutorialButton.addActionListener(new PanelButtonListener());
-        panel2C.add(loadButton);
-        panel2C.add(saveButton);
-        panel2C.add(chooseSiteButton);
-        panel2C.add(tutorialButton);
-        panel2.add(panel2C, c);
+        formatButtonPanel(buttonPanel);
+        centerPanel.add(buttonPanel, c);
     }
 
-    private void formatBoard(JPanel panel2B) {
-        panel2B.setLayout(new GridBagLayout());
+    private void formatBoard(JPanel boardPanel) {
+        boardPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         JButton[][] squares = new JButton[8][8];
         boolean cellColor = true;
         for (byte i = 0; i < 8; i++) {
-            //row name
+            // grid notation row name
             JLabel label = new JLabel(String.valueOf(i+1), SwingConstants.CENTER);
             c.fill = GridBagConstraints.BOTH;
             c.gridx = 0;
@@ -193,7 +184,7 @@ public class Core {
             c.insets = new Insets(0,2,0,2);
             c.weightx = 0.5;
             c.weighty = 0.5;
-            panel2B.add(label, c);
+            boardPanel.add(label, c);
             c.insets = new Insets(0,0,0,0);
             //row of buttons
             for (byte j = 0; j < 8; j++) {
@@ -205,22 +196,24 @@ public class Core {
                 c.weightx = 0.5;
                 c.weighty = 0.5;
                 squares[i][j].addActionListener(new BoardListener());
-                panel2B.add(squares[i][j], c);
+                boardPanel.add(squares[i][j], c);
                 cellColor = !cellColor;
             }
             cellColor = !cellColor;
         }
-        //column names
+        // grid notation column names
         for (byte i = 0; i < 8; i++) {
-            JLabel label = new JLabel(String.valueOf((char)(i+65)), SwingConstants.CENTER);
+            JLabel notationColumn = new JLabel(String.valueOf((char)(i+65)), SwingConstants.CENTER);
             c.fill = GridBagConstraints.BOTH;
             c.gridx = i+1;
             c.gridy = 8;
             c.insets = new Insets(2,0,2,0);
             c.weightx = 0.5;
             c.weighty = 0.5;
-            panel2B.add(label, c);
+            boardPanel.add(notationColumn, c);
         }
+
+        // initialize piece placement
         squares[0][7].setText(blackRook);
         squares[0][0].setText(blackRook);
         squares[0][1].setText(blackKnight);
@@ -244,45 +237,51 @@ public class Core {
 
     }
 
+    private void formatButtonPanel(JPanel buttonPanel) {
+        JButton loadButton = new JButton("Load");
+        loadButton.addActionListener(new PanelButtonListener());
+        JButton saveButton = new JButton("Save");
+        saveButton.addActionListener(new PanelButtonListener());
+        JButton chooseSiteButton = new JButton("Choose Side");
+        chooseSiteButton.addActionListener(new PanelButtonListener());
+        JButton tutorialButton = new JButton("Tutorial");
+        tutorialButton.addActionListener(new PanelButtonListener());
+        buttonPanel.add(loadButton);
+        buttonPanel.add(saveButton);
+        buttonPanel.add(chooseSiteButton);
+        buttonPanel.add(tutorialButton);
+    }
+
     private JButton createBoardSquare(boolean cellColor) {
-        JButton button = new JButton(" ");
-        button.setForeground(Color.BLACK);
-        button.setOpaque(true);
+        JButton squareButton = new JButton(" ");
+        squareButton.setForeground(Color.BLACK);
+        squareButton.setOpaque(true);
         if (cellColor)
         {
-            button.setBackground(Color.WHITE);
+            squareButton.setBackground(Color.WHITE);
         }
         else
         {
-            button.setBackground(Color.GRAY);
+            squareButton.setBackground(Color.GRAY);
         }
-        button.setFont(new Font("Arial", Font.PLAIN, 25));
+        squareButton.setFont(new Font("Arial", Font.PLAIN, 25));
         Border line = new LineBorder(Color.BLACK, 0);
         Border margin = new EmptyBorder(5, 15, 5, 15);
         Border compound = new CompoundBorder(line, margin);
-        button.setBorder(compound);
+        squareButton.setBorder(compound);
         Dimension buttonSize = new Dimension(60,60);
-        button.setMinimumSize(buttonSize);
-        button.setMaximumSize(buttonSize);
-        button.setPreferredSize(buttonSize);
-        return button;
+        squareButton.setMinimumSize(buttonSize);
+        squareButton.setMaximumSize(buttonSize);
+        squareButton.setPreferredSize(buttonSize);
+        return squareButton;
     }
 
     private class BoardListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            JButton button = (JButton) e.getSource();
-            /*String name = button.getName();
-            if (button.isSelected()) {
-                button.setSelected(false);
-                button.setText(" ");
-            } else {
-                button.setSelected(true);
-                button.setFont(new Font("Arial", Font.PLAIN, 16));
-                button.setText(name);
-            }*/
+            JButton squareButton = (JButton) e.getSource();
             if (selected == null) {
-                if (!button.getText().equals(" ")) {
-                    selected = button;
+                if (!squareButton.getText().equals(" ")) {
+                    selected = squareButton;
                     selected.setForeground(Color.YELLOW);
                 } else {
                     // no selected button and button clicked is empty
@@ -292,7 +291,7 @@ public class Core {
                 String text = selected.getText();
                 selected.setForeground(Color.BLACK);
                 selected.setText(" ");
-                button.setText(text);
+                squareButton.setText(text);
                 selected = null;
             }
         }
