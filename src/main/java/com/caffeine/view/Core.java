@@ -26,6 +26,10 @@ public class Core {
     public static final String blackKnight = "\u265E";
     public static final String blackPawn = "\u265F";
 
+    // proprietary font that windows/mac have, but Linux will default to 
+    // a font that will still display the chess pieces
+    Font defaultFont = new Font("Arial Unicode MS", Font.PLAIN, 25);
+
     public Core() {
         window = new JFrame("Laboon Chess");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -256,7 +260,7 @@ public class Core {
         {
             button.setBackground(Color.GRAY);
         }
-        button.setFont(new Font("Arial", Font.PLAIN, 25));
+        button.setFont(defaultFont);
         Border line = new LineBorder(Color.BLACK, 0);
         Border margin = new EmptyBorder(5, 15, 5, 15);
         Border compound = new CompoundBorder(line, margin);
@@ -332,7 +336,7 @@ public class Core {
                 }
             } else if (button.getText().equals("Tutorial")) {
                 JOptionPane.showMessageDialog(window, "This is a simple walking skeleton, but does have some basic functionality.\n" +
-                        "Simply click on a piece and then another tile to move the piece to that tile.", "Tutorial", JOptionPane.PLAIN_MESSAGE);
+                    "Simply click on a piece and then another tile to move the piece to that tile.", "Tutorial", JOptionPane.PLAIN_MESSAGE);
             }
         }
     }
