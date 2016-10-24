@@ -1,6 +1,6 @@
 apply plugin: 'java'
-compileJava {options.encoding = "UTF-8"} 
 apply plugin: 'application'
+compileJava {options.encoding = "UTF-8"}
 
 mainClassName = 'com.caffeine.Chess'
 
@@ -11,19 +11,6 @@ repositories {
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
     testCompile 'junit:junit:4.12'
+    compile files('libs/commons-lang3-3.5.jar') //  For SystemUtils
+    compile files('libs/jockfish-1.0.0.jar')    //  For Stockfish JVM Access
 }
-
-
-//Example Custom Task
-task lando << {
-    String name = "Lando"
-    println name
-}
-
-
-// Masked Operations
-
-// run { /* CURRENTLY NOT WORKING */
-//     systemProperties System.getProperties()
-//     args System.getProperty("args").split()
-// }
