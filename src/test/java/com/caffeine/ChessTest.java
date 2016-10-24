@@ -11,12 +11,6 @@ import com.caffeine.Chess;
 public class ChessTest {
 
     @Test
-    public void testExitWithoutError(){
-        String phrase = "Our Chess is The One True Chess.";
-        assertEquals(Chess.echo(phrase), phrase);
-    }
-
-    @Test
     public void testJockfishEngineIntegrated(){
         String expected = "Stockfish 7 64 by T. Romstad, M. Costalba, J. Kiiski, G. Linscott\n";
         JockfishEngine jockfish = new JockfishEngine();
