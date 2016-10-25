@@ -8,9 +8,8 @@ import java.awt.event.*;
 import java.awt.*;
 
 public class Core {
-    private JButton selected = null;
-    private JLabel statusBar = new JLabel("Status Bar");
-    private JFrame window;
+    public static JLabel statusLabel = new JLabel("Status Bar");
+    public static JFrame window;
 
     // Unicode Pieces
     public static final String whiteKing = "\u2654";
@@ -30,20 +29,29 @@ public class Core {
     // a font that will still display the chess pieces
     Font defaultFont = new Font("Arial Unicode MS", Font.PLAIN, 25);
 
-    // GridBagLayout Values
+    // GUI Layout Values
+    Dimension sidePanelDimension = new Dimension(150,600);
     // Insets are padding between components
     Insets sidePadding = new Insets(0,2,0,2);
     Insets noPadding = new Insets(0,0,0,0);
     Insets topBottomPadding = new Insets(2,0,2,0);
+    // For layout to perform correctly, components need weight > 0
     final double AVERAGE_WEIGHT = 0.5;
+    /*
+        grid x,y and grid width/height are component specific for their 
+        placements within the outer component they are in.
+        (0,0) is the upper left corner
+    */
 
     public Core() {
         window = new JFrame("Laboon Chess");
+        window.setName("window");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addMenu(window);
         addMainPanels(window);
         window.pack();
         window.setVisible(true);
+        window.setResizable(false);
     }
 
     private void addMenu(JFrame window) {
@@ -71,11 +79,11 @@ public class Core {
         GridBagConstraints c = new GridBagConstraints();
 
         JPanel historyPanel = new JPanel();
+        historyPanel.setName("historyPanel");
         historyPanel.setBackground(Color.WHITE);
-        Dimension historyPanelSize = new Dimension(150,500);
-        historyPanel.setMinimumSize(historyPanelSize);
-        historyPanel.setMaximumSize(historyPanelSize);
-        historyPanel.setPreferredSize(historyPanelSize);
+        historyPanel.setMinimumSize(sidePanelDimension);
+        historyPanel.setMaximumSize(sidePanelDimension);
+        historyPanel.setPreferredSize(sidePanelDimension);
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 1;
@@ -88,6 +96,7 @@ public class Core {
         pane.add(historyPanel, c);
 
         JPanel centerPanel = new JPanel();
+        centerPanel.setName("centerPanel");
         c.gridx = 1;
         c.gridy = 0;
         c.gridwidth = 6;
@@ -99,11 +108,11 @@ public class Core {
         pane.add(centerPanel, c);
 
         JPanel takenPanel = new JPanel();
+        takenPanel.setName("takenPanel");
         takenPanel.setBackground(Color.WHITE);
-        Dimension takenPanelSize = new Dimension(150,500);
-        takenPanel.setMinimumSize(takenPanelSize);
-        takenPanel.setMaximumSize(takenPanelSize);
-        takenPanel.setPreferredSize(takenPanelSize);
+        takenPanel.setMinimumSize(sidePanelDimension);
+        takenPanel.setMaximumSize(sidePanelDimension);
+        takenPanel.setPreferredSize(sidePanelDimension);
         c.gridx = 7;
         c.gridy = 0;
         c.gridwidth = 1;
@@ -116,6 +125,7 @@ public class Core {
         pane.add(takenPanel, c);
 
         JPanel statusPanel = new JPanel();
+        statusPanel.setName("statusPanel");
         statusPanel.setBackground(Color.WHITE);
         Dimension statusPanelSize = new Dimension(800,30);
         statusPanel.setMinimumSize(statusPanelSize);
@@ -128,7 +138,7 @@ public class Core {
         c.insets = topBottomPadding;
         c.weightx = AVERAGE_WEIGHT;
         c.weighty = AVERAGE_WEIGHT;
-        statusPanel.add(statusBar, SwingConstants.CENTER);
+        statusPanel.add(statusLabel, SwingConstants.CENTER);
         pane.add(statusPanel, c);
     }
 
@@ -137,6 +147,7 @@ public class Core {
         GridBagConstraints c = new GridBagConstraints();
 
         JPanel timerPanel = new JPanel();
+        timerPanel.setName("timerPanel");
         timerPanel.setBackground(Color.WHITE);
         Dimension timerPanelSize = new Dimension(200,40);
         timerPanel.setMinimumSize(timerPanelSize);
@@ -154,6 +165,7 @@ public class Core {
         centerPanel.add(timerPanel, c);
 
         JPanel boardPanel = new JPanel();
+        boardPanel.setName("boardPanel");
         c.gridx = 0;
         c.gridy = 3;
         c.gridwidth = 13;
@@ -165,6 +177,7 @@ public class Core {
         centerPanel.add(boardPanel, c);
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setName("buttonPanel");
         buttonPanel.setBackground(Color.WHITE);
         Dimension buttonPanelSize = new Dimension(500,70);
         buttonPanel.setMinimumSize(buttonPanelSize);
@@ -185,6 +198,7 @@ public class Core {
         boardPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         JButton[][] squares = new JButton[8][8];
+        BoardListener boardListener = new BoardListener();
         boolean cellColor = true;
         for (byte i = 0; i < 8; i++) {
             // grid notation row name
@@ -206,7 +220,7 @@ public class Core {
                 c.gridy = i;
                 c.weightx = AVERAGE_WEIGHT;
                 c.weighty = AVERAGE_WEIGHT;
-                squares[i][j].addActionListener(new BoardListener());
+                squares[i][j].addActionListener(boardListener);
                 boardPanel.add(squares[i][j], c);
                 cellColor = !cellColor;
             }
@@ -250,16 +264,20 @@ public class Core {
 
     private void formatButtonPanel(JPanel buttonPanel) {
         JButton loadButton = new JButton("Load");
+        loadButton.setName("loadButton");
         loadButton.addActionListener(new PanelButtonListener());
         JButton saveButton = new JButton("Save");
+        saveButton.setName("saveButton");
         saveButton.addActionListener(new PanelButtonListener());
-        JButton chooseSiteButton = new JButton("Choose Side");
-        chooseSiteButton.addActionListener(new PanelButtonListener());
+        JButton chooseSideButton = new JButton("Choose Side");
+        chooseSideButton.setName("chooseSideButton");
+        chooseSideButton.addActionListener(new PanelButtonListener());
         JButton tutorialButton = new JButton("Tutorial");
+        tutorialButton.setName("tutorialButton");
         tutorialButton.addActionListener(new PanelButtonListener());
         buttonPanel.add(loadButton);
         buttonPanel.add(saveButton);
-        buttonPanel.add(chooseSiteButton);
+        buttonPanel.add(chooseSideButton);
         buttonPanel.add(tutorialButton);
     }
 
@@ -286,80 +304,4 @@ public class Core {
         squareButton.setPreferredSize(buttonSize);
         return squareButton;
     }
-
-    private class BoardListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            JButton squareButton = (JButton) e.getSource();
-            if (selected == null) {
-                if (!squareButton.getText().equals(" ")) {
-                    selected = squareButton;
-                    selected.setForeground(Color.YELLOW);
-                } else {
-                    // no selected button and button clicked is empty
-                    return;
-                }
-            } else {
-                String text = selected.getText();
-                selected.setForeground(Color.BLACK);
-                selected.setText(" ");
-                squareButton.setText(text);
-                selected = null;
-            }
-        }
-    }
-
-    private class PanelButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            JButton button = (JButton) e.getSource();
-
-            if (button.getText().equals("Load")){
-                String fileName = JOptionPane.showInputDialog(window, "Please enter file name to load a game: ", "Load Game", JOptionPane.PLAIN_MESSAGE);
-                if (fileName != null && fileName.length() != 0) {
-                    if(fileName.toLowerCase().endsWith(".pgn")){
-                        statusBar.setText("[Upcoming Feature] - Loading game from file: " + fileName);
-                    }
-                    else{
-                        statusBar.setText("[Upcoming Feature] - Loading game from file: " + fileName + ".pgn");
-                    }
-                }
-            } else if (button.getText().equals("Save")) {
-                String fileName = JOptionPane.showInputDialog(window, "Please enter a file name to save your game: ", "Save Game", JOptionPane.PLAIN_MESSAGE);
-                if (fileName != null && fileName.length() != 0) {
-                    statusBar.setText("[Upcoming Feature] - Saving game to file: " + fileName + ".pgn");
-                }
-            } else if (button.getText().equals("Choose Side")) {
-                String[] options = new String[] {"Black", "White", "Cancel"};
-                int playerColor = JOptionPane.showOptionDialog(window, "Please choose a side", "Choose Side",
-                    JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-                    null, options, options[0]);
-                switch(playerColor){
-                    case -1: break;
-                    case 0: statusBar.setText("[Upcoming Feature] - Now playing as Black");
-                    break;
-                    case 1: statusBar.setText("[Upcoming Feature] - Now playing as White");
-                    break;
-                    case 2: break;
-                }
-            } else if (button.getText().equals("Tutorial")) {
-                JOptionPane.showMessageDialog(window, "This is a simple walking skeleton, but does have some basic functionality.\n" +
-                    "Simply click on a piece and then another tile to move the piece to that tile.", "Tutorial", JOptionPane.PLAIN_MESSAGE);
-            }
-        }
-    }
-
-    private class MenuListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            JMenuItem menuItem = (JMenuItem) e.getSource();
-            if (menuItem.getText().equals("Set game timer")) {
-                statusBar.setText("[Upcoming Feature] - Set game timer");
-            } else if (menuItem.getText().equals("Set move timer")) {
-                statusBar.setText("[Upcoming Feature] - Set move timer");
-            } else if (menuItem.getText().equals("Undo last move")) {
-                statusBar.setText("[Upcoming Feature] - Undo last move");
-            } else if (menuItem.getText().equals("Show possible moves")) {
-                statusBar.setText("[Upcoming Feature] - Show possible moves");
-            }
-        }
-    }
-
 }
