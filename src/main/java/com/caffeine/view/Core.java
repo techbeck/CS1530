@@ -30,6 +30,13 @@ public class Core {
     // a font that will still display the chess pieces
     Font defaultFont = new Font("Arial Unicode MS", Font.PLAIN, 25);
 
+    // GridBagLayout Values
+    // Insets are padding between components
+    Insets sidePadding = new Insets(0,2,0,2);
+    Insets noPadding = new Insets(0,0,0,0);
+    Insets topBottomPadding = new Insets(2,0,2,0);
+    final double AVERAGE_WEIGHT = 0.5;
+
     public Core() {
         window = new JFrame("Laboon Chess");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -73,9 +80,9 @@ public class Core {
         c.gridy = 0;
         c.gridwidth = 1;
         c.gridheight = 12;
-        c.insets = new Insets(0,5,0,5);
-        c.weightx = 0.5;
-        c.weighty = 0.5;
+        c.insets = sidePadding;
+        c.weightx = AVERAGE_WEIGHT;
+        c.weighty = AVERAGE_WEIGHT;
         historyPanel.add(new JLabel("<html>[Upcoming Feature]<br>Move History</html>", SwingConstants.CENTER));
         // eventually, formatHistoryPanel(historyPanel);
         pane.add(historyPanel, c);
@@ -85,9 +92,9 @@ public class Core {
         c.gridy = 0;
         c.gridwidth = 6;
         c.gridheight = 12;
-        c.insets = new Insets(0,0,0,0);
-        c.weightx = 0.7;
-        c.weighty = 0.5;
+        c.insets = noPadding;
+        c.weightx = AVERAGE_WEIGHT;
+        c.weighty = AVERAGE_WEIGHT;
         formatCenterPanel(centerPanel);
         pane.add(centerPanel, c);
 
@@ -101,9 +108,9 @@ public class Core {
         c.gridy = 0;
         c.gridwidth = 1;
         c.gridheight = 12;
-        c.insets = new Insets(0,5,0,5);
-        c.weightx = 0.5;
-        c.weighty = 0.5;
+        c.insets = sidePadding;
+        c.weightx = AVERAGE_WEIGHT;
+        c.weighty = AVERAGE_WEIGHT;
         takenPanel.add(new JLabel("<html>[Upcoming Feature]<br>Taken Pieces</html>", SwingConstants.CENTER));
         // eventually, formatTakenPanel(takenPanel);
         pane.add(takenPanel, c);
@@ -118,9 +125,9 @@ public class Core {
         c.gridy = 12;
         c.gridwidth = 8;
         c.gridheight = 1;
-        c.insets = new Insets(5,0,5,0);
-        c.weightx = 0.4;
-        c.weighty = 0.4;
+        c.insets = topBottomPadding;
+        c.weightx = AVERAGE_WEIGHT;
+        c.weighty = AVERAGE_WEIGHT;
         statusPanel.add(statusBar, SwingConstants.CENTER);
         pane.add(statusPanel, c);
     }
@@ -139,9 +146,9 @@ public class Core {
         c.gridy = 0;
         c.gridwidth = 13;
         c.gridheight = 3;
-        c.insets = new Insets(5,0,5,0);
-        c.weightx = 0.5;
-        c.weighty = 0.5;
+        c.insets = topBottomPadding;
+        c.weightx = AVERAGE_WEIGHT;
+        c.weighty = AVERAGE_WEIGHT;
         timerPanel.add(new JLabel("[Upcoming Feature] - Timer", SwingConstants.CENTER));
         // eventually, formatTimerPanel(timerPanel);
         centerPanel.add(timerPanel, c);
@@ -151,9 +158,9 @@ public class Core {
         c.gridy = 3;
         c.gridwidth = 13;
         c.gridheight = 12;
-        c.insets = new Insets(0,0,0,0);
-        c.weightx = 0.5;
-        c.weighty = 0.5;
+        c.insets = noPadding;
+        c.weightx = AVERAGE_WEIGHT;
+        c.weighty = AVERAGE_WEIGHT;
         formatBoard(boardPanel);
         centerPanel.add(boardPanel, c);
 
@@ -167,9 +174,9 @@ public class Core {
         c.gridy = 15;
         c.gridwidth = 13;
         c.gridheight = 4;
-        c.insets = new Insets(5,0,5,0);
-        c.weightx = 0.5;
-        c.weighty = 0.5;
+        c.insets = topBottomPadding;
+        c.weightx = AVERAGE_WEIGHT;
+        c.weighty = AVERAGE_WEIGHT;
         formatButtonPanel(buttonPanel);
         centerPanel.add(buttonPanel, c);
     }
@@ -185,11 +192,11 @@ public class Core {
             c.fill = GridBagConstraints.BOTH;
             c.gridx = 0;
             c.gridy = i;
-            c.insets = new Insets(0,2,0,2);
-            c.weightx = 0.5;
-            c.weighty = 0.5;
+            c.insets = sidePadding;
+            c.weightx = AVERAGE_WEIGHT;
+            c.weighty = AVERAGE_WEIGHT;
             boardPanel.add(label, c);
-            c.insets = new Insets(0,0,0,0);
+            c.insets = noPadding;
             //row of buttons
             for (byte j = 0; j < 8; j++) {
                 squares[i][j] = createBoardSquare(cellColor);
@@ -197,8 +204,8 @@ public class Core {
                 c.fill = GridBagConstraints.BOTH;
                 c.gridx = j+1;
                 c.gridy = i;
-                c.weightx = 0.5;
-                c.weighty = 0.5;
+                c.weightx = AVERAGE_WEIGHT;
+                c.weighty = AVERAGE_WEIGHT;
                 squares[i][j].addActionListener(new BoardListener());
                 boardPanel.add(squares[i][j], c);
                 cellColor = !cellColor;
@@ -211,9 +218,9 @@ public class Core {
             c.fill = GridBagConstraints.BOTH;
             c.gridx = i+1;
             c.gridy = 8;
-            c.insets = new Insets(2,0,2,0);
-            c.weightx = 0.5;
-            c.weighty = 0.5;
+            c.insets = topBottomPadding;
+            c.weightx = AVERAGE_WEIGHT;
+            c.weighty = AVERAGE_WEIGHT;
             boardPanel.add(notationColumn, c);
         }
 
