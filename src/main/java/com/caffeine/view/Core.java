@@ -268,7 +268,7 @@ public class Core {
         {
             squareButton.setBackground(Color.GRAY);
         }
-        button.setFont(defaultFont);
+        squareButton.setFont(defaultFont);
         Border line = new LineBorder(Color.BLACK, 0);
         Border margin = new EmptyBorder(5, 15, 5, 15);
         Border compound = new CompoundBorder(line, margin);
