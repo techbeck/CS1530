@@ -28,9 +28,9 @@ public class Core {
     // proprietary font that windows/mac have, but Linux will default to 
     // a font that will still display the chess pieces
     Font defaultFont = new Font("Arial Unicode MS", Font.PLAIN, 25);
-
+ 
     // GUI Layout Values
-    Dimension sidePanelDimension = new Dimension(150,600);
+    Dimension sidePanelDimension = new Dimension(150,550);
     // Insets are padding between components
     Insets sidePadding = new Insets(0,2,0,2);
     Insets noPadding = new Insets(0,0,0,0);
@@ -38,7 +38,7 @@ public class Core {
     // For layout to perform correctly, components need weight > 0
     final double AVERAGE_WEIGHT = 0.5;
     /*
-        grid x,y and grid width/height are component specific for their 
+        grid x/y and grid width/height are component specific for their 
         placements within the outer component they are in.
         (0,0) is the upper left corner
     */
@@ -56,13 +56,18 @@ public class Core {
 
     private void addMenu(JFrame window) {
         JMenuBar menuBar = new JMenuBar();
+        menuBar.setName("menuBar");
         window.setJMenuBar(menuBar);
         JMenu menu = new JMenu("Menu");
         menuBar.add(menu);
         JMenuItem setGameTimer = new JMenuItem("Set game timer");
+        setGameTimer.setName("setGameTimer");
         JMenuItem setMoveTimer = new JMenuItem("Set move timer");
+        setMoveTimer.setName("setMoveTimer");
         JMenuItem undo = new JMenuItem("Undo last move");
+        undo.setName("undo");
         JMenuItem showPossMoves = new JMenuItem("Show possible moves");
+        showPossMoves.setName("showPossMoves");
         menu.add(setGameTimer);
         menu.add(setMoveTimer);
         menu.add(undo);
@@ -91,7 +96,9 @@ public class Core {
         c.insets = sidePadding;
         c.weightx = AVERAGE_WEIGHT;
         c.weighty = AVERAGE_WEIGHT;
-        historyPanel.add(new JLabel("<html>[Upcoming Feature]<br>Move History</html>", SwingConstants.CENTER));
+        JLabel historyLabel = new JLabel("<html>[Upcoming Feature]<br>Move History</html>", SwingConstants.CENTER);
+        historyLabel.setName("historyLabel");
+        historyPanel.add(historyLabel);
         // eventually, formatHistoryPanel(historyPanel);
         pane.add(historyPanel, c);
 
@@ -120,7 +127,9 @@ public class Core {
         c.insets = sidePadding;
         c.weightx = AVERAGE_WEIGHT;
         c.weighty = AVERAGE_WEIGHT;
-        takenPanel.add(new JLabel("<html>[Upcoming Feature]<br>Taken Pieces</html>", SwingConstants.CENTER));
+        JLabel takenLabel = new JLabel("<html>[Upcoming Feature]<br>Taken Pieces</html>", SwingConstants.CENTER);
+        takenLabel.setName("takenLabel");
+        takenPanel.add(takenLabel);
         // eventually, formatTakenPanel(takenPanel);
         pane.add(takenPanel, c);
 
@@ -160,7 +169,9 @@ public class Core {
         c.insets = topBottomPadding;
         c.weightx = AVERAGE_WEIGHT;
         c.weighty = AVERAGE_WEIGHT;
-        timerPanel.add(new JLabel("[Upcoming Feature] - Timer", SwingConstants.CENTER));
+        JLabel timerLabel = new JLabel("[Upcoming Feature] - Timer", SwingConstants.CENTER);
+        timerLabel.setName("timerLabel");
+        timerPanel.add(timerLabel);
         // eventually, formatTimerPanel(timerPanel);
         centerPanel.add(timerPanel, c);
 
@@ -179,7 +190,7 @@ public class Core {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setName("buttonPanel");
         buttonPanel.setBackground(Color.WHITE);
-        Dimension buttonPanelSize = new Dimension(500,70);
+        Dimension buttonPanelSize = new Dimension(500,40);
         buttonPanel.setMinimumSize(buttonPanelSize);
         buttonPanel.setMaximumSize(buttonPanelSize);
         buttonPanel.setPreferredSize(buttonPanelSize);
