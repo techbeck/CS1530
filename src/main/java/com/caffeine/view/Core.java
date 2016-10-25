@@ -7,11 +7,17 @@ import javax.swing.border.*;
 import java.awt.event.*;
 import java.awt.*;
 
+
+/**
+ * 	This is the core view processor that initializes the GUI components
+ * 	of the chess program.
+ */
 public class Core {
+
     public static JLabel statusLabel = new JLabel("Status Bar");
     public static JFrame window;
 
-    // Unicode Pieces
+    // Unicode chess pieces
     public static final String whiteKing = "\u2654";
     public static final String whiteQueen = "\u2655";
     public static final String whiteRook = "\u2656";
@@ -25,8 +31,8 @@ public class Core {
     public static final String blackKnight = "\u265E";
     public static final String blackPawn = "\u265F";
 
-    // proprietary font that windows/mac have, but Linux will default to 
-    // a font that will still display the chess pieces
+    /* proprietary font that Windows/Mac have, but Linux will default to 
+    a font that will still display the chess pieces */
     Font defaultFont = new Font("Arial Unicode MS", Font.PLAIN, 25);
  
     // GUI Layout Values
@@ -37,11 +43,13 @@ public class Core {
     Insets topBottomPadding = new Insets(2,0,2,0);
     // For layout to perform correctly, components need weight > 0
     final double AVERAGE_WEIGHT = 0.5;
-    /*
-        grid x/y and grid width/height are component specific for their 
-        placements within the outer component they are in.
-        (0,0) is the upper left corner
-    */
+
+    /**
+     *	grid x/y and grid width/height are component specific for their
+     * 	placements within the outer component they are in.
+	 *  (0,0) is the upper left corner 
+     */
+	
 
     public Core() {
         window = new JFrame("Laboon Chess");
@@ -54,7 +62,12 @@ public class Core {
         window.setResizable(false);
     }
 
+    /**
+     * 	Initializes a menu for a given JFrame.
+     *  @param window: the JFrame to create a menu for
+     */
     private void addMenu(JFrame window) {
+
         JMenuBar menuBar = new JMenuBar();
         menuBar.setName("menuBar");
         window.setJMenuBar(menuBar);
@@ -78,6 +91,11 @@ public class Core {
         showPossMoves.addActionListener(new MenuListener());
     }
 
+    /**
+     * 	Initializes panels for a given JFrame to display move history,
+     * 	the game board, chess pieces taken, and a status indicator.
+     *  @param window: the JFrame to create panels for
+     */
     private void addMainPanels(JFrame window) {
         Container pane = window.getContentPane();
         pane.setLayout(new GridBagLayout());
@@ -151,7 +169,13 @@ public class Core {
         pane.add(statusPanel, c);
     }
 
+    /**
+     * 	Initializes sub-panels to display the current game time,
+     * 	the chess board, and commonly used gameplay options
+     *  @param centerPanel: the JPanel upon which to create sub-panels
+     */
     private void formatCenterPanel(JPanel centerPanel) {
+
         centerPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
@@ -205,13 +229,21 @@ public class Core {
         centerPanel.add(buttonPanel, c);
     }
 
+    /**
+     * 	Initializes an 8x8 Array of buttons to serve as the tiles 
+     * 	for the chess board, along with grid notation.
+     *  @param boardPanel: the JPanel upon which to place the game tiles on
+     */
     private void formatBoard(JPanel boardPanel) {
+
         boardPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         JButton[][] squares = new JButton[8][8];
         BoardListener boardListener = new BoardListener();
         boolean cellColor = true;
+
         for (byte i = 0; i < 8; i++) {
+
             // grid notation row name
             JLabel label = new JLabel(String.valueOf(i+1), SwingConstants.CENTER);
             c.fill = GridBagConstraints.BOTH;
@@ -222,8 +254,10 @@ public class Core {
             c.weighty = AVERAGE_WEIGHT;
             boardPanel.add(label, c);
             c.insets = noPadding;
+
             //row of buttons
             for (byte j = 0; j < 8; j++) {
+
                 squares[i][j] = createBoardSquare(cellColor);
                 squares[i][j].setName((char)(j+65) + "," + (8-i));
                 c.fill = GridBagConstraints.BOTH;
@@ -235,10 +269,13 @@ public class Core {
                 boardPanel.add(squares[i][j], c);
                 cellColor = !cellColor;
             }
-            cellColor = !cellColor;
+
+            cellColor = !cellColor; // creates the checkered pattern of tiles
         }
+
         // grid notation column names
         for (byte i = 0; i < 8; i++) {
+
             JLabel notationColumn = new JLabel(String.valueOf((char)(i+65)), SwingConstants.CENTER);
             c.fill = GridBagConstraints.BOTH;
             c.gridx = i+1;
@@ -258,10 +295,12 @@ public class Core {
         squares[0][5].setText(blackBishop);
         squares[0][3].setText(blackQueen);
         squares[0][4].setText(blackKing);
+
         for (int i = 0; i < 8; i++) {
             squares[1][i].setText(blackPawn);
             squares[6][i].setText(whitePawn);
         }
+        
         squares[7][0].setText(whiteRook);
         squares[7][7].setText(whiteRook);
         squares[7][1].setText(whiteKnight);
@@ -273,6 +312,11 @@ public class Core {
 
     }
 
+    /**
+     * 	Initializes buttons for the user to readily access
+     * 	common gameplay options.
+     * @param buttonPanel: the JPanel upon which to place option buttons
+     */
     private void formatButtonPanel(JPanel buttonPanel) {
         JButton loadButton = new JButton("Load");
         loadButton.setName("loadButton");
@@ -292,6 +336,12 @@ public class Core {
         buttonPanel.add(tutorialButton);
     }
 
+    /**
+     * 	Customizes a JButton to appear as a game tile and colors it
+     * 	gray or white.
+     *  @param  cellColor: a Boolean to determine whether the button should be colored gray or not
+     *  @return a JButton that looks like a gameboard tile
+     */
     private JButton createBoardSquare(boolean cellColor) {
         JButton squareButton = new JButton(" ");
         squareButton.setForeground(Color.BLACK);
