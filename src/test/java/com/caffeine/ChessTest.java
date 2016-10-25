@@ -18,4 +18,9 @@ public class ChessTest {
         String observed = jockfish.read();
         assertTrue(expected.equals(observed));
     }
+	
+	@Test
+	public void testAssertJIntegrated(){
+		assertThat("test").isEqualTo("test");
+	}
 }
