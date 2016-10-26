@@ -15,7 +15,7 @@ public class Core {
 
     public static JFrame window;
     public static JLabel statusLabel = new JLabel("Status Bar");
-    public static JButton[][] squares = new JButton[8][8];
+    public static BoardSquare[][] squares = new BoardSquare[8][8];
 
     // Unicode chess pieces
     public static final String whiteKing = "\u2654";
@@ -31,11 +31,7 @@ public class Core {
     public static final String blackKnight = "\u265E";
     public static final String blackPawn = "\u265F";
 
-    /* proprietary font that Windows/Mac have, but Linux will default to 
-    a font that will still display the chess pieces */
-    Font defaultFont = new Font("Arial Unicode MS", Font.PLAIN, 25);
- 
-    // GUI Layout Values
+    /** GUI Layout Values **/
     Dimension sidePanelDimension = new Dimension(150,550);
     // Insets are padding between components
     Insets sidePadding = new Insets(0,2,0,2);
@@ -241,7 +237,7 @@ public class Core {
         boardPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         BoardListener boardListener = new BoardListener();
-        boolean cellColor = true;
+        boolean squareColor = true;
 
         for (byte i = 0; i < 8; i++) {
 
@@ -259,8 +255,9 @@ public class Core {
             //row of buttons
             for (byte j = 0; j < 8; j++) {
 
-                squares[i][j] = createBoardSquare(cellColor);
-                squares[i][j].setName("boardSquare:" + (char)(j+65) + "," + (8-i));
+                squares[i][j] = new BoardSquare();
+                squares[i][j].setColor(squareColor);
+                squares[i][j].setName("BoardSquare:" + (char)(j+65) + "," + (8-i));
                 c.fill = GridBagConstraints.BOTH;
                 c.gridx = j+1;
                 c.gridy = i;
@@ -268,10 +265,10 @@ public class Core {
                 c.weighty = AVERAGE_WEIGHT;
                 squares[i][j].addActionListener(boardListener);
                 boardPanel.add(squares[i][j], c);
-                cellColor = !cellColor;
+                squareColor = !squareColor;
             }
 
-            cellColor = !cellColor; // creates the checkered pattern of squares
+            squareColor = !squareColor; // creates the checkered pattern of squares
         }
 
         // grid notation column names
@@ -336,36 +333,5 @@ public class Core {
         buttonPanel.add(saveButton);
         buttonPanel.add(chooseSideButton);
         buttonPanel.add(tutorialButton);
-    }
-
-    /**
-     * 	Customizes a JButton to appear as a game square and colors it
-     * 	gray or white.
-     * 	
-     *  @param  cellColor a Boolean to determine whether the button should be colored gray or not
-     *  @return a JButton that looks like a gameboard square
-     */
-    private JButton createBoardSquare(boolean cellColor) {
-        JButton squareButton = new JButton(" ");
-        squareButton.setForeground(Color.BLACK);
-        squareButton.setOpaque(true);
-        if (cellColor)
-        {
-            squareButton.setBackground(Color.WHITE);
-        }
-        else
-        {
-            squareButton.setBackground(Color.GRAY);
-        }
-        squareButton.setFont(defaultFont);
-        Border line = new LineBorder(Color.BLACK, 0);
-        Border margin = new EmptyBorder(5, 15, 5, 15);
-        Border compound = new CompoundBorder(line, margin);
-        squareButton.setBorder(compound);
-        Dimension buttonSize = new Dimension(60,60);
-        squareButton.setMinimumSize(buttonSize);
-        squareButton.setMaximumSize(buttonSize);
-        squareButton.setPreferredSize(buttonSize);
-        return squareButton;
     }
 }
