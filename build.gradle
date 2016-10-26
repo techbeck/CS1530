@@ -5,13 +5,29 @@ compileJava {options.encoding = "UTF-8"}
 mainClassName = 'com.caffeine.Chess'
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 dependencies {
-    compile 'org.slf4j:slf4j-api:1.7.21'
-    compile 'org.apache.commons:commons-lang3:3.4'
-    testCompile 'junit:junit:4.12'
+	compile 'org.slf4j:slf4j-api:1.7.21'
+	compile 'org.apache.commons:commons-lang3:3.4'
+	testCompile 'junit:junit:4.12'
     // Locals
     compile files('libs/jockfish-1.0.0.jar')    //  For Stockfish JVM Access
+}
+
+// javadoc task for main code
+task mainJavadoc(type: Javadoc) {
+	source = sourceSets.main.allJava
+	options.memberLevel = JavadocMemberLevel.PRIVATE
+	classpath = sourceSets.main.compileClasspath
+  	destinationDir = file("${buildDir}/docs/mainjavadoc")
+}
+
+// javadoc task for test code
+task testJavadoc(type: Javadoc) {
+	source = sourceSets.test.allJava
+	options.memberLevel = JavadocMemberLevel.PRIVATE
+	classpath = sourceSets.test.compileClasspath
+  	destinationDir = file("${buildDir}/docs/testjavadoc")
 }
