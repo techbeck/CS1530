@@ -8,7 +8,7 @@ import java.awt.event.*;
 import java.awt.*;
 
 /**
- * 	This ActionListener listens for clicks upon the main window's
+ * 	This customized implementation of ActionListener listens for clicks upon the main window's
  * 	menu and performs the proper action given the user's choice.
  */
 public class MenuListener implements ActionListener {

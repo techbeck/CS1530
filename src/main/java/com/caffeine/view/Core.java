@@ -7,15 +7,15 @@ import javax.swing.border.*;
 import java.awt.event.*;
 import java.awt.*;
 
-
 /**
- * 	This is the core view processor that initializes the GUI components
+ * 	This is the core View processor that initializes the GUI components
  * 	of the chess program.
  */
 public class Core {
 
-    public static JLabel statusLabel = new JLabel("Status Bar");
     public static JFrame window;
+    public static JLabel statusLabel = new JLabel("Status Bar");
+    public static JButton[][] squares = new JButton[8][8];
 
     // Unicode chess pieces
     public static final String whiteKing = "\u2654";
@@ -43,17 +43,15 @@ public class Core {
     Insets topBottomPadding = new Insets(2,0,2,0);
     // For layout to perform correctly, components need weight > 0
     final double AVERAGE_WEIGHT = 0.5;
-
     /**
      *	grid x/y and grid width/height are component specific for their
      * 	placements within the outer component they are in.
 	 *  (0,0) is the upper left corner 
      */
 	
-
     public Core() {
         window = new JFrame("Laboon Chess");
-        window.setName("window");
+        window.setName("frame");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addMenu(window);
         addMainPanels(window);
@@ -74,13 +72,13 @@ public class Core {
         JMenu menu = new JMenu("Menu");
         menuBar.add(menu);
         JMenuItem setGameTimer = new JMenuItem("Set game timer");
-        setGameTimer.setName("setGameTimer");
+        setGameTimer.setName("menuSetGameTimer");
         JMenuItem setMoveTimer = new JMenuItem("Set move timer");
-        setMoveTimer.setName("setMoveTimer");
+        setMoveTimer.setName("menuSetMoveTimer");
         JMenuItem undo = new JMenuItem("Undo last move");
-        undo.setName("undo");
+        undo.setName("menuUndo");
         JMenuItem showPossMoves = new JMenuItem("Show possible moves");
-        showPossMoves.setName("showPossMoves");
+        showPossMoves.setName("menuShowPossMoves");
         menu.add(setGameTimer);
         menu.add(setMoveTimer);
         menu.add(undo);
@@ -238,7 +236,6 @@ public class Core {
 
         boardPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        JButton[][] squares = new JButton[8][8];
         BoardListener boardListener = new BoardListener();
         boolean cellColor = true;
 
@@ -259,7 +256,7 @@ public class Core {
             for (byte j = 0; j < 8; j++) {
 
                 squares[i][j] = createBoardSquare(cellColor);
-                squares[i][j].setName((char)(j+65) + "," + (8-i));
+                squares[i][j].setName("boardSquare:" + (char)(j+65) + "," + (8-i));
                 c.fill = GridBagConstraints.BOTH;
                 c.gridx = j+1;
                 c.gridy = i;
