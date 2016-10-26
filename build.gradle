@@ -10,8 +10,7 @@ repositories {
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
-    compile 'org.apache.commons:commons-lang3:3.4'
     testCompile 'junit:junit:4.12'
-    // Locals
+    compile files('libs/commons-lang3-3.5.jar') //  For SystemUtils
     compile files('libs/jockfish-1.0.0.jar')    //  For Stockfish JVM Access
 }
