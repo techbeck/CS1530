@@ -25,12 +25,11 @@ public class PanelButtonListener implements ActionListener {
 
             if (fileName != null && fileName.length() != 0) {
 
-                if(fileName.toLowerCase().endsWith(".pgn")){
+                if (fileName.toLowerCase().endsWith(".pgn")){
 
                     statusLabel.setText("[Upcoming Feature] - Loading game from file: " + fileName);
 
-                }
-                else{
+                } else{
 
                     statusLabel.setText("[Upcoming Feature] - Loading game from file: " + fileName + ".pgn");
 

@@ -22,7 +22,7 @@ public class BoardSquare extends JButton {
 	 * Static dimension forces the button to be square
 	 */ 
 	public BoardSquare() {
-		setForeground(Color.BLACK);
+		unselectSquare();
         setOpaque(true);
         setFont(defaultFont);
         setBorder(compound);
@@ -33,6 +33,7 @@ public class BoardSquare extends JButton {
 	
 	/**
 	 * Colors game square either white or gray
+	 *
 	 * @param  squareColor a Boolean to determine whether the button should be colored gray or not
 	 */
 	public void setColor(boolean squareColor) {
@@ -84,13 +85,25 @@ public class BoardSquare extends JButton {
 	 * Selects a square by setting the foreground (text) to yellow
 	 */
 	public void selectSquare() {
-        selected.setForeground(Color.YELLOW);
+        setForeground(Color.YELLOW);
 	}
 
 	/**
 	 * Returns a square to having a black foreground (text)
 	 */
 	public void unselectSquare() {
-        selected.setForeground(Color.BLACK);
+        setForeground(Color.BLACK);
+	}
+
+	/**
+	 * When a piece is taken, this returns the taken piece
+	 * and sets the square to the new piece
+	 *
+	 * @param piece  the String representation of the piece that is taking the square
+	 */
+	public String takePiece(String piece) {
+		String taken = getPiece();
+		setPiece(piece);
+		return taken;
 	}
 }

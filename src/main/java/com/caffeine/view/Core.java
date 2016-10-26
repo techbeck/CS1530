@@ -3,7 +3,6 @@ package com.caffeine.view;
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
-import javax.swing.border.*;
 import java.awt.event.*;
 import java.awt.*;
 
@@ -237,7 +236,7 @@ public class Core {
         boardPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         BoardListener boardListener = new BoardListener();
-        boolean squareColor = true;
+        boolean whiteSquare = true;
 
         for (byte i = 0; i < 8; i++) {
 
@@ -256,7 +255,7 @@ public class Core {
             for (byte j = 0; j < 8; j++) {
 
                 squares[i][j] = new BoardSquare();
-                squares[i][j].setColor(squareColor);
+                squares[i][j].setColor(whiteSquare);
                 squares[i][j].setName("BoardSquare:" + (char)(j+65) + "," + (8-i));
                 c.fill = GridBagConstraints.BOTH;
                 c.gridx = j+1;
@@ -265,10 +264,10 @@ public class Core {
                 c.weighty = AVERAGE_WEIGHT;
                 squares[i][j].addActionListener(boardListener);
                 boardPanel.add(squares[i][j], c);
-                squareColor = !squareColor;
+                whiteSquare = !whiteSquare;
             }
 
-            squareColor = !squareColor; // creates the checkered pattern of squares
+            whiteSquare = !whiteSquare; // creates the checkered pattern of squares
         }
 
         // grid notation column names
@@ -314,7 +313,7 @@ public class Core {
      * 	Initializes buttons for the user to readily access
      * 	common gameplay options.
      * 	
-     *  @param buttonPanel the JPanel upon which to place option buttons
+     *  @param buttonPanel  the JPanel upon which to place option buttons
      */
     private void formatButtonPanel(JPanel buttonPanel) {
         JButton loadButton = new JButton("Load");
