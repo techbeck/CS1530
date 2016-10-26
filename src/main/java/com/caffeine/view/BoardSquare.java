@@ -69,6 +69,8 @@ public class BoardSquare extends JButton {
 
 	/**
 	 * Changes the text of the square to the Unicode chess piece
+	 *
+	 * @param piece the unicode chess piece 
 	 */
 	public void setPiece(String piece) {
 		setText(piece);
@@ -100,6 +102,7 @@ public class BoardSquare extends JButton {
 	 * and sets the square to the new piece
 	 *
 	 * @param piece  the String representation of the piece that is taking the square
+	 * @return the unicode chess piece that was taken
 	 */
 	public String takePiece(String piece) {
 		String taken = getPiece();
