@@ -10,7 +10,8 @@ import java.awt.Frame;
 import com.jwarner.jockfish.JockfishEngine;
 import org.assertj.swing.core.*;
 import org.assertj.swing.fixture.*;
-import org.assertj.swing.testing.AssertJSwingTestCaseTemplate;
+import org.assertj.swing.exception.*;
+import org.assertj.swing.core.matcher.JButtonMatcher.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.swing.launcher.ApplicationLauncher.application;
 import static org.assertj.swing.finder.WindowFinder.findFrame;
@@ -19,21 +20,32 @@ import static org.assertj.swing.finder.WindowFinder.findFrame;
 import com.caffeine.Chess;
 
 public class ChessTest {
-    public FrameFixture frame;
+
     @BeforeClass
     public static void setUp() {
         application(Chess.class).start();
     }
 
     @Test
-    public void testMyFaithInGod(){
-        Robot robot = BasicRobot.robotWithNewAwtHierarchy();
-        frame = findFrame()
-        frame = findFrame(new GenericTypeMatcher<Frame>(Frame.class) {
-            protected boolean isMatching(Frame frame) {
-                return "Laboon Chess".equals(frame.getTitle()) && frame.isShowing();
-            }
-        }).using(robot);
+    public void testWindowIsNotResizeable(){
+        boolean threwError = false;
+        Robot robot = BasicRobot.robotWithCurrentAwtHierarchy();
+        FrameFixture frame = findFrame("frame").using(robot);
+        try{
+            frame.resizeWidthTo(250);
+        }
+        catch(IllegalStateException e){
+            threwError = true;
+        }
+
+        assertTrue("Window Should not be Resizeable", threwError);
+    }
+
+    @Test
+    public void testLoadButton(){
+        Robot robot = BasicRobot.robotWithCurrentAwtHierarchy();
+        FrameFixture frame = findFrame("frame").using(robot);
+        frame.button("loadButton").click();
     }
 
     @Test
@@ -48,5 +60,4 @@ public class ChessTest {
 	public void testAssertJIntegrated(){
 		assertThat("test").isEqualTo("test");
 	}
-
 }
