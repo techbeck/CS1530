@@ -13,6 +13,6 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.4'
     testCompile 'junit:junit:4.12'
     // Local
-    compile files('libs/jockfish-1.1.0.jar')
-    // compile fileTree(dir: 'libs', include: '*.jar')
+    // compile files('libs/jockfish-1.1.0.jar')
+    compile fileTree(dir: 'libs', include: '*.jar')
 }
