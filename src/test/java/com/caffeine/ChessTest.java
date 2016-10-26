@@ -48,4 +48,5 @@ public class ChessTest {
 	public void testAssertJIntegrated(){
 		assertThat("test").isEqualTo("test");
 	}
+
 }
