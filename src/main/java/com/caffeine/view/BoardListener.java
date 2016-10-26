@@ -9,8 +9,8 @@ import java.awt.*;
 
 /**
  * 	This ActionListener listens for clicks upon the board and first saves
- * 	the chess icon of the tile clicked (if there is one), then sets the text
- * 	of the next clicked tile to the stored icon.
+ * 	the chess icon of the square clicked (if there is one), then sets the text
+ * 	of the next clicked square to the stored icon.
  */
 public class BoardListener implements ActionListener {
 
@@ -32,7 +32,7 @@ public class BoardListener implements ActionListener {
                 return;
             }
         } else {
-        	// else set the clicked tile to the saved chess piece
+        	// else set the clicked square to the saved chess piece
         	
             String text = selected.getText();
             selected.setForeground(Color.BLACK);

@@ -44,11 +44,9 @@ public class Core {
     // For layout to perform correctly, components need weight > 0
     final double AVERAGE_WEIGHT = 0.5;
 
-    /**
-     *	grid x/y and grid width/height are component specific for their
-     * 	placements within the outer component they are in.
-	 *  (0,0) is the upper left corner 
-     */
+   /* grid x/y and grid width/height are component specific for their
+ 	placements within the outer component they are in.
+	(0,0) is the upper left corner */
 	
 
     public Core() {
@@ -64,7 +62,8 @@ public class Core {
 
     /**
      * 	Initializes a menu for a given JFrame.
-     *  @param window: the JFrame to create a menu for
+     * 	
+     *  @param window the JFrame to create a menu for
      */
     private void addMenu(JFrame window) {
 
@@ -94,7 +93,8 @@ public class Core {
     /**
      * 	Initializes panels for a given JFrame to display move history,
      * 	the game board, chess pieces taken, and a status indicator.
-     *  @param window: the JFrame to create panels for
+     * 	
+     *  @param window the JFrame to create panels for
      */
     private void addMainPanels(JFrame window) {
         Container pane = window.getContentPane();
@@ -171,8 +171,9 @@ public class Core {
 
     /**
      * 	Initializes sub-panels to display the current game time,
-     * 	the chess board, and commonly used gameplay options
-     *  @param centerPanel: the JPanel upon which to create sub-panels
+     * 	the chess board, and commonly used gameplay options.
+     * 	
+     *  @param centerPanel the JPanel upon which to create sub-panels
      */
     private void formatCenterPanel(JPanel centerPanel) {
 
@@ -230,9 +231,10 @@ public class Core {
     }
 
     /**
-     * 	Initializes an 8x8 Array of buttons to serve as the tiles 
+     * 	Initializes an 8x8 Array of buttons to serve as the squares 
      * 	for the chess board, along with grid notation.
-     *  @param boardPanel: the JPanel upon which to place the game tiles on
+     * 	
+     *  @param boardPanel the JPanel upon which to place the game squares on
      */
     private void formatBoard(JPanel boardPanel) {
 
@@ -270,7 +272,7 @@ public class Core {
                 cellColor = !cellColor;
             }
 
-            cellColor = !cellColor; // creates the checkered pattern of tiles
+            cellColor = !cellColor; // creates the checkered pattern of squares
         }
 
         // grid notation column names
@@ -300,7 +302,7 @@ public class Core {
             squares[1][i].setText(blackPawn);
             squares[6][i].setText(whitePawn);
         }
-        
+
         squares[7][0].setText(whiteRook);
         squares[7][7].setText(whiteRook);
         squares[7][1].setText(whiteKnight);
@@ -315,7 +317,8 @@ public class Core {
     /**
      * 	Initializes buttons for the user to readily access
      * 	common gameplay options.
-     * @param buttonPanel: the JPanel upon which to place option buttons
+     * 	
+     *  @param buttonPanel the JPanel upon which to place option buttons
      */
     private void formatButtonPanel(JPanel buttonPanel) {
         JButton loadButton = new JButton("Load");
@@ -337,10 +340,11 @@ public class Core {
     }
 
     /**
-     * 	Customizes a JButton to appear as a game tile and colors it
+     * 	Customizes a JButton to appear as a game square and colors it
      * 	gray or white.
-     *  @param  cellColor: a Boolean to determine whether the button should be colored gray or not
-     *  @return a JButton that looks like a gameboard tile
+     * 	
+     *  @param  cellColor a Boolean to determine whether the button should be colored gray or not
+     *  @return a JButton that looks like a gameboard square
      */
     private JButton createBoardSquare(boolean cellColor) {
         JButton squareButton = new JButton(" ");
