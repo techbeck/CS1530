@@ -28,7 +28,7 @@ public class Core{
 
     public void go(String type, String[] parameters){
         String cmd = String.format("go %s ", type);
-        for (int i = 0; i < parameters.length(); i++){
+        for (int i = 0; i < parameters.length; i++){
             cmd.concat(parameters[i] + " ");
         }
         jockfish.write(cmd);
