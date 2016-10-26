@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 // Third-Party Imports
 import com.jwarner.jockfish.JockfishEngine;
-import static org.assertj.core.api.Assertions.*;
 
 // Local Imports
 import com.caffeine.Chess;
@@ -18,9 +17,4 @@ public class ChessTest {
         String observed = jockfish.read();
         assertTrue(expected.equals(observed));
     }
-	
-	@Test
-	public void testAssertJIntegrated(){
-		assertThat("test").isEqualTo("test");
-	}
 }
