@@ -124,15 +124,18 @@ public class ChessTest {
         optionPane.okButton().click();
     }
 
-    // @Test
-    // public void testChessPieceMove(){
-    //     JButtonFixture firstSquare = frame.findByName("boardSquare:E,2", BoardSquare.class);
-    //     JButtonFixture secondSquare = frame.findByName("boardSquare:E,4", BoardSquare.class);
-    //     firstSquare.click();
-    //     secondSquare.click();
-    //     firstSquare.requireText(" ");
-    //     secondSquare.requireText("\u2659");
-    // }
+    @Test
+    public void testChessPieceMove(){
+        ComponentFinder newFinder = robot.finder();
+        JButton firstSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,2", BoardSquare.class);
+        JButton secondSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,4", BoardSquare.class);
+        JButtonFixture firstSquareFix = new JButtonFixture(robot, firstSquare);
+        JButtonFixture secondSquareFix = new JButtonFixture(robot, secondSquare);
+        firstSquareFix.click();
+        secondSquareFix.click();
+        firstSquareFix.requireText(" ");
+        secondSquareFix.requireText("\u2659");
+    }
 
     @Test
     public void testJockfishEngineIntegrated(){
