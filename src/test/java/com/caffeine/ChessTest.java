@@ -131,10 +131,11 @@ public class ChessTest {
         JButton secondSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,4", BoardSquare.class);
         JButtonFixture firstSquareFix = new JButtonFixture(robot, firstSquare);
         JButtonFixture secondSquareFix = new JButtonFixture(robot, secondSquare);
+        String expectedText = firstSquareFix.text();
         firstSquareFix.click();
         secondSquareFix.click();
         firstSquareFix.requireText(" ");
-        secondSquareFix.requireText("\u2659");
+        secondSquareFix.requireText(expectedText);
     }
 
     @Test
