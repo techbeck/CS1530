@@ -20,6 +20,7 @@ import static org.assertj.swing.finder.JOptionPaneFinder.findOptionPane;
 
 // Local Imports
 import com.caffeine.Chess;
+import com.caffeine.view.*;
 
 public class ChessTest {
 
@@ -122,6 +123,16 @@ public class ChessTest {
         optionPane.requireTitle("Tutorial");
         optionPane.okButton().click();
     }
+
+    // @Test
+    // public void testChessPieceMove(){
+    //     JButtonFixture firstSquare = frame.findByName("boardSquare:E,2", BoardSquare.class);
+    //     JButtonFixture secondSquare = frame.findByName("boardSquare:E,4", BoardSquare.class);
+    //     firstSquare.click();
+    //     secondSquare.click();
+    //     firstSquare.requireText(" ");
+    //     secondSquare.requireText("\u2659");
+    // }
 
     @Test
     public void testJockfishEngineIntegrated(){
