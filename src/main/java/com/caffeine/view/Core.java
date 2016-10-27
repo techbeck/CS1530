@@ -243,7 +243,7 @@ public class Core {
         for (byte i = 0; i < 8; i++) {
 
             // grid notation row name
-            JLabel label = new JLabel(String.valueOf(i+1), SwingConstants.CENTER);
+            JLabel label = new JLabel(String.valueOf(8-i), SwingConstants.CENTER);
             c.fill = GridBagConstraints.BOTH;
             c.gridx = 0;
             c.gridy = i;
