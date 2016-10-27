@@ -31,10 +31,10 @@ public class Core {
     public static final String blackKnight = "\u265E";
     public static final String blackPawn = "\u265F";
 
-    /* proprietary font that Windows/Mac have, but Linux will default to 
+    /* proprietary font that Windows/Mac have, but Linux will default to
     a font that will still display the chess pieces */
     Font defaultFont = new Font("Arial Unicode MS", Font.PLAIN, 25);
- 
+
     // GUI Layout Values
     Dimension sidePanelDimension = new Dimension(150,550);
     // Insets are padding between components
@@ -46,9 +46,9 @@ public class Core {
     /**
      *	grid x/y and grid width/height are component specific for their
      * 	placements within the outer component they are in.
-	 *  (0,0) is the upper left corner 
+	 *  (0,0) is the upper left corner
      */
-	
+
     public Core() {
         window = new JFrame("Laboon Chess");
         window.setName("frame");
@@ -62,7 +62,7 @@ public class Core {
 
     /**
      * 	Initializes a menu for a given JFrame.
-     * 	
+     *
      *  @param window the JFrame to create a menu for
      */
     private void addMenu(JFrame window) {
@@ -93,7 +93,7 @@ public class Core {
     /**
      * 	Initializes panels for a given JFrame to display move history,
      * 	the game board, chess pieces taken, and a status indicator.
-     * 	
+     *
      *  @param window the JFrame to create panels for
      */
     private void addMainPanels(JFrame window) {
@@ -165,6 +165,7 @@ public class Core {
         c.insets = topBottomPadding;
         c.weightx = AVERAGE_WEIGHT;
         c.weighty = AVERAGE_WEIGHT;
+        statusLabel.setName("statusLabel");
         statusPanel.add(statusLabel, SwingConstants.CENTER);
         pane.add(statusPanel, c);
     }
@@ -172,7 +173,7 @@ public class Core {
     /**
      * 	Initializes sub-panels to display the current game time,
      * 	the chess board, and commonly used gameplay options.
-     * 	
+     *
      *  @param centerPanel the JPanel upon which to create sub-panels
      */
     private void formatCenterPanel(JPanel centerPanel) {
@@ -231,9 +232,9 @@ public class Core {
     }
 
     /**
-     * 	Initializes an 8x8 Array of buttons to serve as the squares 
+     * 	Initializes an 8x8 Array of buttons to serve as the squares
      * 	for the chess board, along with grid notation.
-     * 	
+     *
      *  @param boardPanel the JPanel upon which to place the game squares on
      */
     private void formatBoard(JPanel boardPanel) {
@@ -316,7 +317,7 @@ public class Core {
     /**
      * 	Initializes buttons for the user to readily access
      * 	common gameplay options.
-     * 	
+     *
      *  @param buttonPanel the JPanel upon which to place option buttons
      */
     private void formatButtonPanel(JPanel buttonPanel) {
@@ -341,7 +342,7 @@ public class Core {
     /**
      * 	Customizes a JButton to appear as a game square and colors it
      * 	gray or white.
-     * 	
+     *
      *  @param  cellColor a Boolean to determine whether the button should be colored gray or not
      *  @return a JButton that looks like a gameboard square
      */
