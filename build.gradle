@@ -5,7 +5,7 @@ compileJava {options.encoding = "UTF-8"}
 mainClassName = 'com.caffeine.Chess'
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 dependencies {
@@ -15,4 +15,20 @@ dependencies {
     // Local
     // compile files('libs/jockfish-1.1.0.jar')
     compile fileTree(dir: 'libs', include: '*.jar')
+}
+
+// javadoc task for main code
+task mainJavadoc(type: Javadoc) {
+	source = sourceSets.main.allJava
+	options.memberLevel = JavadocMemberLevel.PRIVATE
+	classpath = sourceSets.main.compileClasspath
+  	destinationDir = file("${buildDir}/docs/mainjavadoc")
+}
+
+// javadoc task for test code
+task testJavadoc(type: Javadoc) {
+	source = sourceSets.test.allJava
+	options.memberLevel = JavadocMemberLevel.PRIVATE
+	classpath = sourceSets.test.compileClasspath
+  	destinationDir = file("${buildDir}/docs/testjavadoc")
 }
