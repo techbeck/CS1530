@@ -67,21 +67,21 @@ public class Core{
     public HashMap<String, Object> uci(){
         String res;
         String[] resArr;
-        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap<String, Object> result = new HashMap<String, Object>();
+        HashMap<String, String> options = new HashMap<String, String>();
 
         jockfish.write("uci");
 
         // Turn string responses into an accessible dictionary-like mapping.
-        result.put("options", new HashMap<String, String>()); // Options subMap
         loopReadLines: while(true){
             res = jockfish.readLine().trim();
             resArr = res.split(" ");
             switch (resArr[0]){
                 case "id":
-                    result.put(resArr[1], Arrays.copyOfRange(resArr, 2, resArr.length));
+                    result.put(resArr[1], Arrays.copyOfRange(resArr, 2, resArr.length).toString());
                     break;
                 case "options":
-                    result.get("options").put(resArr[2], Arrays.copyOfRange(resArr, 3, resArr.length));
+                    options.put(resArr[2], Arrays.copyOfRange(resArr, 3, resArr.length).toString());
                     break;
                 case "uciok":
                     break loopReadLines;
@@ -89,5 +89,7 @@ public class Core{
                     break;
             }
         }
+        result.put("options", options);
+        return result;
     }
 }
