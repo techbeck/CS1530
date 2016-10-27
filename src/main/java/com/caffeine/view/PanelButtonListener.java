@@ -62,7 +62,7 @@ public class PanelButtonListener implements ActionListener {
 
             JOptionPane.showMessageDialog(window, "This is a simple walking skeleton, but does have some basic functionality.\n" +
                 "Simply click on a piece and then another tile to move the piece to that tile.", "Tutorial", JOptionPane.PLAIN_MESSAGE);
-            
+
         }
     }
 }
