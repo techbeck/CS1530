@@ -335,11 +335,16 @@ public class Core {
         tutorialButton.setName("tutorialButton");
         tutorialButton.addActionListener(buttonListener);
         buttonPanel.add(tutorialButton);
-        
-        JButton colorButton = new JButton("Change Color");
-        colorButton.setName("colorButton");
-        colorButton.addActionListener(buttonListener);
-        buttonPanel.add(colorButton);
+
+        JButton pieceColorButton = new JButton("Change Piece Color");
+        pieceColorButton.setName("pieceColorButton");
+        pieceColorButton.addActionListener(buttonListener);
+        buttonPanel.add(pieceColorButton);
+
+        JButton squareColorButton = new JButton("Change Square Color");
+        squareColorButton.setName("squareColorButton");
+        squareColorButton.addActionListener(buttonListener);
+        buttonPanel.add(squareColorButton);
     }
 
 }

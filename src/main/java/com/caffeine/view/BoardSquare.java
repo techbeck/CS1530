@@ -9,6 +9,7 @@ import java.awt.*;
  */
 public class BoardSquare extends JButton {
 	com.caffeine.logic.Piece piece = null;
+	boolean isLightSquare;
 
 	// formatting-related objects
 	final Border line = new LineBorder(Color.BLACK, 0);
@@ -42,11 +43,22 @@ public class BoardSquare extends JButton {
         if (squareColor)
         {
             setBackground(Color.LIGHT_GRAY);
+            isLightSquare = true;
         }
         else
         {
             setBackground(Color.GRAY);
+            isLightSquare = false;
         }
+	}
+
+	/**
+	 * Returns whether or not piece is light
+	 *
+	 * @return  true if light square, otherwise false
+	 */
+	public boolean isLightSquare() {
+		return isLightSquare;
 	}
 
 	/**
