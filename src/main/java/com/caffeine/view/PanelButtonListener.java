@@ -75,6 +75,7 @@ public class PanelButtonListener implements ActionListener {
                 case 0:  // change black pieces
                     Color newColor = JColorChooser.showDialog(window,
                             "Choose Color", Color.BLACK);
+                    if (newColor == null) return; // user clicked cancel
                     statusLabel.setText("Changed color of black pieces");
                     for (int i = 0; i < 8; i++) {   // iterate through all rows and columns of board
                         for (int j = 0; j < 8; j++) {
@@ -89,6 +90,7 @@ public class PanelButtonListener implements ActionListener {
                 case 1:  // change white pieces
                     newColor = JColorChooser.showDialog(window,
                             "Choose Color", Color.WHITE);
+                    if (newColor == null) return; // user clicked cancel
                     statusLabel.setText("Changed color of white pieces");
                     for (int i = 0; i < 8; i++) {   // iterate through all rows and columns of board
                         for (int j = 0; j < 8; j++) {
@@ -113,6 +115,7 @@ public class PanelButtonListener implements ActionListener {
                 case 0:  // change dark squares
                     Color newColor = JColorChooser.showDialog(window,
                             "Choose Color", Color.GRAY);
+                    if (newColor == null) return; // user clicked cancel
                     statusLabel.setText("Changed color of dark squares");
                     for (int i = 0; i < 8; i++) {   // iterate through all rows and columns of board
                         for (int j = 0; j < 8; j++) {
@@ -127,6 +130,7 @@ public class PanelButtonListener implements ActionListener {
                 case 1:  // change light squares
                     newColor = JColorChooser.showDialog(window,
                             "Choose Color", Color.LIGHT_GRAY);
+                    if (newColor == null) return; // user clicked cancel
                     statusLabel.setText("Changed color of light squares");
                     for (int i = 0; i < 8; i++) {   // iterate through all rows and columns of board
                         for (int j = 0; j < 8; j++) {
