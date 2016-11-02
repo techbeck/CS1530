@@ -38,7 +38,7 @@ public class BoardSquare extends JButton {
 	 *
 	 * @param  squareColor a Boolean to determine whether the button should be colored gray or not
 	 */
-	public void setColor(boolean squareColor) {
+	public void setBackgroundColor(boolean squareColor) {
         if (squareColor)
         {
             setBackground(Color.LIGHT_GRAY);

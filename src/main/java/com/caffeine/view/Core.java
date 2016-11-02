@@ -232,7 +232,7 @@ public class Core {
         boardPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         BoardListener boardListener = new BoardListener();
-        boolean whiteSquare = true;
+        boolean isWhiteSquare = true;
 
         for (byte i = 0; i < 8; i++) {
 
@@ -251,7 +251,7 @@ public class Core {
             for (byte j = 0; j < 8; j++) {
 
                 squares[i][j] = new BoardSquare();
-                squares[i][j].setColor(whiteSquare);
+                squares[i][j].setBackgroundColor(isWhiteSquare);
                 squares[i][j].setName("BoardSquare:" + (char)(j+65) + "," + (8-i));
 
                 c.fill = GridBagConstraints.BOTH;
@@ -261,10 +261,10 @@ public class Core {
                 c.weighty = AVERAGE_WEIGHT;
                 squares[i][j].addActionListener(boardListener);
                 boardPanel.add(squares[i][j], c);
-                whiteSquare = !whiteSquare;
+                isWhiteSquare = !isWhiteSquare;
             }
 
-            whiteSquare = !whiteSquare; // creates the checkered pattern of squares
+            isWhiteSquare = !isWhiteSquare; // creates the checkered pattern of squares
         }
 
         // grid notation column names
@@ -315,25 +315,30 @@ public class Core {
      */
     private void formatButtonPanel(JPanel buttonPanel) {
         PanelButtonListener buttonListener = new PanelButtonListener();
+
         JButton loadButton = new JButton("Load");
         loadButton.setName("loadButton");
-        loadButton.addActionListener(new PanelButtonListener());
+        loadButton.addActionListener(buttonListener);
+        buttonPanel.add(loadButton);
+
         JButton saveButton = new JButton("Save");
         saveButton.setName("saveButton");
-        saveButton.addActionListener(new PanelButtonListener());
+        saveButton.addActionListener(buttonListener);
+        buttonPanel.add(saveButton);
+
         JButton chooseSideButton = new JButton("Choose Side");
         chooseSideButton.setName("chooseSideButton");
-        chooseSideButton.addActionListener(new PanelButtonListener());
+        chooseSideButton.addActionListener(buttonListener);
+        buttonPanel.add(chooseSideButton);
+
         JButton tutorialButton = new JButton("Tutorial");
         tutorialButton.setName("tutorialButton");
-        tutorialButton.addActionListener(new PanelButtonListener());
+        tutorialButton.addActionListener(buttonListener);
+        buttonPanel.add(tutorialButton);
+        
         JButton colorButton = new JButton("Change Color");
         colorButton.setName("colorButton");
         colorButton.addActionListener(buttonListener);
-        buttonPanel.add(loadButton);
-        buttonPanel.add(saveButton);
-        buttonPanel.add(chooseSideButton);
-        buttonPanel.add(tutorialButton);
         buttonPanel.add(colorButton);
     }
 
