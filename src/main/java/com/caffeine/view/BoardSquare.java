@@ -8,6 +8,9 @@ import java.awt.*;
  * This customized implementation of JButton makes buttons that appear as a game square
  */
 public class BoardSquare extends JButton {
+	com.caffeine.logic.Piece piece = null;
+
+	// formatting-related objects
 	final Border line = new LineBorder(Color.BLACK, 0);
     final Border margin = new EmptyBorder(5, 15, 5, 15);
     final Border compound = new CompoundBorder(line, margin);
@@ -22,7 +25,6 @@ public class BoardSquare extends JButton {
 	 * Static dimension forces the button to be square
 	 */ 
 	public BoardSquare() {
-		unselectSquare();
         setOpaque(true);
         setFont(defaultFont);
         setBorder(compound);
@@ -39,7 +41,7 @@ public class BoardSquare extends JButton {
 	public void setColor(boolean squareColor) {
         if (squareColor)
         {
-            setBackground(Color.WHITE);
+            setBackground(Color.LIGHT_GRAY);
         }
         else
         {
@@ -50,11 +52,10 @@ public class BoardSquare extends JButton {
 	/**
 	 * Returns piece on square, or null if no piece found
 	 * 
-	 * @return  The String of the Unicode character for the chess piece
+	 * @return  The Piece on the square
 	 */
-	public String getPiece() {
-		if (getText().equals(" ")) return null;
-		else return getText();
+	public com.caffeine.logic.Piece getPiece() {
+		return piece;
 	}
 
 	/**
@@ -63,7 +64,7 @@ public class BoardSquare extends JButton {
 	 * @return True if piece found, false if not
 	 */
 	public boolean hasPiece() {
-		if (getText().equals(" ")) return false;
+		if (piece == null) return false;
 		else return true;
 	}
 
@@ -72,8 +73,10 @@ public class BoardSquare extends JButton {
 	 *
 	 * @param piece the unicode chess piece 
 	 */
-	public void setPiece(String piece) {
-		setText(piece);
+	public void setPiece(com.caffeine.logic.Piece piece) {
+		this.piece = piece;
+		setText(piece.getType());
+		setForeground(piece.getColor());
 	}
 
 	/**
@@ -91,22 +94,33 @@ public class BoardSquare extends JButton {
 	}
 
 	/**
-	 * Returns a square to having a black foreground (text)
+	 * Returns a square to the regular foreground (text) color of the piece
 	 */
 	public void unselectSquare() {
-        setForeground(Color.BLACK);
+        if (piece == null) return;
+        setForeground(piece.getColor());
+	}
+
+	/**
+	 * Changes the color of the piece 
+	 * 
+	 * @param color  The color to set the piece
+	 */
+	public void setPieceColor(Color color) {
+		setForeground(color);
+		piece.setColor(color);
 	}
 
 	/**
 	 * When a piece is taken, this returns the taken piece
 	 * and sets the square to the new piece
 	 *
-	 * @param piece  the String representation of the piece that is taking the square
-	 * @return the unicode chess piece that was taken
+	 * @param piece  The piece that is taking the square
+	 * @return  the piece that was taken
 	 */
-	public String takePiece(String piece) {
-		String taken = getPiece();
-		setPiece(piece);
+	public com.caffeine.logic.Piece takePiece(com.caffeine.logic.Piece piece) {
+		com.caffeine.logic.Piece taken = this.piece;
+		setPiece(piece);	// both sets this.piece and foreground color
 		return taken;
 	}
 }

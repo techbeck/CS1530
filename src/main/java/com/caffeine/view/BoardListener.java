@@ -14,17 +14,16 @@ import java.awt.*;
  */
 public class BoardListener implements ActionListener {
 
-    static JButton selected = null;
+    static BoardSquare selected = null;
+
     public void actionPerformed(ActionEvent e) {
 
-        JButton squareButton = (JButton) e.getSource();
+        BoardSquare squareButton = (BoardSquare) e.getSource();
         if (selected == null) {
-        	// if no previous chess piece stored, save the one clicked
-        	
-            if (!squareButton.getText().equals(" ")) {
-
+        	// if no previous board square selected, save the one clicked
+            if (squareButton.getPiece() != null) {
                 selected = squareButton;
-                selected.setForeground(Color.YELLOW);
+                selected.selectSquare();
 
             } else {
 
@@ -32,12 +31,11 @@ public class BoardListener implements ActionListener {
                 return;
             }
         } else {
-        	// else set the clicked square to the saved chess piece
-        	
-            String text = selected.getText();
-            selected.setForeground(Color.BLACK);
-            selected.setText(" ");
-            squareButton.setText(text);
+        	// else set the clicked square to the previously selected chess piece
+            com.caffeine.logic.Piece piece = selected.getPiece();
+            selected.unselectSquare();
+            selected.removePiece();
+            squareButton.setPiece(piece);
             selected = null;
         }
     }

@@ -17,18 +17,12 @@ public class Core {
     public static BoardSquare[][] squares = new BoardSquare[8][8];
 
     // Unicode chess pieces
-    public static final String whiteKing = "\u2654";
-    public static final String whiteQueen = "\u2655";
-    public static final String whiteRook = "\u2656";
-    public static final String whiteBishop = "\u2657";
-    public static final String whiteKnight = "\u2658";
-    public static final String whitePawn = "\u2659";
-    public static final String blackKing = "\u265A";
-    public static final String blackQueen = "\u265B";
-    public static final String blackRook = "\u265C";
-    public static final String blackBishop = "\u265D";
-    public static final String blackKnight = "\u265E";
-    public static final String blackPawn = "\u265F";
+    public static final String king = "\u265A";
+    public static final String queen = "\u265B";
+    public static final String rook = "\u265C";
+    public static final String bishop = "\u265D";
+    public static final String knight = "\u265E";
+    public static final String pawn = "\u265F";
 
 
     /** GUI Layout Values **/
@@ -212,7 +206,7 @@ public class Core {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setName("buttonPanel");
         buttonPanel.setBackground(Color.WHITE);
-        Dimension buttonPanelSize = new Dimension(500,40);
+        Dimension buttonPanelSize = new Dimension(500,70);
         buttonPanel.setMinimumSize(buttonPanelSize);
         buttonPanel.setMaximumSize(buttonPanelSize);
         buttonPanel.setPreferredSize(buttonPanelSize);
@@ -287,28 +281,28 @@ public class Core {
         }
 
         // initialize piece placement
-        squares[0][7].setText(blackRook);
-        squares[0][0].setText(blackRook);
-        squares[0][1].setText(blackKnight);
-        squares[0][6].setText(blackKnight);
-        squares[0][2].setText(blackBishop);
-        squares[0][5].setText(blackBishop);
-        squares[0][3].setText(blackQueen);
-        squares[0][4].setText(blackKing);
+        squares[0][7].setPiece(new com.caffeine.logic.Piece(rook, 0, "black"));
+        squares[0][0].setPiece(new com.caffeine.logic.Piece(rook, 1, "black"));
+        squares[0][1].setPiece(new com.caffeine.logic.Piece(knight, 0, "black"));
+        squares[0][6].setPiece(new com.caffeine.logic.Piece(knight, 1, "black"));
+        squares[0][2].setPiece(new com.caffeine.logic.Piece(bishop, 0, "black"));
+        squares[0][5].setPiece(new com.caffeine.logic.Piece(bishop, 1, "black"));
+        squares[0][3].setPiece(new com.caffeine.logic.Piece(queen, 0, "black"));
+        squares[0][4].setPiece(new com.caffeine.logic.Piece(king, 0, "black"));
 
         for (int i = 0; i < 8; i++) {
-            squares[1][i].setText(blackPawn);
-            squares[6][i].setText(whitePawn);
+            squares[1][i].setPiece(new com.caffeine.logic.Piece(pawn, i, "black"));
+            squares[6][i].setPiece(new com.caffeine.logic.Piece(pawn, i, "white"));
         }
 
-        squares[7][0].setText(whiteRook);
-        squares[7][7].setText(whiteRook);
-        squares[7][1].setText(whiteKnight);
-        squares[7][6].setText(whiteKnight);
-        squares[7][2].setText(whiteBishop);
-        squares[7][5].setText(whiteBishop);
-        squares[7][3].setText(whiteQueen);
-        squares[7][4].setText(whiteKing);
+        squares[7][0].setPiece(new com.caffeine.logic.Piece(rook, 0, "white"));
+        squares[7][7].setPiece(new com.caffeine.logic.Piece(rook, 1, "white"));
+        squares[7][1].setPiece(new com.caffeine.logic.Piece(knight, 0, "white"));
+        squares[7][6].setPiece(new com.caffeine.logic.Piece(knight, 1, "white"));
+        squares[7][2].setPiece(new com.caffeine.logic.Piece(bishop, 0, "white"));
+        squares[7][5].setPiece(new com.caffeine.logic.Piece(bishop, 1, "white"));
+        squares[7][3].setPiece(new com.caffeine.logic.Piece(queen, 0, "white"));
+        squares[7][4].setPiece(new com.caffeine.logic.Piece(king, 0, "white"));
 
     }
 
@@ -318,9 +312,9 @@ public class Core {
      *
      *
      *  @param buttonPanel  the JPanel upon which to place option buttons
->>>>>>> 510472b7e6137c04274096c4503f960076ac4508
      */
     private void formatButtonPanel(JPanel buttonPanel) {
+        PanelButtonListener buttonListener = new PanelButtonListener();
         JButton loadButton = new JButton("Load");
         loadButton.setName("loadButton");
         loadButton.addActionListener(new PanelButtonListener());
@@ -333,10 +327,14 @@ public class Core {
         JButton tutorialButton = new JButton("Tutorial");
         tutorialButton.setName("tutorialButton");
         tutorialButton.addActionListener(new PanelButtonListener());
+        JButton colorButton = new JButton("Change Color");
+        colorButton.setName("colorButton");
+        colorButton.addActionListener(buttonListener);
         buttonPanel.add(loadButton);
         buttonPanel.add(saveButton);
         buttonPanel.add(chooseSideButton);
         buttonPanel.add(tutorialButton);
+        buttonPanel.add(colorButton);
     }
 
 }
