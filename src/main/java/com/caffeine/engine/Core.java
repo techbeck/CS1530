@@ -62,7 +62,7 @@ public class Core{
     }
 
 
-    public boolean stop(){
+    public void stop(){
         jockfish.write("stop");
     }
 
