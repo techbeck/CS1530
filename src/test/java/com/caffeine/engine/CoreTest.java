@@ -1,12 +1,12 @@
-// First-Party Libs
+// First-Party Imports
 import java.util.*;
 
-// Third-Party Libs
+// Third-Party Imports
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.apache.commons.lang3.StringUtils;
 
-// Local Libs
+// Local Imports
 import com.caffeine.engine.Core;
 
 public class CoreTest {
@@ -26,36 +26,34 @@ public class CoreTest {
         HashMap<String, String> response = engine.getConfig();
 
         // Define Options as initialized in a new Stockfish instance
-        List<List<String>> options = new List<List<String>>();
-        options.add(["Write", "Debug Log type check default false"]);
-        options.add(["Contempt", "type spin default 0 min -100 max 100"]);
-        options.add(["Threads", "type spin default 1 min 1 max 128"]);
-        options.add(["Hash", "type spin default 16 min 1 max 1048576"]);
-        options.add(["Clear", "Hash type button"]);
-        options.add(["Ponder", "type check default false"]);
-        options.add(["MultiPV", "type spin default 1 min 1 max 500"]);
-        options.add(["Skill", "Level type spin default 20 min 0 max 20"]);
-        options.add(["Move", "Overhead type spin default 30 min 0 max 5000"]);
-        options.add(["Minimum", "Thinking Time type spin default 20 min 0 max 5000"]);
-        options.add(["Slow", "Mover type spin default 84 min 10 max 1000"]);
-        options.add(["nodestime", "type spin default 0 min 0 max 10000"]);
-        options.add(["UCI_Chess960", "type check default false"]);
-        options.add(["SyzygyPath", "type string default <empty>"]);
-        options.add(["SyzygyProbeDepth", "type spin default 1 min 1 max 100"]);
-        options.add(["Syzygy50MoveRule", "type check default true"]);
-        options.add(["SyzygyProbeLimit", "type spin default 6 min 0 max 6"]);
+        HashMap<String, String> options = new HashMap<String, String>();
+        options.put("Write", "Debug Log type check default false");
+        options.put("Contempt", "type spin default 0 min -100 max 100");
+        options.put("Threads", "type spin default 1 min 1 max 128");
+        options.put("Hash", "type spin default 16 min 1 max 1048576");
+        options.put("Clear", "Hash type button");
+        options.put("Ponder", "type check default false");
+        options.put("MultiPV", "type spin default 1 min 1 max 500");
+        options.put("Skill", "Level type spin default 20 min 0 max 20");
+        options.put("Move", "Overhead type spin default 30 min 0 max 5000");
+        options.put("Minimum", "Thinking Time type spin default 20 min 0 max 5000");
+        options.put("Slow", "Mover type spin default 84 min 10 max 1000");
+        options.put("nodestime", "type spin default 0 min 0 max 10000");
+        options.put("UCI_Chess960", "type check default false");
+        options.put("SyzygyPath", "type string default <empty>");
+        options.put("SyzygyProbeDepth", "type spin default 1 min 1 max 100");
+        options.put("Syzygy50MoveRule", "type check default true");
+        options.put("SyzygyProbeLimit", "type spin default 6 min 0 max 6");
 
-        for (String[] option : options){
-            String optString = response.get(option[0]);
-            if (StringUtils.isBlank(optString)){
-                fail("Did not find option '"+optString+"'.");
-            }
-            if (!optString.equals(option[1])){
+        for (Map.Entry<String, String> option : options.entrySet()){
+            String optString = response.getOrDefault(option.getKey(), "KNP");
+            if (optString.equals("KNP")){ fail("Did not find optString for key '"+option.getKey()+"'."); }
+            if (!optString.equals(response.get(option.getKey()))){
                 String failString = String.format(
-                    "Option did not match default.\n" +
+                    "Option did not match expected.\n" +
                     "  DEFAULT: '%s'\n" +
                     "  FOUND:   '%s'\n",
-                    option[1],
+                    option.getValue(),
                     optString
                 );
                 fail(failString);

@@ -29,18 +29,6 @@ public class Core{
         return jockfish.read();
     }
 
-    // UCI Interface
-
-    public void go(String type, String[] parameters){
-        String cmd = String.format("go %s ", type);
-        for (int i = 0; i < parameters.length; i++){ cmd.concat(parameters[i] + " "); }
-        jockfish.write(cmd);
-    }
-
-    public void stop(){
-        jockfish.write("stop");
-    }
-
     public HashMap<String, String> getConfig(){
         HashMap<String, String> result = new HashMap<String, String>();
         jockfish.write("uci");
@@ -56,6 +44,14 @@ public class Core{
         return result;
     }
 
+// ================= INCOMPLETE/WIP METHODS ===================================
+
+    public void go(String type, String[] parameters){
+        String cmd = String.format("go %s ", type);
+        for (int i = 0; i < parameters.length; i++){ cmd.concat(parameters[i] + " "); }
+        jockfish.write(cmd);
+    }
+
     public boolean setFEN(String fen){
         if (Utils.isValidFEN(fen)){
             jockfish.write(String.format("position", fen));
@@ -64,5 +60,9 @@ public class Core{
         return false;
     }
 
+
+    public boolean stop(){
+        jockfish.write("stop");
+    }
 
 }

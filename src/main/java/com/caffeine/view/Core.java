@@ -17,18 +17,12 @@ public class Core {
     public static BoardSquare[][] squares = new BoardSquare[8][8];
 
     // Unicode chess pieces
-    public static final String whiteKing = "\u2654";
-    public static final String whiteQueen = "\u2655";
-    public static final String whiteRook = "\u2656";
-    public static final String whiteBishop = "\u2657";
-    public static final String whiteKnight = "\u2658";
-    public static final String whitePawn = "\u2659";
-    public static final String blackKing = "\u265A";
-    public static final String blackQueen = "\u265B";
-    public static final String blackRook = "\u265C";
-    public static final String blackBishop = "\u265D";
-    public static final String blackKnight = "\u265E";
-    public static final String blackPawn = "\u265F";
+    public static final String king = "\u265A";
+    public static final String queen = "\u265B";
+    public static final String rook = "\u265C";
+    public static final String bishop = "\u265D";
+    public static final String knight = "\u265E";
+    public static final String pawn = "\u265F";
 
 
     /** GUI Layout Values **/
@@ -212,7 +206,7 @@ public class Core {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setName("buttonPanel");
         buttonPanel.setBackground(Color.WHITE);
-        Dimension buttonPanelSize = new Dimension(500,40);
+        Dimension buttonPanelSize = new Dimension(500,70);
         buttonPanel.setMinimumSize(buttonPanelSize);
         buttonPanel.setMaximumSize(buttonPanelSize);
         buttonPanel.setPreferredSize(buttonPanelSize);
@@ -238,12 +232,12 @@ public class Core {
         boardPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         BoardListener boardListener = new BoardListener();
-        boolean whiteSquare = true;
+        boolean isWhiteSquare = true;
 
         for (byte i = 0; i < 8; i++) {
 
             // grid notation row name
-            JLabel label = new JLabel(String.valueOf(i+1), SwingConstants.CENTER);
+            JLabel label = new JLabel(String.valueOf(8-i), SwingConstants.CENTER);
             c.fill = GridBagConstraints.BOTH;
             c.gridx = 0;
             c.gridy = i;
@@ -257,7 +251,7 @@ public class Core {
             for (byte j = 0; j < 8; j++) {
 
                 squares[i][j] = new BoardSquare();
-                squares[i][j].setColor(whiteSquare);
+                squares[i][j].setBackgroundColor(isWhiteSquare);
                 squares[i][j].setName("BoardSquare:" + (char)(j+65) + "," + (8-i));
 
                 c.fill = GridBagConstraints.BOTH;
@@ -267,10 +261,10 @@ public class Core {
                 c.weighty = AVERAGE_WEIGHT;
                 squares[i][j].addActionListener(boardListener);
                 boardPanel.add(squares[i][j], c);
-                whiteSquare = !whiteSquare;
+                isWhiteSquare = !isWhiteSquare;
             }
 
-            whiteSquare = !whiteSquare; // creates the checkered pattern of squares
+            isWhiteSquare = !isWhiteSquare; // creates the checkered pattern of squares
         }
 
         // grid notation column names
@@ -287,28 +281,28 @@ public class Core {
         }
 
         // initialize piece placement
-        squares[0][7].setText(blackRook);
-        squares[0][0].setText(blackRook);
-        squares[0][1].setText(blackKnight);
-        squares[0][6].setText(blackKnight);
-        squares[0][2].setText(blackBishop);
-        squares[0][5].setText(blackBishop);
-        squares[0][3].setText(blackQueen);
-        squares[0][4].setText(blackKing);
+        squares[0][7].setPiece(new com.caffeine.logic.Piece(rook, 0, "black"));
+        squares[0][0].setPiece(new com.caffeine.logic.Piece(rook, 1, "black"));
+        squares[0][1].setPiece(new com.caffeine.logic.Piece(knight, 0, "black"));
+        squares[0][6].setPiece(new com.caffeine.logic.Piece(knight, 1, "black"));
+        squares[0][2].setPiece(new com.caffeine.logic.Piece(bishop, 0, "black"));
+        squares[0][5].setPiece(new com.caffeine.logic.Piece(bishop, 1, "black"));
+        squares[0][3].setPiece(new com.caffeine.logic.Piece(queen, 0, "black"));
+        squares[0][4].setPiece(new com.caffeine.logic.Piece(king, 0, "black"));
 
         for (int i = 0; i < 8; i++) {
-            squares[1][i].setText(blackPawn);
-            squares[6][i].setText(whitePawn);
+            squares[1][i].setPiece(new com.caffeine.logic.Piece(pawn, i, "black"));
+            squares[6][i].setPiece(new com.caffeine.logic.Piece(pawn, i, "white"));
         }
 
-        squares[7][0].setText(whiteRook);
-        squares[7][7].setText(whiteRook);
-        squares[7][1].setText(whiteKnight);
-        squares[7][6].setText(whiteKnight);
-        squares[7][2].setText(whiteBishop);
-        squares[7][5].setText(whiteBishop);
-        squares[7][3].setText(whiteQueen);
-        squares[7][4].setText(whiteKing);
+        squares[7][0].setPiece(new com.caffeine.logic.Piece(rook, 0, "white"));
+        squares[7][7].setPiece(new com.caffeine.logic.Piece(rook, 1, "white"));
+        squares[7][1].setPiece(new com.caffeine.logic.Piece(knight, 0, "white"));
+        squares[7][6].setPiece(new com.caffeine.logic.Piece(knight, 1, "white"));
+        squares[7][2].setPiece(new com.caffeine.logic.Piece(bishop, 0, "white"));
+        squares[7][5].setPiece(new com.caffeine.logic.Piece(bishop, 1, "white"));
+        squares[7][3].setPiece(new com.caffeine.logic.Piece(queen, 0, "white"));
+        squares[7][4].setPiece(new com.caffeine.logic.Piece(king, 0, "white"));
 
     }
 
@@ -318,25 +312,39 @@ public class Core {
      *
      *
      *  @param buttonPanel  the JPanel upon which to place option buttons
->>>>>>> 510472b7e6137c04274096c4503f960076ac4508
      */
     private void formatButtonPanel(JPanel buttonPanel) {
+        PanelButtonListener buttonListener = new PanelButtonListener();
+
         JButton loadButton = new JButton("Load");
         loadButton.setName("loadButton");
-        loadButton.addActionListener(new PanelButtonListener());
+        loadButton.addActionListener(buttonListener);
+        buttonPanel.add(loadButton);
+
         JButton saveButton = new JButton("Save");
         saveButton.setName("saveButton");
-        saveButton.addActionListener(new PanelButtonListener());
+        saveButton.addActionListener(buttonListener);
+        buttonPanel.add(saveButton);
+
         JButton chooseSideButton = new JButton("Choose Side");
         chooseSideButton.setName("chooseSideButton");
-        chooseSideButton.addActionListener(new PanelButtonListener());
+        chooseSideButton.addActionListener(buttonListener);
+        buttonPanel.add(chooseSideButton);
+
         JButton tutorialButton = new JButton("Tutorial");
         tutorialButton.setName("tutorialButton");
-        tutorialButton.addActionListener(new PanelButtonListener());
-        buttonPanel.add(loadButton);
-        buttonPanel.add(saveButton);
-        buttonPanel.add(chooseSideButton);
+        tutorialButton.addActionListener(buttonListener);
         buttonPanel.add(tutorialButton);
+
+        JButton pieceColorButton = new JButton("Change Piece Color");
+        pieceColorButton.setName("pieceColorButton");
+        pieceColorButton.addActionListener(buttonListener);
+        buttonPanel.add(pieceColorButton);
+
+        JButton squareColorButton = new JButton("Change Square Color");
+        squareColorButton.setName("squareColorButton");
+        squareColorButton.addActionListener(buttonListener);
+        buttonPanel.add(squareColorButton);
     }
 
 }

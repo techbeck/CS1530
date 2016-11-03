@@ -1,18 +1,18 @@
 // First-Party Imports
-import org.junit.BeforeClass;
-import org.junit.AfterClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
 import javax.swing.*;
 import java.awt.Frame;
 
-
 // Third-Party Imports
-import com.jwarner.jockfish.JockfishEngine;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+
 import org.assertj.swing.core.*;
 import org.assertj.swing.fixture.*;
 import org.assertj.swing.exception.*;
 import org.assertj.swing.core.matcher.JButtonMatcher.*;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.swing.launcher.ApplicationLauncher.application;
 import static org.assertj.swing.finder.WindowFinder.findFrame;
@@ -22,7 +22,16 @@ import static org.assertj.swing.finder.JOptionPaneFinder.findOptionPane;
 import com.caffeine.Chess;
 import com.caffeine.view.*;
 
+
+/* ============================================================================
+                                Integration Tests
+============================================================================ */
 public class ChessTest {
+
+    @Test // Sanity Check -- Is Chess properly imported and accessible?
+    public void testChessIntegrated(){
+        Chess game = new Chess();
+    }
 
     static FrameFixture frame;
     static Robot robot;
@@ -137,17 +146,4 @@ public class ChessTest {
         firstSquareFix.requireText(" ");
         secondSquareFix.requireText(expectedText);
     }
-
-    @Test
-    public void testJockfishEngineIntegrated(){
-        String expected = "Stockfish 7 64 by T. Romstad, M. Costalba, J. Kiiski, G. Linscott\n";
-        JockfishEngine jockfish = new JockfishEngine();
-        String observed = jockfish.read();
-        assertTrue(expected.equals(observed));
-    }
-
-	@Test
-	public void testAssertJIntegrated(){
-		assertThat("test").isEqualTo("test");
-	}
 }
