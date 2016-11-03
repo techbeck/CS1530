@@ -12,8 +12,9 @@ import java.awt.*;
  */
 public class Core {
 
-    public static JFrame window;
+    public static JFrame window = new JFrame("Laboon Chess");
     public static JLabel statusLabel = new JLabel("Status Bar");
+    public static JPanel boardPanel = new JPanel();
     public static BoardSquare[][] squares = new BoardSquare[8][8];
 
     // Unicode chess pieces
@@ -40,7 +41,6 @@ public class Core {
      */
 
     public Core() {
-        window = new JFrame("Laboon Chess");
         window.setName("frame");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addMenu(window);
@@ -191,7 +191,6 @@ public class Core {
         // eventually, formatTimerPanel(timerPanel);
         centerPanel.add(timerPanel, c);
 
-        JPanel boardPanel = new JPanel();
         boardPanel.setName("boardPanel");
         c.gridx = 0;
         c.gridy = 3;
