@@ -44,7 +44,8 @@ public class Core{
         return result;
     }
 
-// ================= INCOMPLETE/WIP METHODS ===================================
+// ================= INCOMPLETE/WIP METHODS    ================================
+// ================= DO NOT USE THESE METHODS! ================================
 
     public void go(String type, String[] parameters){
         String cmd = String.format("go %s ", type);
