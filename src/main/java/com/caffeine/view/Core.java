@@ -1,5 +1,7 @@
 package com.caffeine.view;
 
+import com.caffeine.logic.Piece;
+
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
@@ -16,6 +18,8 @@ public class Core {
     public static JLabel statusLabel = new JLabel("Status Bar");
     public static JPanel boardPanel = new JPanel();
     public static BoardSquare[][] squares = new BoardSquare[8][8];
+    public static Color whiteColor = Color.WHITE;
+    public static Color blackColor = Color.BLACK;
 
     // Unicode chess pieces
     public static final String king = "\u265A";
@@ -280,28 +284,28 @@ public class Core {
         }
 
         // initialize piece placement
-        squares[0][7].setPiece(new com.caffeine.logic.Piece(rook, 0, "black"));
-        squares[0][0].setPiece(new com.caffeine.logic.Piece(rook, 1, "black"));
-        squares[0][1].setPiece(new com.caffeine.logic.Piece(knight, 0, "black"));
-        squares[0][6].setPiece(new com.caffeine.logic.Piece(knight, 1, "black"));
-        squares[0][2].setPiece(new com.caffeine.logic.Piece(bishop, 0, "black"));
-        squares[0][5].setPiece(new com.caffeine.logic.Piece(bishop, 1, "black"));
-        squares[0][3].setPiece(new com.caffeine.logic.Piece(queen, 0, "black"));
-        squares[0][4].setPiece(new com.caffeine.logic.Piece(king, 0, "black"));
+        squares[0][7].setPiece(new Piece(rook, 0, "black"));
+        squares[0][0].setPiece(new Piece(rook, 1, "black"));
+        squares[0][1].setPiece(new Piece(knight, 0, "black"));
+        squares[0][6].setPiece(new Piece(knight, 1, "black"));
+        squares[0][2].setPiece(new Piece(bishop, 0, "black"));
+        squares[0][5].setPiece(new Piece(bishop, 1, "black"));
+        squares[0][3].setPiece(new Piece(queen, 0, "black"));
+        squares[0][4].setPiece(new Piece(king, 0, "black"));
 
         for (int i = 0; i < 8; i++) {
-            squares[1][i].setPiece(new com.caffeine.logic.Piece(pawn, i, "black"));
-            squares[6][i].setPiece(new com.caffeine.logic.Piece(pawn, i, "white"));
+            squares[1][i].setPiece(new Piece(pawn, i, "black"));
+            squares[6][i].setPiece(new Piece(pawn, i, "white"));
         }
 
-        squares[7][0].setPiece(new com.caffeine.logic.Piece(rook, 0, "white"));
-        squares[7][7].setPiece(new com.caffeine.logic.Piece(rook, 1, "white"));
-        squares[7][1].setPiece(new com.caffeine.logic.Piece(knight, 0, "white"));
-        squares[7][6].setPiece(new com.caffeine.logic.Piece(knight, 1, "white"));
-        squares[7][2].setPiece(new com.caffeine.logic.Piece(bishop, 0, "white"));
-        squares[7][5].setPiece(new com.caffeine.logic.Piece(bishop, 1, "white"));
-        squares[7][3].setPiece(new com.caffeine.logic.Piece(queen, 0, "white"));
-        squares[7][4].setPiece(new com.caffeine.logic.Piece(king, 0, "white"));
+        squares[7][0].setPiece(new Piece(rook, 0, "white"));
+        squares[7][7].setPiece(new Piece(rook, 1, "white"));
+        squares[7][1].setPiece(new Piece(knight, 0, "white"));
+        squares[7][6].setPiece(new Piece(knight, 1, "white"));
+        squares[7][2].setPiece(new Piece(bishop, 0, "white"));
+        squares[7][5].setPiece(new Piece(bishop, 1, "white"));
+        squares[7][3].setPiece(new Piece(queen, 0, "white"));
+        squares[7][4].setPiece(new Piece(king, 0, "white"));
 
     }
 
