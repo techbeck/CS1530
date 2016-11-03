@@ -182,4 +182,36 @@ public class ChessTest {
         okButton.click();
         squareFix.foreground().requireEqualTo(Color.BLUE);
     }
+
+    @Test
+    public void testDarkSquareColorChange(){
+        ComponentFinder newFinder = robot.finder();
+        JButton darkSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:A,1", BoardSquare.class);
+        JButtonFixture squareFix = new JButtonFixture(robot, darkSquare);
+        frame.button("squareColorButton").click();
+        JOptionPaneFixture optionPane = findOptionPane().using(robot);
+        optionPane.buttonWithText("Dark").click();
+        JColorChooser chooser = (JColorChooser) newFinder.findByType(JColorChooser.class);
+        chooser.setColor(Color.GREEN);
+        JButtonMatcher matcher = JButtonMatcher.withText("OK").andShowing();
+        JButtonFixture okButton = new JButtonFixture(robot,(JButton)newFinder.find(matcher));
+        okButton.click();
+        squareFix.background().requireEqualTo(Color.GREEN);
+    }
+
+    @Test
+    public void testLightSquareColorChange(){
+        ComponentFinder newFinder = robot.finder();
+        JButton lightSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:B,1", BoardSquare.class);
+        JButtonFixture squareFix = new JButtonFixture(robot, lightSquare);
+        frame.button("squareColorButton").click();
+        JOptionPaneFixture optionPane = findOptionPane().using(robot);
+        optionPane.buttonWithText("Light").click();
+        JColorChooser chooser = (JColorChooser) newFinder.findByType(JColorChooser.class);
+        chooser.setColor(Color.ORANGE);
+        JButtonMatcher matcher = JButtonMatcher.withText("OK").andShowing();
+        JButtonFixture okButton = new JButtonFixture(robot,(JButton)newFinder.find(matcher));
+        okButton.click();
+        squareFix.background().requireEqualTo(Color.ORANGE);
+    }
 }
