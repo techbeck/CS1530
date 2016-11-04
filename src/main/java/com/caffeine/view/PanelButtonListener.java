@@ -14,9 +14,9 @@ import java.awt.*;
  */
 public class PanelButtonListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
-        JLabel statusLabel = com.caffeine.view.Core.statusLabel;
-        JFrame window = com.caffeine.view.Core.window;
-        BoardSquare[][] squares = com.caffeine.view.Core.squares;
+        JLabel statusLabel = Core.statusLabel;
+        JFrame window = Core.window;
+        BoardSquare[][] squares = Core.squares;
 
         JButton button = (JButton) e.getSource();
 
@@ -83,6 +83,7 @@ public class PanelButtonListener implements ActionListener {
                             BoardSquare square = squares[i][j];
                             if (square.getPiece() != null && !square.getPiece().isWhite()) {
                                 square.setPieceColor(newColor);
+                                Core.blackColor = newColor;
                             }
                         }
                     }
@@ -98,6 +99,7 @@ public class PanelButtonListener implements ActionListener {
                             BoardSquare square = squares[i][j];
                             if (square.getPiece() != null && square.getPiece().isWhite()) {
                                 square.setPieceColor(newColor);
+                                Core.whiteColor = newColor;
                             }
                         }
                     }

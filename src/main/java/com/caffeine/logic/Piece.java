@@ -1,16 +1,9 @@
 package com.caffeine.logic;
 
-import java.util.*;
-import java.io.*;
-import javax.swing.*;
-import java.awt.event.*;
-import java.awt.*;
-
 public class Piece {
 	String type;
 	int number;
 	boolean isWhite;
-	Color color;
 
 	/**
 	 * Initializes type, number, and side as passed in as parameters.
@@ -24,10 +17,8 @@ public class Piece {
 		this.number = number;	// eg. knight 0 or 1
 		if (side.equals("white")) {
 			isWhite = true;
-			color = Color.WHITE;
 		} else {
 			isWhite = false;
-			color = Color.BLACK;
 		}
 	}
 
@@ -56,23 +47,5 @@ public class Piece {
 	 */
 	public boolean isWhite() {
 		return isWhite;
-	}
-
-	/**
-	 * Sets the color, irrespective of the side.
-	 * 
-	 * @param color  A color object
-	 */
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
-	/**
-	 * Returns the color of the piece
-	 * 
-	 * @return  A color object
-	 */
-	public Color getColor() {
-		return color;
 	}
 }
