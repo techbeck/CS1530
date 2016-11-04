@@ -14,13 +14,6 @@ import java.awt.*;
  */
 public class Core {
 
-    public static JFrame window = new JFrame("Laboon Chess");
-    public static JLabel statusLabel = new JLabel("Status Bar");
-    public static JPanel boardPanel = new JPanel();
-    public static BoardSquare[][] squares = new BoardSquare[8][8];
-    public static Color whiteColor = Color.WHITE;
-    public static Color blackColor = Color.BLACK;
-
     // Unicode chess pieces
     public static final String king = "\u265A";
     public static final String queen = "\u265B";
@@ -29,20 +22,29 @@ public class Core {
     public static final String knight = "\u265E";
     public static final String pawn = "\u265F";
 
+    // Track colors of white pieces and black pieces
+    public static Color whiteColor = Color.WHITE;
+    public static Color blackColor = Color.BLACK;
+
 
     /** GUI Layout Values **/
-    Dimension sidePanelDimension = new Dimension(150,550);
+    public static final Dimension sidePanelDimension = new Dimension(150,550);
     // Insets are padding between components
-    Insets sidePadding = new Insets(0,2,0,2);
-    Insets noPadding = new Insets(0,0,0,0);
-    Insets topBottomPadding = new Insets(2,0,2,0);
+    public static final Insets sidePadding = new Insets(0,2,0,2);
+    public static final Insets noPadding = new Insets(0,0,0,0);
+    public static final Insets topBottomPadding = new Insets(2,0,2,0);
     // For layout to perform correctly, components need weight > 0
-    final double AVERAGE_WEIGHT = 0.5;
+    public static final double AVERAGE_WEIGHT = 0.5;
     /**
      *	grid x/y and grid width/height are component specific for their
      * 	placements within the outer component they are in.
 	 *  (0,0) is the upper left corner
      */
+    
+    public static JFrame window = new JFrame("Laboon Chess");
+    public static JLabel statusLabel = new JLabel("Status Bar");
+    public static BoardSquare[][] squares = new BoardSquare[8][8];
+    public static BoardPanel boardPanel = new BoardPanel();
 
     public Core() {
         window.setName("frame");
@@ -203,7 +205,7 @@ public class Core {
         c.insets = noPadding;
         c.weightx = AVERAGE_WEIGHT;
         c.weighty = AVERAGE_WEIGHT;
-        formatBoard(boardPanel);
+        //formatBoard(boardPanel);
         centerPanel.add(boardPanel, c);
 
         JPanel buttonPanel = new JPanel();
@@ -230,7 +232,7 @@ public class Core {
      *
      *  @param boardPanel the JPanel upon which to place the game squares on
      */
-    private void formatBoard(JPanel boardPanel) {
+    /*private void formatBoard(JPanel boardPanel) {
 
         boardPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -307,7 +309,7 @@ public class Core {
         squares[7][3].setPiece(new Piece(queen, 0, "white"));
         squares[7][4].setPiece(new Piece(king, 0, "white"));
 
-    }
+    }*/
 
     /**
      * 	Initializes buttons for the user to readily access
