@@ -28,6 +28,7 @@ public class Core {
 
     /** GUI Layout Values **/
     public static final Dimension sidePanelDimension = new Dimension(150,550);
+    public static final Dimension centerPanelDimension = new Dimension(500,630);
     // Insets are padding between components
     public static final Insets sidePadding = new Insets(0,2,0,2);
     public static final Insets noPadding = new Insets(0,0,0,0);
@@ -44,11 +45,7 @@ public class Core {
     public static JLabel statusLabel = new JLabel("Status Bar");
     public static BoardSquare[][] squares = new BoardSquare[8][8];
     public static Piece[] pieces = new Piece[32];
-    public static JPanel boardPanel = new JPanel();
-    public static CardLayout flipControl = new CardLayout();
-    public static BoardPanel blackTop;
-    public static BoardPanel whiteTop;
-    public static boolean blackTopShowing = true;
+    public static BoardPanel boardPanel = new BoardPanel();
 
     public Core() {
         window.setName("frame");
@@ -122,6 +119,9 @@ public class Core {
 
         JPanel centerPanel = new JPanel();
         centerPanel.setName("centerPanel");
+        centerPanel.setMinimumSize(centerPanelDimension);
+        centerPanel.setMaximumSize(centerPanelDimension);
+        centerPanel.setPreferredSize(centerPanelDimension);
         c.gridx = 1;
         c.gridy = 0;
         c.gridwidth = 6;
@@ -178,8 +178,7 @@ public class Core {
      */
     private void formatCenterPanel(JPanel centerPanel) {
 
-        centerPanel.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
+        centerPanel.setLayout(new FlowLayout());
 
         JPanel timerPanel = new JPanel();
         timerPanel.setName("timerPanel");
@@ -188,39 +187,14 @@ public class Core {
         timerPanel.setMinimumSize(timerPanelSize);
         timerPanel.setMaximumSize(timerPanelSize);
         timerPanel.setPreferredSize(timerPanelSize);
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 13;
-        c.gridheight = 3;
-        c.insets = topBottomPadding;
-        c.weightx = AVERAGE_WEIGHT;
-        c.weighty = AVERAGE_WEIGHT;
         JLabel timerLabel = new JLabel("[Upcoming Feature] - Timer", SwingConstants.CENTER);
         timerLabel.setName("timerLabel");
         timerPanel.add(timerLabel);
         // eventually, formatTimerPanel(timerPanel);
-        centerPanel.add(timerPanel, c);
+        centerPanel.add(timerPanel);
 
         boardPanel.setName("boardPanel");
-        boardPanel.setLayout(flipControl);
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                squares[i][j] = new BoardSquare();
-            }
-        }
-        blackTop = new BoardPanel("black");
-        whiteTop = new BoardPanel("white");
-        boardPanel.add(blackTop, "blackTop");
-        boardPanel.add(whiteTop, "whiteTop");
-        flipControl.show(boardPanel, "blackTop");
-        c.gridx = 0;
-        c.gridy = 3;
-        c.gridwidth = 13;
-        c.gridheight = 12;
-        c.insets = noPadding;
-        c.weightx = AVERAGE_WEIGHT;
-        c.weighty = AVERAGE_WEIGHT;
-        centerPanel.add(boardPanel, c);
+        centerPanel.add(boardPanel);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setName("buttonPanel");
@@ -229,15 +203,8 @@ public class Core {
         buttonPanel.setMinimumSize(buttonPanelSize);
         buttonPanel.setMaximumSize(buttonPanelSize);
         buttonPanel.setPreferredSize(buttonPanelSize);
-        c.gridx = 0;
-        c.gridy = 15;
-        c.gridwidth = 13;
-        c.gridheight = 4;
-        c.insets = topBottomPadding;
-        c.weightx = AVERAGE_WEIGHT;
-        c.weighty = AVERAGE_WEIGHT;
         formatButtonPanel(buttonPanel);
-        centerPanel.add(buttonPanel, c);
+        centerPanel.add(buttonPanel);
     }
 
     /**

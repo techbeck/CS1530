@@ -1,5 +1,7 @@
 package com.caffeine.view;
 
+import com.caffeine.logic.Piece;
+
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
@@ -147,19 +149,28 @@ public class PanelButtonListener implements ActionListener {
                 case 2: break;
             }
         } else if (button.getText().equals("Flip the Board")) {
-            Core.flipControl.next(Core.boardPanel);
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    if (Core.blackTopShowing) {
-                        Core.whiteTop.squares[i][j].setPiece(Core.squares[i][j].getPiece());
-                    } else {
-                        Core.blackTop.squares[i][j].setPiece(Core.squares[i][j].getPiece());
-                    }
-                }
+            BoardPanel replacement = null;
+            if (Core.boardPanel.blackOnTop()) {
+                replacement = new BoardPanel("white");
+            } else {
+                replacement = new BoardPanel("black");
             }
-            Core.whiteTop.repaint();
-            Core.blackTop.repaint();
-            Core.blackTopShowing = !Core.blackTopShowing;
+            Container center = Core.boardPanel.getParent();
+            Component[] components = center.getComponents();
+            Component timer = components[0];
+            Component buttons = components[2];
+            center.removeAll();
+            center.add(timer);
+            center.add(replacement);
+            center.add(buttons);
+            center.validate();
+            center.repaint();
+            Core.boardPanel = replacement;
+            for (Piece p : Core.pieces) {
+                int x = p.getRank();
+                int y = p.getFile();
+                Core.squares[x][y].setPiece(p);
+            }
         }
     }
 }
