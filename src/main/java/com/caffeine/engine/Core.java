@@ -30,10 +30,11 @@ public class Core{
     }
 
     public HashMap<String, String> getConfig(){
+        // TODO: DOCSTRINGS
         HashMap<String, String> result = new HashMap<String, String>();
         jockfish.write("uci");
         String responseLine;
-        while (true) {
+        while (true){
             responseLine = jockfish.readLine().trim();
             if (responseLine.equals("uciok")) { break; }
             if (responseLine.contains("option name")){
@@ -47,23 +48,20 @@ public class Core{
 // ================= INCOMPLETE/WIP METHODS    ================================
 // ================= DO NOT USE THESE METHODS! ================================
 
-    public void go(String type, String[] parameters){
-        String cmd = String.format("go %s ", type);
-        for (int i = 0; i < parameters.length; i++){ cmd.concat(parameters[i] + " "); }
-        jockfish.write(cmd);
-    }
-
-    public boolean setFEN(String fen){
-        if (Utils.isValidFEN(fen)){
-            jockfish.write(String.format("position", fen));
-            return true;
+    public ArrayList<String> getAuthors(){
+        // TODO: DOCSTRINGS
+        ArrayList<String> result = new ArrayList<String>();
+        jockfish.write("uci");
+        String responseLine;
+        while(true){
+            responseLine = jockfish.readLine().trim();
+            if (responseLine.equals("uciok")) { break; }
+            if (responseLine.contains("id author")){
+                String authorString = responseLine.split(" ", 3)[2];
+                String[] authors = authorString.split(",")
+                for (int i = 0; i < authors.length; i++){ result.add(authors[i].trim()); }
+            }
         }
-        return false;
+        return result;
     }
-
-
-    public void stop(){
-        jockfish.write("stop");
-    }
-
 }
