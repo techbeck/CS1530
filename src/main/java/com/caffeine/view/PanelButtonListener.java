@@ -147,7 +147,19 @@ public class PanelButtonListener implements ActionListener {
                 case 2: break;
             }
         } else if (button.getText().equals("Flip the Board")) {
-            Core.boardPanel = Core.boardPanel.flipBoard();
+            Core.flipControl.next(Core.boardPanel);
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if (Core.blackTopShowing) {
+                        Core.whiteTop.squares[i][j].setPiece(Core.squares[i][j].getPiece());
+                    } else {
+                        Core.blackTop.squares[i][j].setPiece(Core.squares[i][j].getPiece());
+                    }
+                }
+            }
+            Core.whiteTop.repaint();
+            Core.blackTop.repaint();
+            Core.blackTopShowing = !Core.blackTopShowing;
         }
     }
 }

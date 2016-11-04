@@ -43,7 +43,12 @@ public class Core {
     public static JFrame window = new JFrame("Laboon Chess");
     public static JLabel statusLabel = new JLabel("Status Bar");
     public static BoardSquare[][] squares = new BoardSquare[8][8];
-    public static BoardPanel boardPanel = new BoardPanel();
+    public static Piece[] pieces = new Piece[32];
+    public static JPanel boardPanel = new JPanel();
+    public static CardLayout flipControl = new CardLayout();
+    public static BoardPanel blackTop;
+    public static BoardPanel whiteTop;
+    public static boolean blackTopShowing = true;
 
     public Core() {
         window.setName("frame");
@@ -197,6 +202,17 @@ public class Core {
         centerPanel.add(timerPanel, c);
 
         boardPanel.setName("boardPanel");
+        boardPanel.setLayout(flipControl);
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                squares[i][j] = new BoardSquare();
+            }
+        }
+        blackTop = new BoardPanel("black");
+        whiteTop = new BoardPanel("white");
+        boardPanel.add(blackTop, "blackTop");
+        boardPanel.add(whiteTop, "whiteTop");
+        flipControl.show(boardPanel, "blackTop");
         c.gridx = 0;
         c.gridy = 3;
         c.gridwidth = 13;
@@ -204,7 +220,6 @@ public class Core {
         c.insets = noPadding;
         c.weightx = AVERAGE_WEIGHT;
         c.weighty = AVERAGE_WEIGHT;
-        //formatBoard(boardPanel);
         centerPanel.add(boardPanel, c);
 
         JPanel buttonPanel = new JPanel();
@@ -224,91 +239,6 @@ public class Core {
         formatButtonPanel(buttonPanel);
         centerPanel.add(buttonPanel, c);
     }
-
-    /**
-     * 	Initializes an 8x8 Array of buttons to serve as the squares
-     * 	for the chess board, along with grid notation.
-     *
-     *  @param boardPanel the JPanel upon which to place the game squares on
-     */
-    /*private void formatBoard(JPanel boardPanel) {
-
-        boardPanel.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        BoardListener boardListener = new BoardListener();
-        boolean isWhiteSquare = true;
-
-        for (byte i = 0; i < 8; i++) {
-
-            // grid notation row name
-            JLabel label = new JLabel(String.valueOf(8-i), SwingConstants.CENTER);
-            c.fill = GridBagConstraints.BOTH;
-            c.gridx = 0;
-            c.gridy = i;
-            c.insets = sidePadding;
-            c.weightx = AVERAGE_WEIGHT;
-            c.weighty = AVERAGE_WEIGHT;
-            boardPanel.add(label, c);
-            c.insets = noPadding;
-
-            //row of buttons
-            for (byte j = 0; j < 8; j++) {
-
-                squares[i][j] = new BoardSquare();
-                squares[i][j].setBackgroundColor(isWhiteSquare);
-                squares[i][j].setName("BoardSquare:" + (char)(j+65) + "," + (8-i));
-
-                c.fill = GridBagConstraints.BOTH;
-                c.gridx = j+1;
-                c.gridy = i;
-                c.weightx = AVERAGE_WEIGHT;
-                c.weighty = AVERAGE_WEIGHT;
-                squares[i][j].addActionListener(boardListener);
-                boardPanel.add(squares[i][j], c);
-                isWhiteSquare = !isWhiteSquare;
-            }
-
-            isWhiteSquare = !isWhiteSquare; // creates the checkered pattern of squares
-        }
-
-        // grid notation column names
-        for (byte i = 0; i < 8; i++) {
-
-            JLabel notationColumn = new JLabel(String.valueOf((char)(i+65)), SwingConstants.CENTER);
-            c.fill = GridBagConstraints.BOTH;
-            c.gridx = i+1;
-            c.gridy = 8;
-            c.insets = topBottomPadding;
-            c.weightx = AVERAGE_WEIGHT;
-            c.weighty = AVERAGE_WEIGHT;
-            boardPanel.add(notationColumn, c);
-        }
-
-        // initialize piece placement
-        squares[0][7].setPiece(new Piece(rook, 0, "black"));
-        squares[0][0].setPiece(new Piece(rook, 1, "black"));
-        squares[0][1].setPiece(new Piece(knight, 0, "black"));
-        squares[0][6].setPiece(new Piece(knight, 1, "black"));
-        squares[0][2].setPiece(new Piece(bishop, 0, "black"));
-        squares[0][5].setPiece(new Piece(bishop, 1, "black"));
-        squares[0][3].setPiece(new Piece(queen, 0, "black"));
-        squares[0][4].setPiece(new Piece(king, 0, "black"));
-
-        for (int i = 0; i < 8; i++) {
-            squares[1][i].setPiece(new Piece(pawn, i, "black"));
-            squares[6][i].setPiece(new Piece(pawn, i, "white"));
-        }
-
-        squares[7][0].setPiece(new Piece(rook, 0, "white"));
-        squares[7][7].setPiece(new Piece(rook, 1, "white"));
-        squares[7][1].setPiece(new Piece(knight, 0, "white"));
-        squares[7][6].setPiece(new Piece(knight, 1, "white"));
-        squares[7][2].setPiece(new Piece(bishop, 0, "white"));
-        squares[7][5].setPiece(new Piece(bishop, 1, "white"));
-        squares[7][3].setPiece(new Piece(queen, 0, "white"));
-        squares[7][4].setPiece(new Piece(king, 0, "white"));
-
-    }*/
 
     /**
      * 	Initializes buttons for the user to readily access

@@ -9,24 +9,25 @@ import java.awt.event.*;
 import java.awt.*;
 
 public class BoardPanel extends JPanel {
-    public boolean blackOnTop;
-    public BoardSquare[][] squares = Core.squares;
+    private boolean blackOnTop;
+    private BoardSquare[][] squares = Core.squares;
     
-    public BoardPanel() {
-        blackOnTop = true;
-        initializeBoard();
-        initializePiecePlacement();
-    }
-
-    public BoardPanel(boolean blackOnTop) {
-        this.blackOnTop = blackOnTop;
-        initializeBoard();
-        initializePiecePlacement();
+    public BoardPanel(String top) {
+        if (top.equals("black")) {
+            blackOnTop = true;
+            initializeBoard();
+            initializePiecePlacement();
+        } else {
+            blackOnTop = false;
+            initializeBoard();
+            initializePiecePlacement();
+        }
     }
 
     /**
      *  Initializes an 8x8 Array of buttons to serve as the squares
      *  for the chess board, along with grid notation.
+     *  Can initialize to black on top or white on top depending on boolean.
      *
      *  @param boardPanel the JPanel upon which to place the game squares on
      */
@@ -38,7 +39,7 @@ public class BoardPanel extends JPanel {
         boolean isWhiteSquare = true;
 
         if (blackOnTop) {
-            
+
             for (byte i = 0; i < 8; i++) {
 
                 // grid notation row name
@@ -132,6 +133,15 @@ public class BoardPanel extends JPanel {
         }
     }
 
+    /**
+     * Returns whether or not black in at the top of the board or the bottom
+     * 
+     * @return  true if black on top, false if black on bottom
+     */
+    public boolean blackOnTop() {
+        return blackOnTop;
+    }
+
     /** 
      * Initializes board layout with black pieces on top
      */
@@ -158,23 +168,5 @@ public class BoardPanel extends JPanel {
         squares[7][5].setPiece(new Piece(Core.bishop, 1, "white"));
         squares[7][3].setPiece(new Piece(Core.queen, 0, "white"));
         squares[7][4].setPiece(new Piece(Core.king, 0, "white"));
-    }
-
-    /**
-     * Returns whether or not black in at the top of the board or the bottom
-     * 
-     * @return  true if black on top, false if black on bottom
-     */
-    public boolean blackOnTop() {
-        return blackOnTop;
-    }
-
-    /**
-     * Flips the board
-     */
-    public BoardPanel flipBoard() {
-        System.out.println("FLIPPING");
-        BoardPanel replacement = new BoardPanel(false);
-        return replacement;
     }
 }
