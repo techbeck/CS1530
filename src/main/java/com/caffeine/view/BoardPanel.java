@@ -9,70 +9,127 @@ import java.awt.event.*;
 import java.awt.*;
 
 public class BoardPanel extends JPanel {
-	public boolean blackOnTop;
-	public BoardSquare[][] squares = Core.squares;
-	
-	public BoardPanel() {
-		blackOnTop = true;
-		formatBoard();
-		initializePiecePlacement();
-	}
+    public boolean blackOnTop;
+    public BoardSquare[][] squares = Core.squares;
+    
+    public BoardPanel() {
+        blackOnTop = true;
+        initializeBoard();
+        initializePiecePlacement();
+    }
 
-	/**
-	 * Returns whether or not black in at the top of the board or the bottom
-	 * 
-	 * @return  true if black on top, false if black on bottom
-	 */
-	public boolean blackOnTop() {
-		return blackOnTop;
-	}
+    public BoardPanel(boolean blackOnTop) {
+        this.blackOnTop = blackOnTop;
+        initializeBoard();
+        initializePiecePlacement();
+    }
 
-	/**
-	 * Flips the board
-	 */
-	public void flip() {
-
-	}
-
-	/**
-     * 	Initializes an 8x8 Array of buttons to serve as the squares
-     * 	for the chess board, along with grid notation.
+    /**
+     *  Initializes an 8x8 Array of buttons to serve as the squares
+     *  for the chess board, along with grid notation.
      *
      *  @param boardPanel the JPanel upon which to place the game squares on
      */
-    private void formatBoard() {
+    private void initializeBoard() {
 
-        setLayout(new GridLayout(9,9));
+        setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
         BoardListener boardListener = new BoardListener();
         boolean isWhiteSquare = true;
 
-        for (byte i = 0; i < 8; i++) {
+        if (blackOnTop) {
+            
+            for (byte i = 0; i < 8; i++) {
 
-            // grid notation row name
-            JLabel label = new JLabel(String.valueOf(8-i), SwingConstants.CENTER);
-            add(label);
+                // grid notation row name
+                JLabel notationRow = new JLabel(String.valueOf(8-i), SwingConstants.CENTER);
+                c.fill = GridBagConstraints.BOTH;
+                c.gridx = 0;
+                c.gridy = i;
+                c.insets = Core.sidePadding;
+                c.weightx = Core.AVERAGE_WEIGHT;
+                c.weighty = Core.AVERAGE_WEIGHT;
+                add(notationRow, c);
+                c.insets = Core.noPadding;
 
-            //row of buttons
-            for (byte j = 0; j < 8; j++) {
-                
-                squares[i][j] = new BoardSquare();
-                squares[i][j].setBackgroundColor(isWhiteSquare);
-                squares[i][j].setName("BoardSquare:" + (char)(j+65) + "," + (8-i));
-                squares[i][j].addActionListener(boardListener);
-                add(squares[i][j]);
-                isWhiteSquare = !isWhiteSquare;
+                //row of buttons
+                for (byte j = 0; j < 8; j++) {
+                    
+                    squares[i][j] = new BoardSquare();
+                    squares[i][j].setBackgroundColor(isWhiteSquare);
+                    squares[i][j].setName("BoardSquare:" + (char)(j+65) + "," + (8-i));
+                    squares[i][j].addActionListener(boardListener);
+                    c.fill = GridBagConstraints.BOTH;
+                    c.gridx = j+1;
+                    c.gridy = i;
+                    c.weightx = Core.AVERAGE_WEIGHT;
+                    c.weighty = Core.AVERAGE_WEIGHT;
+                    add(squares[i][j], c);
+                    isWhiteSquare = !isWhiteSquare;
+                }
+
+                isWhiteSquare = !isWhiteSquare; // creates the checkered pattern of squares
             }
 
-            isWhiteSquare = !isWhiteSquare; // creates the checkered pattern of squares
+            // grid notation column names
+            for (byte i = 0; i < 8; i++) {
+
+                JLabel notationColumn = new JLabel(String.valueOf((char)(i+65)), SwingConstants.CENTER);
+                c.fill = GridBagConstraints.BOTH;
+                c.gridx = i+1;
+                c.gridy = 8;
+                c.insets = Core.topBottomPadding;
+                c.weightx = Core.AVERAGE_WEIGHT;
+                c.weighty = Core.AVERAGE_WEIGHT;
+                add(notationColumn, c);
+            }
+        } else { // loops run in reverse to flip the board from standard
+
+            for (byte i = 7; i >= 0; i--) {
+
+                // grid notation row name
+                JLabel notationRow = new JLabel(String.valueOf(8-i), SwingConstants.CENTER);
+                c.fill = GridBagConstraints.BOTH;
+                c.gridx = 0;
+                c.gridy = 8-(i+1);
+                c.insets = Core.sidePadding;
+                c.weightx = Core.AVERAGE_WEIGHT;
+                c.weighty = Core.AVERAGE_WEIGHT;
+                add(notationRow, c);
+                c.insets = Core.noPadding;
+
+                //row of buttons
+                for (byte j = 7; j >= 0; j--) {
+                    
+                    squares[i][j] = new BoardSquare();
+                    squares[i][j].setBackgroundColor(isWhiteSquare);
+                    squares[i][j].setName("BoardSquare:" + (char)(j+65) + "," + (8-i));
+                    squares[i][j].addActionListener(boardListener);
+                    c.fill = GridBagConstraints.BOTH;
+                    c.gridx = 8-(j);
+                    c.gridy = 8-(i+1);
+                    c.weightx = Core.AVERAGE_WEIGHT;
+                    c.weighty = Core.AVERAGE_WEIGHT;
+                    add(squares[i][j], c);
+                    isWhiteSquare = !isWhiteSquare;
+                }
+
+                isWhiteSquare = !isWhiteSquare; // creates the checkered pattern of squares
+            }
+
+            // grid notation column names
+            for (byte i = 7; i >= 0; i--) {
+
+                JLabel notationColumn = new JLabel(String.valueOf((char)(i+65)), SwingConstants.CENTER);
+                c.fill = GridBagConstraints.BOTH;
+                c.gridx = 8-i;
+                c.gridy = 8;
+                c.insets = Core.topBottomPadding;
+                c.weightx = Core.AVERAGE_WEIGHT;
+                c.weighty = Core.AVERAGE_WEIGHT;
+                add(notationColumn, c);
+            }
         }
-
-        // grid notation column names
-        for (byte i = 0; i < 8; i++) {
-
-            JLabel notationColumn = new JLabel(String.valueOf((char)(i+65)), SwingConstants.CENTER);
-            add(notationColumn);
-        }
-
     }
 
     /** 
@@ -101,5 +158,23 @@ public class BoardPanel extends JPanel {
         squares[7][5].setPiece(new Piece(Core.bishop, 1, "white"));
         squares[7][3].setPiece(new Piece(Core.queen, 0, "white"));
         squares[7][4].setPiece(new Piece(Core.king, 0, "white"));
+    }
+
+    /**
+     * Returns whether or not black in at the top of the board or the bottom
+     * 
+     * @return  true if black on top, false if black on bottom
+     */
+    public boolean blackOnTop() {
+        return blackOnTop;
+    }
+
+    /**
+     * Flips the board
+     */
+    public BoardPanel flipBoard() {
+        System.out.println("FLIPPING");
+        BoardPanel replacement = new BoardPanel(false);
+        return replacement;
     }
 }

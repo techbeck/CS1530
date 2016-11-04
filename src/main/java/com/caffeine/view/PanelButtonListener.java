@@ -146,6 +146,8 @@ public class PanelButtonListener implements ActionListener {
                     break;
                 case 2: break;
             }
+        } else if (button.getText().equals("Flip the Board")) {
+            Core.boardPanel = Core.boardPanel.flipBoard();
         }
     }
 }

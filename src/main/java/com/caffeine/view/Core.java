@@ -26,7 +26,6 @@ public class Core {
     public static Color whiteColor = Color.WHITE;
     public static Color blackColor = Color.BLACK;
 
-
     /** GUI Layout Values **/
     public static final Dimension sidePanelDimension = new Dimension(150,550);
     // Insets are padding between components
@@ -40,7 +39,7 @@ public class Core {
      * 	placements within the outer component they are in.
 	 *  (0,0) is the upper left corner
      */
-    
+
     public static JFrame window = new JFrame("Laboon Chess");
     public static JLabel statusLabel = new JLabel("Status Bar");
     public static BoardSquare[][] squares = new BoardSquare[8][8];
@@ -350,6 +349,10 @@ public class Core {
         squareColorButton.setName("squareColorButton");
         squareColorButton.addActionListener(buttonListener);
         buttonPanel.add(squareColorButton);
-    }
 
+        JButton flipButton = new JButton("Flip the Board");
+        flipButton.setName("flipButton");
+        flipButton.addActionListener(buttonListener);
+        buttonPanel.add(flipButton);
+    }
 }
