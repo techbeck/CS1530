@@ -166,6 +166,7 @@ public class PanelButtonListener implements ActionListener {
             center.validate();
             center.repaint();
             Core.boardPanel = replacement;
+            BoardListener.selected = null;
             for (Piece p : Core.pieces) {
                 int x = p.getRank();
                 int y = p.getFile();
