@@ -26,13 +26,21 @@ public class Core {
     public static Color whiteColor = Color.WHITE;
     public static Color blackColor = Color.BLACK;
 
+    // Constants for color theme hex Values      background, panels,     light,      dark
+    public static final String[][] themes = {   {"0xEEEEEE", "0xFFFFFF", "0x808080", "0xC0C0C0"}, // Grayscale
+                                                {"0xFFAFC2", "0xFFDFE6", "0xFE73A6", "0xFE3C74"}, // Peppermint
+                                                {"0xaeffd4", "0x8CD0A1", "0x7dfa92", "0x34a762"}, // Shamrock
+                                                {"0xB07147", "0xf4d095", "0xfea645", "0x8F4120"}, // Pumpkin Spice
+                                                {"0xC4B5AF", "0xeeeeff", "0xE5F1FF", "0x9A7C60"}  }; // Iced Vanilla
+    public static int currentTheme = 0; // match indices above
+
     /** GUI Layout Values **/
     public static final Dimension sidePanelDimension = new Dimension(150,550);
     public static final Dimension centerPanelDimension = new Dimension(500,630);
     // Insets are padding between components
-    public static final Insets sidePadding = new Insets(0,2,0,2);
+    public static final Insets sidePadding = new Insets(0,5,0,5);
     public static final Insets noPadding = new Insets(0,0,0,0);
-    public static final Insets topBottomPadding = new Insets(2,0,2,0);
+    public static final Insets topBottomPadding = new Insets(5,0,5,0);
     // For layout to perform correctly, components need weight > 0
     public static final double AVERAGE_WEIGHT = 0.5;
     /**
@@ -45,7 +53,14 @@ public class Core {
     public static JLabel statusLabel = new JLabel("Status Bar");
     public static BoardSquare[][] squares = new BoardSquare[8][8];
     public static Piece[] pieces = new Piece[32];
-    public static BoardPanel boardPanel;
+
+    protected static JPanel historyPanel;
+    protected static JPanel takenPanel;
+    protected static JPanel statusPanel;
+    protected static JPanel centerPanel;
+    protected static JPanel timerPanel;
+    protected static JPanel buttonPanel;
+    protected static BoardPanel boardPanel;
 
     public Core() {
         window.setName("frame");
@@ -98,7 +113,7 @@ public class Core {
         pane.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
-        JPanel historyPanel = new JPanel();
+        historyPanel = new JPanel();
         historyPanel.setName("historyPanel");
         historyPanel.setBackground(Color.WHITE);
         historyPanel.setMinimumSize(sidePanelDimension);
@@ -117,7 +132,7 @@ public class Core {
         // eventually, formatHistoryPanel(historyPanel);
         pane.add(historyPanel, c);
 
-        JPanel centerPanel = new JPanel();
+        centerPanel = new JPanel();
         centerPanel.setName("centerPanel");
         centerPanel.setMinimumSize(centerPanelDimension);
         centerPanel.setMaximumSize(centerPanelDimension);
@@ -132,7 +147,7 @@ public class Core {
         formatCenterPanel(centerPanel);
         pane.add(centerPanel, c);
 
-        JPanel takenPanel = new JPanel();
+        takenPanel = new JPanel();
         takenPanel.setName("takenPanel");
         takenPanel.setBackground(Color.WHITE);
         takenPanel.setMinimumSize(sidePanelDimension);
@@ -151,7 +166,7 @@ public class Core {
         // eventually, formatTakenPanel(takenPanel);
         pane.add(takenPanel, c);
 
-        JPanel statusPanel = new JPanel();
+        statusPanel = new JPanel();
         statusPanel.setName("statusPanel");
         statusPanel.setBackground(Color.WHITE);
         Dimension statusPanelSize = new Dimension(800,30);
@@ -180,7 +195,7 @@ public class Core {
 
         centerPanel.setLayout(new FlowLayout());
 
-        JPanel timerPanel = new JPanel();
+        timerPanel = new JPanel();
         timerPanel.setName("timerPanel");
         timerPanel.setBackground(Color.WHITE);
         Dimension timerPanelSize = new Dimension(200,40);
@@ -197,10 +212,10 @@ public class Core {
         boardPanel.setName("boardPanel");
         centerPanel.add(boardPanel);
 
-        JPanel buttonPanel = new JPanel();
+        buttonPanel = new JPanel();
         buttonPanel.setName("buttonPanel");
         buttonPanel.setBackground(Color.WHITE);
-        Dimension buttonPanelSize = new Dimension(500,70);
+        Dimension buttonPanelSize = new Dimension(490,70);
         buttonPanel.setMinimumSize(buttonPanelSize);
         buttonPanel.setMaximumSize(buttonPanelSize);
         buttonPanel.setPreferredSize(buttonPanelSize);
@@ -243,10 +258,10 @@ public class Core {
         pieceColorButton.addActionListener(buttonListener);
         buttonPanel.add(pieceColorButton);
 
-        JButton squareColorButton = new JButton("Change Square Color");
-        squareColorButton.setName("squareColorButton");
-        squareColorButton.addActionListener(buttonListener);
-        buttonPanel.add(squareColorButton);
+        JButton colorThemeButton = new JButton("Change Color Theme");
+        colorThemeButton.setName("colorThemeButton");
+        colorThemeButton.addActionListener(buttonListener);
+        buttonPanel.add(colorThemeButton);
 
         JButton flipButton = new JButton("Flip the Board");
         flipButton.setName("flipButton");
