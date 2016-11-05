@@ -1,6 +1,8 @@
 // First-Party Imports
 import javax.swing.*;
 import java.awt.Frame;
+import java.awt.Container;
+import java.awt.Component;
 import java.awt.Color;
 import java.awt.event.*;
 
@@ -213,5 +215,23 @@ public class ChessTest {
         JButtonFixture okButton = new JButtonFixture(robot,(JButton)newFinder.find(matcher));
         okButton.click();
         squareFix.background().requireEqualTo(Color.ORANGE);
+    }
+
+    @Test
+    public void testFlip(){
+        ComponentFinder newFinder = robot.finder();
+        JButton h1Button = (JButton) newFinder.findByName(frame.target(), "BoardSquare:A,1", BoardSquare.class);
+        Container board = h1Button.getParent();
+        Component[] components = board.getComponents();
+        JButton square = (JButton) components[11];
+        JButtonFixture squareFix = new JButtonFixture(robot, square);
+        squareFix.foreground().requireEqualTo(Color.BLACK);
+        frame.button("flipButton").click();
+        h1Button = (JButton) newFinder.findByName(frame.target(), "BoardSquare:A,1", BoardSquare.class);
+        board = h1Button.getParent();
+        components = board.getComponents();
+        square = (JButton) components[11];
+        squareFix = new JButtonFixture(robot, square);
+        squareFix.foreground().requireEqualTo(Color.WHITE);
     }
 }

@@ -45,7 +45,7 @@ public class Core {
     public static JLabel statusLabel = new JLabel("Status Bar");
     public static BoardSquare[][] squares = new BoardSquare[8][8];
     public static Piece[] pieces = new Piece[32];
-    public static BoardPanel boardPanel = new BoardPanel();
+    public static BoardPanel boardPanel;
 
     public Core() {
         window.setName("frame");
@@ -193,6 +193,7 @@ public class Core {
         // eventually, formatTimerPanel(timerPanel);
         centerPanel.add(timerPanel);
 
+        boardPanel = new BoardPanel();
         boardPanel.setName("boardPanel");
         centerPanel.add(boardPanel);
 

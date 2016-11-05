@@ -135,19 +135,10 @@ public class BoardPanel extends JPanel {
         }
     }
 
-    /**
-     * Returns whether or not black in at the top of the board or the bottom
-     * 
-     * @return  true if black on top, false if black on bottom
-     */
-    public boolean blackOnTop() {
-        return blackOnTop;
-    }
-
     /** 
      * Initializes board layout with black pieces on top
      */
-    public void initializePiecePlacement() {
+    private void initializePiecePlacement() {
         Core.pieces[0] = new Piece(Core.rook, 0, "black", 0, 7);
         Core.squares[0][7].setPiece(Core.pieces[0]);
         Core.pieces[1] = new Piece(Core.rook, 1, "black", 0, 0);
@@ -188,5 +179,14 @@ public class BoardPanel extends JPanel {
         Core.squares[7][3].setPiece(Core.pieces[30]);
         Core.pieces[31] = new Piece(Core.king, 0, "white", 7, 4);
         Core.squares[7][4].setPiece(Core.pieces[31]);
+    }
+
+    /**
+     * Returns whether or not black in at the top of the board or the bottom
+     * 
+     * @return  true if black on top, false if black on bottom
+     */
+    public boolean blackOnTop() {
+        return blackOnTop;
     }
 }
