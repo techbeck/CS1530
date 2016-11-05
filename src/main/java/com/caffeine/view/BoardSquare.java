@@ -88,6 +88,7 @@ public class BoardSquare extends JButton {
 	 * @param piece the unicode chess piece 
 	 */
 	public void setPiece(Piece piece) {
+		if (piece == null) return;
 		this.piece = piece;
 		setText(piece.getType());
 		if (piece.isWhite()) {
@@ -102,6 +103,7 @@ public class BoardSquare extends JButton {
 	 */
 	public void removePiece() {
 		setText(" ");
+		piece = null;
 	}
 
 	/**

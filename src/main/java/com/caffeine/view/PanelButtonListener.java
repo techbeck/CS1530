@@ -1,5 +1,7 @@
 package com.caffeine.view;
 
+import com.caffeine.logic.Piece;
+
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
@@ -145,6 +147,30 @@ public class PanelButtonListener implements ActionListener {
                     }
                     break;
                 case 2: break;
+            }
+        } else if (button.getText().equals("Flip the Board")) {
+            BoardPanel replacement = null;
+            if (Core.boardPanel.blackOnTop()) {
+                replacement = new BoardPanel("white");
+            } else {
+                replacement = new BoardPanel("black");
+            }
+            Container center = Core.boardPanel.getParent();
+            Component[] components = center.getComponents();
+            Component timer = components[0];
+            Component buttons = components[2];
+            center.removeAll();
+            center.add(timer);
+            center.add(replacement);
+            center.add(buttons);
+            center.validate();
+            center.repaint();
+            Core.boardPanel = replacement;
+            BoardListener.selected = null;
+            for (Piece p : Core.pieces) {
+                int x = p.getRank();
+                int y = p.getFile();
+                Core.squares[x][y].setPiece(p);
             }
         }
     }
