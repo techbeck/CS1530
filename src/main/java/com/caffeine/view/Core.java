@@ -53,8 +53,13 @@ public class Core {
         addMenu(window);
         addMainPanels(window);
         window.pack();
-        window.setVisible(true);
         window.setResizable(false);
+        window.setVisible(true);
+
+        // 	Windows doesn't permit a VM to initially bring a window to focus,
+        // 	so this forces the chess window to be focused
+        window.setAlwaysOnTop(true);
+        window.setAlwaysOnTop(false);
     }
 
     /**
