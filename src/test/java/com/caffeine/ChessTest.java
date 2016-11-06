@@ -193,7 +193,8 @@ public class ChessTest {
         JComboBoxFixture dropMenu = optionPane.comboBox();
         dropMenu.selectItem("Peppermint");
         optionPane.okButton().click();
-        frame.background().requireEqualTo(Color.decode(Core.themes[1][0]));
+        JPanelFixture panelFix = frame.panel("historyPanel");
+        panelFix.background().requireEqualTo(Color.decode(Core.themes[1][1]));
     }
 
     @Test
