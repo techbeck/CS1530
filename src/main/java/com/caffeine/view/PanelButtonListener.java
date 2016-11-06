@@ -122,6 +122,8 @@ public class PanelButtonListener implements ActionListener {
             if (theme == null) return;
 
             int themeChoice = 0;
+            //if (themeChoice == Core.currentTheme) return;
+
             if (theme.equals("Grayscale")) themeChoice = 0;
             else if (theme.equals("Peppermint")) themeChoice = 1;
             else if (theme.equals("Shamrock")) themeChoice = 2;
