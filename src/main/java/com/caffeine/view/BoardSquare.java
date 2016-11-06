@@ -1,5 +1,7 @@
 package com.caffeine.view;
 
+import com.caffeine.logic.Piece;
+
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
@@ -8,7 +10,7 @@ import java.awt.*;
  * This customized implementation of JButton makes buttons that appear as a game square
  */
 public class BoardSquare extends JButton {
-	com.caffeine.logic.Piece piece = null;
+	Piece piece = null;
 	boolean isLightSquare;
 
 	// formatting-related objects
@@ -66,7 +68,7 @@ public class BoardSquare extends JButton {
 	 * 
 	 * @return  The Piece on the square
 	 */
-	public com.caffeine.logic.Piece getPiece() {
+	public Piece getPiece() {
 		return piece;
 	}
 
@@ -85,10 +87,15 @@ public class BoardSquare extends JButton {
 	 *
 	 * @param piece the unicode chess piece 
 	 */
-	public void setPiece(com.caffeine.logic.Piece piece) {
+	public void setPiece(Piece piece) {
+		if (piece == null) return;
 		this.piece = piece;
 		setText(piece.getType());
-		setForeground(piece.getColor());
+		if (piece.isWhite()) {
+			setForeground(Core.whiteColor);
+		} else {
+			setForeground(Core.blackColor);
+		}
 	}
 
 	/**
@@ -96,6 +103,7 @@ public class BoardSquare extends JButton {
 	 */
 	public void removePiece() {
 		setText(" ");
+		piece = null;
 	}
 
 	/**
@@ -110,7 +118,11 @@ public class BoardSquare extends JButton {
 	 */
 	public void unselectSquare() {
         if (piece == null) return;
-        setForeground(piece.getColor());
+        if (piece.isWhite()) {
+			setForeground(Core.whiteColor);
+		} else {
+			setForeground(Core.blackColor);
+		}
 	}
 
 	/**
@@ -120,7 +132,6 @@ public class BoardSquare extends JButton {
 	 */
 	public void setPieceColor(Color color) {
 		setForeground(color);
-		piece.setColor(color);
 	}
 
 	/**
@@ -130,8 +141,8 @@ public class BoardSquare extends JButton {
 	 * @param piece  The piece that is taking the square
 	 * @return  the piece that was taken
 	 */
-	public com.caffeine.logic.Piece takePiece(com.caffeine.logic.Piece piece) {
-		com.caffeine.logic.Piece taken = this.piece;
+	public Piece takePiece(Piece piece) {
+		Piece taken = this.piece;
 		setPiece(piece);	// both sets this.piece and foreground color
 		return taken;
 	}

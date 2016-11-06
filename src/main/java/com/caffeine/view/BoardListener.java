@@ -1,5 +1,7 @@
 package com.caffeine.view;
 
+import com.caffeine.logic.Piece;
+
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
@@ -19,6 +21,10 @@ public class BoardListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         BoardSquare squareButton = (BoardSquare) e.getSource();
+
+        int i = 8 - Integer.parseInt(squareButton.getName().split(":")[1].split(",")[1]);
+        int j = ((int) squareButton.getName().split(":")[1].split(",")[0].toCharArray()[0]) - 65;
+
         if (selected == null) {
         	// if no previous board square selected, save the one clicked
             if (squareButton.getPiece() != null) {
@@ -31,8 +37,9 @@ public class BoardListener implements ActionListener {
                 return;
             }
         } else {
-        	// else set the clicked square to the previously selected chess piece
-            com.caffeine.logic.Piece piece = selected.getPiece();
+        	// else move the previously selected chess piece to the clicked square 
+            Piece piece = selected.getPiece();
+            piece.moveTo(i,j);
             selected.unselectSquare();
             selected.removePiece();
             squareButton.setPiece(piece);

@@ -1,6 +1,10 @@
 // First-Party Imports
 import javax.swing.*;
 import java.awt.Frame;
+import java.awt.Container;
+import java.awt.Component;
+import java.awt.Color;
+import java.awt.event.*;
 
 // Third-Party Imports
 import org.junit.Test;
@@ -11,12 +15,14 @@ import org.junit.BeforeClass;
 import org.assertj.swing.core.*;
 import org.assertj.swing.fixture.*;
 import org.assertj.swing.exception.*;
+import org.assertj.swing.core.matcher.*;
 import org.assertj.swing.core.matcher.JButtonMatcher.*;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.swing.launcher.ApplicationLauncher.application;
 import static org.assertj.swing.finder.WindowFinder.findFrame;
 import static org.assertj.swing.finder.JOptionPaneFinder.findOptionPane;
+import static org.assertj.swing.fixture.Containers.showInFrame;
 
 // Local Imports
 import com.caffeine.Chess;
@@ -145,5 +151,67 @@ public class ChessTest {
         secondSquareFix.click();
         firstSquareFix.requireText(" ");
         secondSquareFix.requireText(expectedText);
+    }
+
+    @Test
+    public void testWhitePieceColorChange(){
+        ComponentFinder newFinder = robot.finder();
+        JButton whiteSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:A,1", BoardSquare.class);
+        JButtonFixture squareFix = new JButtonFixture(robot, whiteSquare);
+        frame.button("pieceColorButton").click();
+        JOptionPaneFixture optionPane = findOptionPane().using(robot);
+        optionPane.buttonWithText("White").click();
+        JColorChooser chooser = (JColorChooser) newFinder.findByType(JColorChooser.class);
+        chooser.setColor(Color.RED);
+        JButtonMatcher matcher = JButtonMatcher.withText("OK").andShowing();
+        JButtonFixture okButton = new JButtonFixture(robot,(JButton)newFinder.find(matcher));
+        okButton.click();
+        squareFix.foreground().requireEqualTo(Color.RED);
+    }
+
+    @Test
+    public void testBlackPieceColorChange(){
+        ComponentFinder newFinder = robot.finder();
+        JButton blackSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:A,8", BoardSquare.class);
+        JButtonFixture squareFix = new JButtonFixture(robot, blackSquare);
+        frame.button("pieceColorButton").click();
+        JOptionPaneFixture optionPane = findOptionPane().using(robot);
+        optionPane.buttonWithText("Black").click();
+        JColorChooser chooser = (JColorChooser) newFinder.findByType(JColorChooser.class);
+        chooser.setColor(Color.BLUE);
+        JButtonMatcher matcher = JButtonMatcher.withText("OK").andShowing();
+        JButtonFixture okButton = new JButtonFixture(robot,(JButton)newFinder.find(matcher));
+        okButton.click();
+        squareFix.foreground().requireEqualTo(Color.BLUE);
+    }
+
+    @Test
+    public void testColorThemeChange(){
+        ComponentFinder newFinder = robot.finder();
+        frame.button("colorThemeButton").click();
+        JOptionPaneFixture optionPane = findOptionPane().using(robot);
+        JComboBoxFixture dropMenu = optionPane.comboBox();
+        dropMenu.selectItem("Peppermint");
+        optionPane.okButton().click();
+        JPanelFixture panelFix = frame.panel("historyPanel");
+        panelFix.background().requireEqualTo(Color.decode(Core.themes[1][1]));
+    }
+
+    @Test
+    public void testFlip(){
+        ComponentFinder newFinder = robot.finder();
+        JButton h1Button = (JButton) newFinder.findByName(frame.target(), "BoardSquare:A,1", BoardSquare.class);
+        Container board = h1Button.getParent();
+        Component[] components = board.getComponents();
+        JButton square = (JButton) components[11];
+        JButtonFixture squareFix = new JButtonFixture(robot, square);
+        squareFix.foreground().requireEqualTo(Color.BLACK);
+        frame.button("flipButton").click();
+        h1Button = (JButton) newFinder.findByName(frame.target(), "BoardSquare:A,1", BoardSquare.class);
+        board = h1Button.getParent();
+        components = board.getComponents();
+        square = (JButton) components[11];
+        squareFix = new JButtonFixture(robot, square);
+        squareFix.foreground().requireEqualTo(Color.WHITE);
     }
 }

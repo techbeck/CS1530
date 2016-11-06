@@ -1,5 +1,7 @@
 package com.caffeine.view;
 
+import com.caffeine.logic.Piece;
+
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
@@ -12,10 +14,6 @@ import java.awt.*;
  */
 public class Core {
 
-    public static JFrame window;
-    public static JLabel statusLabel = new JLabel("Status Bar");
-    public static BoardSquare[][] squares = new BoardSquare[8][8];
-
     // Unicode chess pieces
     public static final String king = "\u265A";
     public static final String queen = "\u265B";
@@ -24,30 +22,59 @@ public class Core {
     public static final String knight = "\u265E";
     public static final String pawn = "\u265F";
 
+    // Track colors of white pieces and black pieces
+    public static Color whiteColor = Color.WHITE;
+    public static Color blackColor = Color.BLACK;
+
+    // Constants for color theme hex Values      background, panels,     light,      dark
+    public static final String[][] themes = {   {"0xEEEEEE", "0xFFFFFF", "0x808080", "0xC0C0C0"}, // Grayscale
+                                                {"0xFFAFC2", "0xFFDFE6", "0xFE73A6", "0xFE3C74"}, // Peppermint
+                                                {"0xaeffd4", "0x8CD0A1", "0x7dfa92", "0x34a762"}, // Shamrock
+                                                {"0xB07147", "0xf4d095", "0xfea645", "0x8F4120"}, // Pumpkin Spice
+                                                {"0xC4B5AF", "0xeeeeff", "0xE5F1FF", "0x9A7C60"}  }; // Iced Vanilla
+    public static int currentTheme = 0; // match indices above
 
     /** GUI Layout Values **/
-    Dimension sidePanelDimension = new Dimension(150,550);
+    public static final Dimension sidePanelDimension = new Dimension(150,550);
+    public static final Dimension centerPanelDimension = new Dimension(500,630);
     // Insets are padding between components
-    Insets sidePadding = new Insets(0,2,0,2);
-    Insets noPadding = new Insets(0,0,0,0);
-    Insets topBottomPadding = new Insets(2,0,2,0);
+    public static final Insets sidePadding = new Insets(0,5,0,5);
+    public static final Insets noPadding = new Insets(0,0,0,0);
+    public static final Insets topBottomPadding = new Insets(5,0,5,0);
     // For layout to perform correctly, components need weight > 0
-    final double AVERAGE_WEIGHT = 0.5;
+    public static final double AVERAGE_WEIGHT = 0.5;
     /**
      *	grid x/y and grid width/height are component specific for their
      * 	placements within the outer component they are in.
 	 *  (0,0) is the upper left corner
      */
 
+    public static JFrame window = new JFrame("Laboon Chess");
+    public static JLabel statusLabel = new JLabel("Status Bar");
+    public static BoardSquare[][] squares = new BoardSquare[8][8];
+    public static Piece[] pieces = new Piece[32];
+
+    protected static JPanel historyPanel;
+    protected static JPanel takenPanel;
+    protected static JPanel statusPanel;
+    protected static JPanel centerPanel;
+    protected static JPanel timerPanel;
+    protected static JPanel buttonPanel;
+    protected static BoardPanel boardPanel;
+
     public Core() {
-        window = new JFrame("Laboon Chess");
         window.setName("frame");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addMenu(window);
         addMainPanels(window);
         window.pack();
-        window.setVisible(true);
         window.setResizable(false);
+        window.setVisible(true);
+
+        // 	Windows doesn't permit a VM to initially bring a window to focus,
+        // 	so this forces the chess window to be focused
+        window.setAlwaysOnTop(true);
+        window.setAlwaysOnTop(false);
     }
 
     /**
@@ -91,7 +118,7 @@ public class Core {
         pane.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
-        JPanel historyPanel = new JPanel();
+        historyPanel = new JPanel();
         historyPanel.setName("historyPanel");
         historyPanel.setBackground(Color.WHITE);
         historyPanel.setMinimumSize(sidePanelDimension);
@@ -110,8 +137,11 @@ public class Core {
         // eventually, formatHistoryPanel(historyPanel);
         pane.add(historyPanel, c);
 
-        JPanel centerPanel = new JPanel();
+        centerPanel = new JPanel();
         centerPanel.setName("centerPanel");
+        centerPanel.setMinimumSize(centerPanelDimension);
+        centerPanel.setMaximumSize(centerPanelDimension);
+        centerPanel.setPreferredSize(centerPanelDimension);
         c.gridx = 1;
         c.gridy = 0;
         c.gridwidth = 6;
@@ -122,7 +152,7 @@ public class Core {
         formatCenterPanel(centerPanel);
         pane.add(centerPanel, c);
 
-        JPanel takenPanel = new JPanel();
+        takenPanel = new JPanel();
         takenPanel.setName("takenPanel");
         takenPanel.setBackground(Color.WHITE);
         takenPanel.setMinimumSize(sidePanelDimension);
@@ -141,7 +171,7 @@ public class Core {
         // eventually, formatTakenPanel(takenPanel);
         pane.add(takenPanel, c);
 
-        JPanel statusPanel = new JPanel();
+        statusPanel = new JPanel();
         statusPanel.setName("statusPanel");
         statusPanel.setBackground(Color.WHITE);
         Dimension statusPanelSize = new Dimension(800,30);
@@ -168,142 +198,34 @@ public class Core {
      */
     private void formatCenterPanel(JPanel centerPanel) {
 
-        centerPanel.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
+        centerPanel.setLayout(new FlowLayout());
 
-        JPanel timerPanel = new JPanel();
+        timerPanel = new JPanel();
         timerPanel.setName("timerPanel");
         timerPanel.setBackground(Color.WHITE);
         Dimension timerPanelSize = new Dimension(200,40);
         timerPanel.setMinimumSize(timerPanelSize);
         timerPanel.setMaximumSize(timerPanelSize);
         timerPanel.setPreferredSize(timerPanelSize);
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 13;
-        c.gridheight = 3;
-        c.insets = topBottomPadding;
-        c.weightx = AVERAGE_WEIGHT;
-        c.weighty = AVERAGE_WEIGHT;
         JLabel timerLabel = new JLabel("[Upcoming Feature] - Timer", SwingConstants.CENTER);
         timerLabel.setName("timerLabel");
         timerPanel.add(timerLabel);
         // eventually, formatTimerPanel(timerPanel);
-        centerPanel.add(timerPanel, c);
+        centerPanel.add(timerPanel);
 
-        JPanel boardPanel = new JPanel();
+        boardPanel = new BoardPanel();
         boardPanel.setName("boardPanel");
-        c.gridx = 0;
-        c.gridy = 3;
-        c.gridwidth = 13;
-        c.gridheight = 12;
-        c.insets = noPadding;
-        c.weightx = AVERAGE_WEIGHT;
-        c.weighty = AVERAGE_WEIGHT;
-        formatBoard(boardPanel);
-        centerPanel.add(boardPanel, c);
+        centerPanel.add(boardPanel);
 
-        JPanel buttonPanel = new JPanel();
+        buttonPanel = new JPanel();
         buttonPanel.setName("buttonPanel");
         buttonPanel.setBackground(Color.WHITE);
-        Dimension buttonPanelSize = new Dimension(500,70);
+        Dimension buttonPanelSize = new Dimension(490,70);
         buttonPanel.setMinimumSize(buttonPanelSize);
         buttonPanel.setMaximumSize(buttonPanelSize);
         buttonPanel.setPreferredSize(buttonPanelSize);
-        c.gridx = 0;
-        c.gridy = 15;
-        c.gridwidth = 13;
-        c.gridheight = 4;
-        c.insets = topBottomPadding;
-        c.weightx = AVERAGE_WEIGHT;
-        c.weighty = AVERAGE_WEIGHT;
         formatButtonPanel(buttonPanel);
-        centerPanel.add(buttonPanel, c);
-    }
-
-    /**
-     * 	Initializes an 8x8 Array of buttons to serve as the squares
-     * 	for the chess board, along with grid notation.
-     *
-     *  @param boardPanel the JPanel upon which to place the game squares on
-     */
-    private void formatBoard(JPanel boardPanel) {
-
-        boardPanel.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        BoardListener boardListener = new BoardListener();
-        boolean isWhiteSquare = true;
-
-        for (byte i = 0; i < 8; i++) {
-
-            // grid notation row name
-            JLabel label = new JLabel(String.valueOf(8-i), SwingConstants.CENTER);
-            c.fill = GridBagConstraints.BOTH;
-            c.gridx = 0;
-            c.gridy = i;
-            c.insets = sidePadding;
-            c.weightx = AVERAGE_WEIGHT;
-            c.weighty = AVERAGE_WEIGHT;
-            boardPanel.add(label, c);
-            c.insets = noPadding;
-
-            //row of buttons
-            for (byte j = 0; j < 8; j++) {
-
-                squares[i][j] = new BoardSquare();
-                squares[i][j].setBackgroundColor(isWhiteSquare);
-                squares[i][j].setName("BoardSquare:" + (char)(j+65) + "," + (8-i));
-
-                c.fill = GridBagConstraints.BOTH;
-                c.gridx = j+1;
-                c.gridy = i;
-                c.weightx = AVERAGE_WEIGHT;
-                c.weighty = AVERAGE_WEIGHT;
-                squares[i][j].addActionListener(boardListener);
-                boardPanel.add(squares[i][j], c);
-                isWhiteSquare = !isWhiteSquare;
-            }
-
-            isWhiteSquare = !isWhiteSquare; // creates the checkered pattern of squares
-        }
-
-        // grid notation column names
-        for (byte i = 0; i < 8; i++) {
-
-            JLabel notationColumn = new JLabel(String.valueOf((char)(i+65)), SwingConstants.CENTER);
-            c.fill = GridBagConstraints.BOTH;
-            c.gridx = i+1;
-            c.gridy = 8;
-            c.insets = topBottomPadding;
-            c.weightx = AVERAGE_WEIGHT;
-            c.weighty = AVERAGE_WEIGHT;
-            boardPanel.add(notationColumn, c);
-        }
-
-        // initialize piece placement
-        squares[0][7].setPiece(new com.caffeine.logic.Piece(rook, 0, "black"));
-        squares[0][0].setPiece(new com.caffeine.logic.Piece(rook, 1, "black"));
-        squares[0][1].setPiece(new com.caffeine.logic.Piece(knight, 0, "black"));
-        squares[0][6].setPiece(new com.caffeine.logic.Piece(knight, 1, "black"));
-        squares[0][2].setPiece(new com.caffeine.logic.Piece(bishop, 0, "black"));
-        squares[0][5].setPiece(new com.caffeine.logic.Piece(bishop, 1, "black"));
-        squares[0][3].setPiece(new com.caffeine.logic.Piece(queen, 0, "black"));
-        squares[0][4].setPiece(new com.caffeine.logic.Piece(king, 0, "black"));
-
-        for (int i = 0; i < 8; i++) {
-            squares[1][i].setPiece(new com.caffeine.logic.Piece(pawn, i, "black"));
-            squares[6][i].setPiece(new com.caffeine.logic.Piece(pawn, i, "white"));
-        }
-
-        squares[7][0].setPiece(new com.caffeine.logic.Piece(rook, 0, "white"));
-        squares[7][7].setPiece(new com.caffeine.logic.Piece(rook, 1, "white"));
-        squares[7][1].setPiece(new com.caffeine.logic.Piece(knight, 0, "white"));
-        squares[7][6].setPiece(new com.caffeine.logic.Piece(knight, 1, "white"));
-        squares[7][2].setPiece(new com.caffeine.logic.Piece(bishop, 0, "white"));
-        squares[7][5].setPiece(new com.caffeine.logic.Piece(bishop, 1, "white"));
-        squares[7][3].setPiece(new com.caffeine.logic.Piece(queen, 0, "white"));
-        squares[7][4].setPiece(new com.caffeine.logic.Piece(king, 0, "white"));
-
+        centerPanel.add(buttonPanel);
     }
 
     /**
@@ -341,10 +263,14 @@ public class Core {
         pieceColorButton.addActionListener(buttonListener);
         buttonPanel.add(pieceColorButton);
 
-        JButton squareColorButton = new JButton("Change Square Color");
-        squareColorButton.setName("squareColorButton");
-        squareColorButton.addActionListener(buttonListener);
-        buttonPanel.add(squareColorButton);
-    }
+        JButton colorThemeButton = new JButton("Change Color Theme");
+        colorThemeButton.setName("colorThemeButton");
+        colorThemeButton.addActionListener(buttonListener);
+        buttonPanel.add(colorThemeButton);
 
+        JButton flipButton = new JButton("Flip the Board");
+        flipButton.setName("flipButton");
+        flipButton.addActionListener(buttonListener);
+        buttonPanel.add(flipButton);
+    }
 }
