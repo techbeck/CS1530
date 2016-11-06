@@ -116,7 +116,7 @@ public class PanelButtonListener implements ActionListener {
             }
         } else if (button.getText().equals("Change Color Theme")) {
 
-            String[] options = new String[] {"Grayscale", "Peppermint", "Shamrock", "Pumpkin Spice", "Iced Vanilla", "Cancel"};
+            String[] options = new String[] {"Grayscale", "Peppermint", "Shamrock", "Pumpkin Spice", "Iced Vanilla"};
             String theme = (String) JOptionPane.showInputDialog(null, "Choose Theme",
                     "Choose Color Theme", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if (theme == null) return;
