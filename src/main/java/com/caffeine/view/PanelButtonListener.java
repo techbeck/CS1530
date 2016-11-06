@@ -24,7 +24,8 @@ public class PanelButtonListener implements ActionListener {
 
         if (button.getText().equals("Load")){
 
-            String fileName = JOptionPane.showInputDialog(window, "Please enter file name to load a game: ", "Load Game", JOptionPane.PLAIN_MESSAGE);
+            String fileName = JOptionPane.showInputDialog(window,
+                "Please enter file name to load a game: ", "Load Game", JOptionPane.PLAIN_MESSAGE);
 
             if (fileName != null && fileName.length() != 0) {
 
@@ -40,7 +41,8 @@ public class PanelButtonListener implements ActionListener {
             }
         } else if (button.getText().equals("Save")) {
 
-            String fileName = JOptionPane.showInputDialog(window, "Please enter a file name to save your game: ", "Save Game", JOptionPane.PLAIN_MESSAGE);
+            String fileName = JOptionPane.showInputDialog(window,
+                "Please enter a file name to save your game: ", "Save Game", JOptionPane.PLAIN_MESSAGE);
 
             if (fileName != null && fileName.length() != 0) {
 
@@ -54,12 +56,16 @@ public class PanelButtonListener implements ActionListener {
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
             switch(playerColor){
-                case -1: break;
-                case 0: statusLabel.setText("[Upcoming Feature] - Now playing as Black");
-                break;
-                case 1: statusLabel.setText("[Upcoming Feature] - Now playing as White");
-                break;
-                case 2: break;
+                case -1:
+                    break;
+                case 0:
+                    statusLabel.setText("[Upcoming Feature] - Now playing as Black");
+                    break;
+                case 1:
+                    statusLabel.setText("[Upcoming Feature] - Now playing as White");
+                    break;
+                case 2:
+                    break;
             }
         } else if (button.getText().equals("Tutorial")) {
 
@@ -108,45 +114,49 @@ public class PanelButtonListener implements ActionListener {
                     break;
                 case 2: break;
             }
-        } else if (button.getText().equals("Change Square Color")) {
+        } else if (button.getText().equals("Change Color Theme")) {
 
-            String[] options = new String[] {"Dark", "Light", "Cancel"};
-            int playerColor = JOptionPane.showOptionDialog(window, "Choose squares to change", "Change Color",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+            String[] options = new String[] {"Grayscale", "Peppermint", "Shamrock", "Pumpkin Spice", "Iced Vanilla"};
+            String theme = (String) JOptionPane.showInputDialog(null, "Choose Theme",
+                    "Choose Color Theme", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (theme == null) return;
 
-            switch(playerColor) {
-                case -1: break;
-                case 0:  // change dark squares
-                    Color newColor = JColorChooser.showDialog(window,
-                            "Choose Color", Color.GRAY);
-                    if (newColor == null) return; // user clicked cancel
-                    statusLabel.setText("Changed color of dark squares");
-                    for (int i = 0; i < 8; i++) {   // iterate through all rows and columns of board
-                        for (int j = 0; j < 8; j++) {
-                            // Change color of only black pieces
-                            BoardSquare square = squares[i][j];
-                            if (!square.isLightSquare()) {
-                                square.setBackground(newColor);
-                            }
-                        }
+            int themeChoice = 0;
+            //if (themeChoice == Core.currentTheme) return;
+
+            if (theme.equals("Grayscale")) themeChoice = 0;
+            else if (theme.equals("Peppermint")) themeChoice = 1;
+            else if (theme.equals("Shamrock")) themeChoice = 2;
+            else if (theme.equals("Pumpkin Spice")) themeChoice = 3;
+            else if (theme.equals("Iced Vanilla")) themeChoice = 4;
+            else return;
+
+            Core.currentTheme = themeChoice;
+            statusLabel.setText("Changed color theme to " + theme);
+
+            Color backCol = Color.decode(Core.themes[Core.currentTheme][0]);
+            Color panelCol = Color.decode(Core.themes[Core.currentTheme][1]);
+            Color lightCol = Color.decode(Core.themes[Core.currentTheme][2]);
+            Color darkCol = Color.decode(Core.themes[Core.currentTheme][3]);
+
+            window.getContentPane().setBackground(backCol);
+            Core.centerPanel.setBackground(backCol);
+            Core.historyPanel.setBackground(panelCol);
+            Core.takenPanel.setBackground(panelCol);
+            Core.timerPanel.setBackground(panelCol);
+            Core.buttonPanel.setBackground(panelCol);
+            Core.statusPanel.setBackground(panelCol);
+
+            Core.boardPanel.setBackground(backCol);
+            for (int i = 0; i < 8; i++) {   // iterate through all rows and columns of board
+                for (int j = 0; j < 8; j++) {
+                    BoardSquare square = squares[i][j];
+                    if (square.isLightSquare()) {
+                        square.setBackground(lightCol);
+                    } else {
+                        square.setBackground(darkCol);
                     }
-                    break;
-                case 1:  // change light squares
-                    newColor = JColorChooser.showDialog(window,
-                            "Choose Color", Color.LIGHT_GRAY);
-                    if (newColor == null) return; // user clicked cancel
-                    statusLabel.setText("Changed color of light squares");
-                    for (int i = 0; i < 8; i++) {   // iterate through all rows and columns of board
-                        for (int j = 0; j < 8; j++) {
-                            // Change color of only white pieces
-                            BoardSquare square = squares[i][j];
-                            if (square.isLightSquare()) {
-                                square.setBackground(newColor);
-                            }
-                        }
-                    }
-                    break;
-                case 2: break;
+                }
             }
         } else if (button.getText().equals("Flip the Board")) {
             BoardPanel replacement = null;
@@ -167,10 +177,30 @@ public class PanelButtonListener implements ActionListener {
             center.repaint();
             Core.boardPanel = replacement;
             BoardListener.selected = null;
+
+            // Place pieces in correct board locations
             for (Piece p : Core.pieces) {
                 int x = p.getRank();
                 int y = p.getFile();
                 Core.squares[x][y].setPiece(p);
+            }
+
+            // Redo previously done theme change
+            if (Core.currentTheme != 0) {
+                Color backCol = Color.decode(Core.themes[Core.currentTheme][0]);
+                Color lightCol = Color.decode(Core.themes[Core.currentTheme][2]);
+                Color darkCol = Color.decode(Core.themes[Core.currentTheme][3]);
+                Core.boardPanel.setBackground(backCol);
+                for (int i = 0; i < 8; i++) {   // iterate through all rows and columns of board
+                    for (int j = 0; j < 8; j++) {
+                        BoardSquare square = squares[i][j];
+                        if (square.isLightSquare()) {
+                            square.setBackground(lightCol);
+                        } else {
+                            square.setBackground(darkCol);
+                        }
+                    }
+                }
             }
         }
     }
