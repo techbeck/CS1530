@@ -59,9 +59,11 @@ public class PanelButtonListener implements ActionListener {
                 case -1:
                     break;
                 case 0:
+                    Core.game.setSide("black");
                     statusLabel.setText("[Upcoming Feature] - Now playing as Black");
                     break;
                 case 1:
+                    Core.game.setSide("white");
                     statusLabel.setText("[Upcoming Feature] - Now playing as White");
                     break;
                 case 2:

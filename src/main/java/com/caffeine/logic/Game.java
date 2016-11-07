@@ -10,6 +10,17 @@ public class Game {
 	protected String captByBlack = "";
 	protected String captByWhite = "";
 
+	public void setSide(String side) {
+		if (side.equals("white"))
+			userWhite = true;
+		else
+			userWhite = false;
+	}
+
+	public boolean userWhite() {
+		return userWhite;
+	}
+
 	public void captureBlackPiece(String piece) {
 		captByWhite = captByWhite.concat(" " + piece);
 		Core.takenPanel.setCaptByWhite(captByWhite);
