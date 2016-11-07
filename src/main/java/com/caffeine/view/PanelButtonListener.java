@@ -181,9 +181,10 @@ public class PanelButtonListener implements ActionListener {
 
             // Place pieces in correct board locations
             for (Piece p : Game.pieces) {
-                int x = p.getRank();
-                int y = p.getFile();
-                Core.squares[x][y].setPiece(p);
+                int rank = p.getRank();
+                int file = p.getFile();
+                if (rank == -1) continue;
+                Core.squares[7-rank][file].setPiece(p);
             }
 
             // Redo previously done theme change

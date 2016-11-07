@@ -37,6 +37,7 @@ public class Game {
 			Piece moving = getPieceMatching(oldRank, oldFile);
 			
 			if (taken != null) {
+				taken.moveTo(-1,-1); // indicates piece has been taken
 				if (taken.isWhite())
 					captureWhitePiece(taken.getType());
 				else
