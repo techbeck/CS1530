@@ -9,8 +9,9 @@ import com.jwarner.jockfish.JockfishEngine;
 public class Chess {
 
     public static void main(String[] args) {
-        com.caffeine.view.Core mainWindow = new com.caffeine.view.Core();
         JockfishEngine engine = new JockfishEngine();
+        com.caffeine.logic.Game game = new com.caffeine.logic.Game();
+        com.caffeine.view.Core mainWindow = new com.caffeine.view.Core(game);
     }
 
 }

@@ -1,7 +1,6 @@
 package com.caffeine.view;
 
 import com.caffeine.logic.Piece;
-import com.caffeine.logic.Game;
 
 import java.util.*;
 import java.io.*;
@@ -92,10 +91,11 @@ public class PanelButtonListener implements ActionListener {
                             BoardSquare square = squares[i][j];
                             if (square.getPiece() != null && !square.getPiece().isWhite()) {
                                 square.setPieceColor(newColor);
-                                Core.blackColor = newColor;
                             }
                         }
                     }
+                    Core.blackColor = newColor;
+                    Core.takenPanel.setCaptByWhiteColor();
                     break;
                 case 1:  // change white pieces
                     newColor = JColorChooser.showDialog(window,
@@ -108,10 +108,11 @@ public class PanelButtonListener implements ActionListener {
                             BoardSquare square = squares[i][j];
                             if (square.getPiece() != null && square.getPiece().isWhite()) {
                                 square.setPieceColor(newColor);
-                                Core.whiteColor = newColor;
                             }
                         }
                     }
+                    Core.whiteColor = newColor;
+                    Core.takenPanel.setCaptByBlackColor();
                     break;
                 case 2: break;
             }
@@ -180,7 +181,7 @@ public class PanelButtonListener implements ActionListener {
             BoardListener.selected = null;
 
             // Place pieces in correct board locations
-            for (Piece p : Game.pieces) {
+            for (Piece p : Core.game.pieces) {
                 int rank = p.getRank();
                 int file = p.getFile();
                 if (rank == -1) continue;

@@ -1,7 +1,6 @@
 package com.caffeine.view;
 
 import com.caffeine.logic.Piece;
-import com.caffeine.logic.Game;
 
 import java.util.*;
 import java.io.*;
@@ -43,7 +42,7 @@ public class BoardListener implements ActionListener {
             int oldFile = ((int) selected.getName().split(":")[1].split(",")[0].toCharArray()[0]) - 65;
 
             Piece piece = selected.getPiece();
-            Game.move(oldRank,oldFile,newRank,newFile);
+            Core.game.move(oldRank,oldFile,newRank,newFile);
             selected.unselectSquare();
             selected.removePiece();
             squareButton.setPiece(piece);

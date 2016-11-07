@@ -3,35 +3,34 @@ package com.caffeine.logic;
 import com.caffeine.view.Core;
 
 public class Game {
-    public static Piece[] pieces = new Piece[32];
+    public Piece[] pieces = new Piece[32];
 
-	protected static boolean whiteActive;
-	protected static boolean userWhite;
-	protected static String captByBlack = "";
-	protected static String captByWhite = "";
+	protected boolean whiteActive;
+	protected boolean userWhite;
+	protected String captByBlack = "";
+	protected String captByWhite = "";
 
-	public static void captureBlackPiece(String piece) {
+	public void captureBlackPiece(String piece) {
 		captByWhite = captByWhite.concat(" " + piece);
 		Core.takenPanel.setCaptByWhite(captByWhite);
 	}
 
-	public static void captureWhitePiece(String piece) {
+	public void captureWhitePiece(String piece) {
 		captByBlack = captByBlack.concat(" " + piece);
 		Core.takenPanel.setCaptByBlack(captByBlack);
 	}
 
-	public static String getCaptByBlack() {
+	public String getCaptByBlack() {
 		return captByBlack;
 	}
 
-	public static String getCaptByWhite() {
+	public String getCaptByWhite() {
 		return captByWhite;
 	}
 
-	public static boolean move(int oldRank, int oldFile, int newRank, int newFile) {
+	public boolean move(int oldRank, int oldFile, int newRank, int newFile) {
 		String oldLoc = (char)(oldFile+65) + "" + (oldRank+1);
 		String newLoc = (char)(newFile+65) + "" + (newRank+1);
-		System.out.println(oldLoc+newLoc);
 		if (true) {//(Engine.isValidMove(oldLoc+newLoc)) {
 			Piece taken = getPieceMatching(newRank,newFile);
 			Piece moving = getPieceMatching(oldRank, oldFile);
@@ -49,7 +48,7 @@ public class Game {
 		return false;
 	}
 
-	public static Piece getPieceMatching(int rank, int file) {
+	public Piece getPieceMatching(int rank, int file) {
 		for (Piece p : pieces) {
 			if (p.getRank() == rank) {
 				if (p.getFile() == file) {

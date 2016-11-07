@@ -1,7 +1,6 @@
 package com.caffeine.view;
 
 import com.caffeine.logic.Piece;
-import com.caffeine.logic.Game;
 
 import java.util.*;
 import java.io.*;
@@ -144,46 +143,46 @@ public class BoardPanel extends JPanel {
      * Initializes board layout with black pieces on top
      */
     private void initializePiecePlacement() {
-        Game.pieces[0] = new Piece(Core.rook, 0, "black", 7, 7);
-        Core.squares[0][7].setPiece(Game.pieces[0]);
-        Game.pieces[1] = new Piece(Core.rook, 1, "black", 7, 0);
-        Core.squares[0][0].setPiece(Game.pieces[1]);
-        Game.pieces[2] = new Piece(Core.knight, 0, "black", 7, 1);
-        Core.squares[0][1].setPiece(Game.pieces[2]);
-        Game.pieces[3] = new Piece(Core.knight, 1, "black", 7, 6);
-        Core.squares[0][6].setPiece(Game.pieces[3]);
-        Game.pieces[4] = new Piece(Core.bishop, 0, "black", 7, 2);
-        Core.squares[0][2].setPiece(Game.pieces[4]);
-        Game.pieces[5] = new Piece(Core.bishop, 1, "black", 7, 5);
-        Core.squares[0][5].setPiece(Game.pieces[5]);
-        Game.pieces[6] = new Piece(Core.queen, 0, "black", 7, 3);
-        Core.squares[0][3].setPiece(Game.pieces[6]);
-        Game.pieces[7] = new Piece(Core.king, 0, "black", 7, 4);
-        Core.squares[0][4].setPiece(Game.pieces[7]);
+        Core.game.pieces[0] = new Piece(Core.rook, 0, "black", 7, 7);
+        Core.squares[0][7].setPiece(Core.game.pieces[0]);
+        Core.game.pieces[1] = new Piece(Core.rook, 1, "black", 7, 0);
+        Core.squares[0][0].setPiece(Core.game.pieces[1]);
+        Core.game.pieces[2] = new Piece(Core.knight, 0, "black", 7, 1);
+        Core.squares[0][1].setPiece(Core.game.pieces[2]);
+        Core.game.pieces[3] = new Piece(Core.knight, 1, "black", 7, 6);
+        Core.squares[0][6].setPiece(Core.game.pieces[3]);
+        Core.game.pieces[4] = new Piece(Core.bishop, 0, "black", 7, 2);
+        Core.squares[0][2].setPiece(Core.game.pieces[4]);
+        Core.game.pieces[5] = new Piece(Core.bishop, 1, "black", 7, 5);
+        Core.squares[0][5].setPiece(Core.game.pieces[5]);
+        Core.game.pieces[6] = new Piece(Core.queen, 0, "black", 7, 3);
+        Core.squares[0][3].setPiece(Core.game.pieces[6]);
+        Core.game.pieces[7] = new Piece(Core.king, 0, "black", 7, 4);
+        Core.squares[0][4].setPiece(Core.game.pieces[7]);
 
         for (int i = 0; i < 8; i++) {
-            Game.pieces[i+8] = new Piece(Core.pawn, i, "black", 6, i);
-            Core.squares[1][i].setPiece(Game.pieces[i+8]);
-            Game.pieces[i+16] = new Piece(Core.pawn, i, "white", 1, i);
-            Core.squares[6][i].setPiece(Game.pieces[i+16]);
+            Core.game.pieces[i+8] = new Piece(Core.pawn, i, "black", 6, i);
+            Core.squares[1][i].setPiece(Core.game.pieces[i+8]);
+            Core.game.pieces[i+16] = new Piece(Core.pawn, i, "white", 1, i);
+            Core.squares[6][i].setPiece(Core.game.pieces[i+16]);
         }
 
-        Game.pieces[24] = new Piece(Core.rook, 0, "white", 0, 0);
-        Core.squares[7][0].setPiece(Game.pieces[24]);
-        Game.pieces[25] = new Piece(Core.rook, 1, "white", 0, 7);
-        Core.squares[7][7].setPiece(Game.pieces[25]);
-        Game.pieces[26] = new Piece(Core.knight, 0, "white", 0, 1);
-        Core.squares[7][1].setPiece(Game.pieces[26]);
-        Game.pieces[27] = new Piece(Core.knight, 1, "white", 0, 6);
-        Core.squares[7][6].setPiece(Game.pieces[27]);
-        Game.pieces[28] = new Piece(Core.bishop, 0, "white", 0, 2);
-        Core.squares[7][2].setPiece(Game.pieces[28]);
-        Game.pieces[29] = new Piece(Core.bishop, 1, "white", 0, 5);
-        Core.squares[7][5].setPiece(Game.pieces[29]);
-        Game.pieces[30] = new Piece(Core.queen, 0, "white", 0, 3);
-        Core.squares[7][3].setPiece(Game.pieces[30]);
-        Game.pieces[31] = new Piece(Core.king, 0, "white", 0, 4);
-        Core.squares[7][4].setPiece(Game.pieces[31]);
+        Core.game.pieces[24] = new Piece(Core.rook, 0, "white", 0, 0);
+        Core.squares[7][0].setPiece(Core.game.pieces[24]);
+        Core.game.pieces[25] = new Piece(Core.rook, 1, "white", 0, 7);
+        Core.squares[7][7].setPiece(Core.game.pieces[25]);
+        Core.game.pieces[26] = new Piece(Core.knight, 0, "white", 0, 1);
+        Core.squares[7][1].setPiece(Core.game.pieces[26]);
+        Core.game.pieces[27] = new Piece(Core.knight, 1, "white", 0, 6);
+        Core.squares[7][6].setPiece(Core.game.pieces[27]);
+        Core.game.pieces[28] = new Piece(Core.bishop, 0, "white", 0, 2);
+        Core.squares[7][2].setPiece(Core.game.pieces[28]);
+        Core.game.pieces[29] = new Piece(Core.bishop, 1, "white", 0, 5);
+        Core.squares[7][5].setPiece(Core.game.pieces[29]);
+        Core.game.pieces[30] = new Piece(Core.queen, 0, "white", 0, 3);
+        Core.squares[7][3].setPiece(Core.game.pieces[30]);
+        Core.game.pieces[31] = new Piece(Core.king, 0, "white", 0, 4);
+        Core.squares[7][4].setPiece(Core.game.pieces[31]);
     }
 
     /**

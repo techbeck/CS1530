@@ -1,7 +1,5 @@
 package com.caffeine.view;
 
-import com.caffeine.logic.Game;
-
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
@@ -34,7 +32,7 @@ public class TakenPanel extends JPanel {
         captByBlack.setFont(takenFont);
         captByBlack.setHorizontalAlignment(SwingConstants.CENTER);
         captByBlack.setVerticalAlignment(SwingConstants.TOP);
-        captByBlack.setForeground(Core.whiteColor);
+        setCaptByBlackColor();
         add(captByBlack);
         captByWhite.setPreferredSize(labelDimen);
         captByWhite.setMaximumSize(labelDimen);
@@ -48,10 +46,17 @@ public class TakenPanel extends JPanel {
 
 	public void setCaptByBlack(String str) {
 		captByBlack.setText("<html><p>"+ str +"</p></html>");
-		System.out.println("taking white piece");
 	}
 
 	public void setCaptByWhite(String str) {
 		captByWhite.setText("<html><p>"+ str +"</p></html>");
+	}
+
+	public void setCaptByBlackColor() {
+		captByBlack.setForeground(Core.whiteColor);
+	}
+
+	public void setCaptByWhiteColor() {
+		captByWhite.setForeground(Core.blackColor);
 	}
 }
