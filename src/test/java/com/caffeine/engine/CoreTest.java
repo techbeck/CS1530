@@ -15,7 +15,7 @@ public class CoreTest {
     public void testJockfishIntegration(){
         String expected = "Stockfish 7 64 by T. Romstad, M. Costalba, J. Kiiski, G. Linscott\n";
         Core engine = new Core();
-        String observed = engine.out();
+        String observed = engine.read();
         assertTrue(expected.equals(observed));
     }
 
@@ -59,5 +59,42 @@ public class CoreTest {
                 fail(failString);
             }
         }
+    }
+
+    @Test
+    public void testCoreGetFEN(){
+        Core engine = new Core();
+
+        final String expected = "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2";
+
+        // Do it the hard way since we can't count on setFen() yet
+        engine.write(String.format("position fen %s\n", expected));
+        String observed = engine.getFEN();
+
+        assertTrue(expected.equals(observed));
+    }
+
+    @Test
+    public void testCoreSetFEN(){
+        Core engine = new Core();
+
+        final String fen = "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2";
+
+        boolean result = engine.setFEN(fen);
+
+        String newFen = engine.getFEN();
+
+        assertTrue(result && newFen.equals(fen));
+    }
+
+    @Test
+    public void testCoreGetBestMove(){
+        Core engine = new Core();
+
+        final String expected = "e2e4";
+
+        String observed = engine.getBestMove(500);
+
+        assertTrue(expected.equals(observed));
     }
 }

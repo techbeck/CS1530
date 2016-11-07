@@ -1,5 +1,6 @@
 // First-Party Imports
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 // Third-Party Imports
 import org.junit.Test;
@@ -73,7 +74,48 @@ public class UtilsTest {
             }
         }
 
-        // TODO: Why failing?
         assertTrue(allIsWell);
     }
+
+    @Test
+    // TODO: WHY FAILING?
+    public void testValidateBoardPosition(){
+        String position;
+
+        // Test all the board squares!
+        for (int i = 1; i <= 8; i++){
+            for (int j = 65; j <= 72; j++){
+                position = String.format("%c%c", i, (char) j);
+                if (!Utils.isValidBoardPosition(position)){ fail(); }
+            }
+        }
+
+        // Test randomized INVALID board squares!
+        int rank;
+        char file;
+        for (int i = 0; i < 100; i++){
+            rank = ThreadLocalRandom.current().nextInt(9, 100 + 1);
+            file = (char) ThreadLocalRandom.current().nextInt(65, 90 + 1);
+        }
+    }
+
+    @Test
+    // TODO: WHY FAILING?
+    public void testValidateMove(){
+        // Test a few valids
+        if (!Utils.isValidMove("a2a3")){ fail(); }
+        if (!Utils.isValidMove("h5b6")){ fail(); }
+        if (!Utils.isValidMove("g4a3")){ fail(); }
+        if (!Utils.isValidMove("e1f8")){ fail(); }
+        if (!Utils.isValidMove("c5a3")){ fail(); }
+
+        // Test a few invalids
+        if (Utils.isValidMove("z2a3")){ fail(); }
+        if (Utils.isValidMove("q1bb")){ fail(); }
+        if (Utils.isValidMove("a5q0")){ fail(); }
+        if (Utils.isValidMove("g9r3")){ fail(); }
+        if (Utils.isValidMove("d0a3")){ fail(); }
+    }
 }
+
+// TODO: NEXT, USE THESE

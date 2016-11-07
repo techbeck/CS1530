@@ -140,4 +140,24 @@ public class Utils {
         // If we're still here, we've most likely got a valid FEN String!
         return true;
     }
+
+    public static boolean isValidBoardPosition(String position){
+        // The position falls within the rank and file of a chess board.
+        String sanitizedPosition = position.toLowerCase().trim();
+        String validRanks = "12345678";
+        String validFiles = "abcdefgh";
+        if (sanitizedPosition.length() != 2){ return false; }
+        if (validRanks.contains(sanitizedPosition.substring(0,1))){ return false; }
+        if (validFiles.contains(sanitizedPosition.substring(1,2))){ return false; }
+        return true;
+    }
+
+    public static boolean isValidMove(String move){
+        // Both positions in the move fall within the rank/file of the board.
+        boolean move1, move2;
+        if (move.length() != 4){ return false; }
+        move1 = isValidBoardPosition(move.substring(0,2));
+        move2 = isValidBoardPosition(move.substring(2,4));
+        return (move1 && move2);
+    }
 }
