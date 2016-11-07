@@ -1,6 +1,7 @@
 package com.caffeine.view;
 
 import com.caffeine.logic.Piece;
+import com.caffeine.logic.Game;
 
 import java.util.*;
 import java.io.*;
@@ -179,7 +180,7 @@ public class PanelButtonListener implements ActionListener {
             BoardListener.selected = null;
 
             // Place pieces in correct board locations
-            for (Piece p : Core.pieces) {
+            for (Piece p : Game.pieces) {
                 int x = p.getRank();
                 int y = p.getFile();
                 Core.squares[x][y].setPiece(p);
@@ -202,6 +203,13 @@ public class PanelButtonListener implements ActionListener {
                     }
                 }
             }
+
+            // Also flip taken pieces panels
+            Component[] takenComponents = Core.takenPanel.getComponents();
+            Core.takenPanel.removeAll();
+            Core.takenPanel.add(takenComponents[0]);
+            Core.takenPanel.add(takenComponents[2]);
+            Core.takenPanel.add(takenComponents[1]);
         }
     }
 }

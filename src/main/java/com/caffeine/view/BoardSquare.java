@@ -44,12 +44,12 @@ public class BoardSquare extends JButton {
 	public void setBackgroundColor(boolean squareColor) {
         if (squareColor)
         {
-            setBackground(Color.LIGHT_GRAY);
+            setBackground(Color.decode(Core.themes[0][2]));
             isLightSquare = true;
         }
         else
         {
-            setBackground(Color.GRAY);
+            setBackground(Color.decode(Core.themes[0][3]));
             isLightSquare = false;
         }
 	}

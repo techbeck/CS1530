@@ -27,7 +27,7 @@ public class Core {
     public static Color blackColor = Color.BLACK;
 
     // Constants for color theme hex Values      background, panels,     light,      dark
-    public static final String[][] themes = {   {"0xEEEEEE", "0xFFFFFF", "0x808080", "0xC0C0C0"}, // Grayscale
+    public static final String[][] themes = {   {"0xFFFFFF", "0xE0E0E0", "0x808080", "0xC0C0C0"}, // Grayscale
                                                 {"0xFFAFC2", "0xFFDFE6", "0xFE73A6", "0xFE3C74"}, // Peppermint
                                                 {"0xaeffd4", "0x8CD0A1", "0x7dfa92", "0x34a762"}, // Shamrock
                                                 {"0xB07147", "0xf4d095", "0xfea645", "0x8F4120"}, // Pumpkin Spice
@@ -52,10 +52,9 @@ public class Core {
     public static JFrame window = new JFrame("Laboon Chess");
     public static JLabel statusLabel = new JLabel("Status Bar");
     public static BoardSquare[][] squares = new BoardSquare[8][8];
-    public static Piece[] pieces = new Piece[32];
+    public static TakenPanel takenPanel;
 
     protected static JPanel historyPanel;
-    protected static JPanel takenPanel;
     protected static JPanel statusPanel;
     protected static JPanel centerPanel;
     protected static JPanel timerPanel;
@@ -110,12 +109,13 @@ public class Core {
      */
     private void addMainPanels(JFrame window) {
         Container pane = window.getContentPane();
+        pane.setBackground(Color.decode(themes[0][0]));
         pane.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
         historyPanel = new JPanel();
         historyPanel.setName("historyPanel");
-        historyPanel.setBackground(Color.WHITE);
+        historyPanel.setBackground(Color.decode(themes[0][1]));
         historyPanel.setMinimumSize(sidePanelDimension);
         historyPanel.setMaximumSize(sidePanelDimension);
         historyPanel.setPreferredSize(sidePanelDimension);
@@ -134,6 +134,7 @@ public class Core {
 
         centerPanel = new JPanel();
         centerPanel.setName("centerPanel");
+        centerPanel.setBackground(Color.decode(themes[0][0]));
         centerPanel.setMinimumSize(centerPanelDimension);
         centerPanel.setMaximumSize(centerPanelDimension);
         centerPanel.setPreferredSize(centerPanelDimension);
@@ -147,12 +148,7 @@ public class Core {
         formatCenterPanel(centerPanel);
         pane.add(centerPanel, c);
 
-        takenPanel = new JPanel();
-        takenPanel.setName("takenPanel");
-        takenPanel.setBackground(Color.WHITE);
-        takenPanel.setMinimumSize(sidePanelDimension);
-        takenPanel.setMaximumSize(sidePanelDimension);
-        takenPanel.setPreferredSize(sidePanelDimension);
+        takenPanel = new TakenPanel();
         c.gridx = 7;
         c.gridy = 0;
         c.gridwidth = 1;
@@ -160,15 +156,11 @@ public class Core {
         c.insets = sidePadding;
         c.weightx = AVERAGE_WEIGHT;
         c.weighty = AVERAGE_WEIGHT;
-        JLabel takenLabel = new JLabel("<html>[Upcoming Feature]<br>Taken Pieces</html>", SwingConstants.CENTER);
-        takenLabel.setName("takenLabel");
-        takenPanel.add(takenLabel);
-        // eventually, formatTakenPanel(takenPanel);
         pane.add(takenPanel, c);
 
         statusPanel = new JPanel();
         statusPanel.setName("statusPanel");
-        statusPanel.setBackground(Color.WHITE);
+        statusPanel.setBackground(Color.decode(themes[0][1]));
         Dimension statusPanelSize = new Dimension(800,30);
         statusPanel.setMinimumSize(statusPanelSize);
         statusPanel.setMaximumSize(statusPanelSize);
@@ -197,7 +189,7 @@ public class Core {
 
         timerPanel = new JPanel();
         timerPanel.setName("timerPanel");
-        timerPanel.setBackground(Color.WHITE);
+        timerPanel.setBackground(Color.decode(themes[0][1]));
         Dimension timerPanelSize = new Dimension(200,40);
         timerPanel.setMinimumSize(timerPanelSize);
         timerPanel.setMaximumSize(timerPanelSize);
@@ -209,12 +201,11 @@ public class Core {
         centerPanel.add(timerPanel);
 
         boardPanel = new BoardPanel();
-        boardPanel.setName("boardPanel");
         centerPanel.add(boardPanel);
 
         buttonPanel = new JPanel();
         buttonPanel.setName("buttonPanel");
-        buttonPanel.setBackground(Color.WHITE);
+        buttonPanel.setBackground(Color.decode(themes[0][1]));
         Dimension buttonPanelSize = new Dimension(490,70);
         buttonPanel.setMinimumSize(buttonPanelSize);
         buttonPanel.setMaximumSize(buttonPanelSize);
