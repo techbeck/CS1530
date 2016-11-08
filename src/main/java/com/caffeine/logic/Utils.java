@@ -147,8 +147,8 @@ public class Utils {
         String validRanks = "12345678";
         String validFiles = "abcdefgh";
         if (sanitizedPosition.length() != 2){ return false; }
-        if (validRanks.contains(sanitizedPosition.substring(0,1))){ return false; }
-        if (validFiles.contains(sanitizedPosition.substring(1,2))){ return false; }
+        if (!validRanks.contains(sanitizedPosition.substring(1,2))){ return false; }
+        if (!validFiles.contains(sanitizedPosition.substring(0,1))){ return false; }
         return true;
     }
 

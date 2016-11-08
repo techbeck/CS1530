@@ -78,29 +78,50 @@ public class UtilsTest {
     }
 
     @Test
-    // TODO: WHY FAILING?
     public void testValidateBoardPosition(){
         String position;
 
         // Test all the board squares!
         for (int i = 1; i <= 8; i++){
             for (int j = 65; j <= 72; j++){
-                position = String.format("%c%c", i, (char) j);
+                position = String.format("%c%d", (char) j, i);
+
                 if (!Utils.isValidBoardPosition(position)){ fail(); }
             }
         }
 
-        // Test randomized INVALID board squares!
-        int rank;
-        char file;
-        for (int i = 0; i < 100; i++){
-            rank = ThreadLocalRandom.current().nextInt(9, 100 + 1);
-            file = (char) ThreadLocalRandom.current().nextInt(65, 90 + 1);
+        // Test random invalid board squares
+        for (int i = 0; i < 64; i++){
+            position = String.format(
+                "%c%d",
+                (char) ThreadLocalRandom.current().nextInt(65, 90 + 1),
+                ThreadLocalRandom.current().nextInt(9, 100 + 1)
+            );
+            if (Utils.isValidBoardPosition(position)){ fail(); }
+        }
+
+        // Test both chars aren't digits
+        for (int i = 0; i < 64; i++){
+            position = String.format(
+                "%d%d",
+                ThreadLocalRandom.current().nextInt(0, 9 + 1),
+                ThreadLocalRandom.current().nextInt(0, 9 + 1)
+            );
+            if (Utils.isValidBoardPosition(position)){ fail(); }
+        }
+
+        // Test both chars aren't letters
+        for (int i = 0; i < 64; i++){
+            position = String.format(
+                "%c%c",
+                (char) ThreadLocalRandom.current().nextInt(65, 90 + 1),
+                (char) ThreadLocalRandom.current().nextInt(65, 90 + 1)
+            );
+            if (Utils.isValidBoardPosition(position)){ fail(); }
         }
     }
 
     @Test
-    // TODO: WHY FAILING?
     public void testValidateMove(){
         // Test a few valids
         if (!Utils.isValidMove("a2a3")){ fail(); }
@@ -110,12 +131,11 @@ public class UtilsTest {
         if (!Utils.isValidMove("c5a3")){ fail(); }
 
         // Test a few invalids
-        if (Utils.isValidMove("z2a3")){ fail(); }
-        if (Utils.isValidMove("q1bb")){ fail(); }
-        if (Utils.isValidMove("a5q0")){ fail(); }
-        if (Utils.isValidMove("g9r3")){ fail(); }
-        if (Utils.isValidMove("d0a3")){ fail(); }
+        if ( Utils.isValidMove("z2a3")){ fail(); }
+        if ( Utils.isValidMove("q1bb")){ fail(); }
+        if ( Utils.isValidMove("a5q0")){ fail(); }
+        if ( Utils.isValidMove("g9r3")){ fail(); }
+        if ( Utils.isValidMove("d0a3")){ fail(); }
     }
-}
 
-// TODO: NEXT, USE THESE
+}
