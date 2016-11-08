@@ -191,7 +191,7 @@ public class ChessTest {
         frame.button("colorThemeButton").click();
         JOptionPaneFixture optionPane = findOptionPane().using(robot);
         JComboBoxFixture dropMenu = optionPane.comboBox();
-        dropMenu.selectItem("Peppermint");
+        dropMenu.selectItem("Shamrock");
         optionPane.okButton().click();
         JPanelFixture panelFix = frame.panel("historyPanel");
         panelFix.background().requireEqualTo(Color.decode(Core.themes[1][1]));
