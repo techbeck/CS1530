@@ -13,5 +13,4 @@ public class Chess {
         com.caffeine.logic.Game game = new com.caffeine.logic.Game();
         com.caffeine.view.Core mainWindow = new com.caffeine.view.Core(game);
     }
-
 }

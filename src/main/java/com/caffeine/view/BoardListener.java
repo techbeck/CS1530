@@ -22,9 +22,6 @@ public class BoardListener implements ActionListener {
 
         BoardSquare squareButton = (BoardSquare) e.getSource();
 
-        int newRank = Integer.parseInt(squareButton.getName().split(":")[1].split(",")[1]) - 1;
-        int newFile = ((int) squareButton.getName().split(":")[1].split(",")[0].toCharArray()[0]) - 65;
-
         if (selected == null) {
 
         	// if no previous board square selected, save the one clicked
@@ -35,7 +32,7 @@ public class BoardListener implements ActionListener {
                     return;
                 if (!squareButton.getPiece().isWhite() && Core.game.userWhite())
                     return;
-                
+
                 selected = squareButton;
                 selected.selectSquare();
 
@@ -48,6 +45,8 @@ public class BoardListener implements ActionListener {
         	// else move the previously selected chess piece to the clicked square 
             int oldRank = Integer.parseInt(selected.getName().split(":")[1].split(",")[1]) - 1;
             int oldFile = ((int) selected.getName().split(":")[1].split(",")[0].toCharArray()[0]) - 65;
+            int newRank = Integer.parseInt(squareButton.getName().split(":")[1].split(",")[1]) - 1;
+            int newFile = ((int) squareButton.getName().split(":")[1].split(",")[0].toCharArray()[0]) - 65;
 
             Piece piece = selected.getPiece();
             Core.game.move(oldRank,oldFile,newRank,newFile);

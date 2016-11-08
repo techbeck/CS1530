@@ -57,7 +57,7 @@ public class PanelButtonListener implements ActionListener {
 
             switch(playerColor){
                 case -1:
-                    break;
+                    return;
                 case 0:
                     Core.game.setSide("black");
                     statusLabel.setText("[Upcoming Feature] - Now playing as Black");
@@ -67,8 +67,9 @@ public class PanelButtonListener implements ActionListener {
                     statusLabel.setText("[Upcoming Feature] - Now playing as White");
                     break;
                 case 2:
-                    break;
+                    return;
             }
+
         } else if (button.getText().equals("Tutorial")) {
 
             JOptionPane.showMessageDialog(window, "This is a simple walking skeleton, but does have some basic functionality.\n" +

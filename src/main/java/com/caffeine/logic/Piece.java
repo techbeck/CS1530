@@ -60,7 +60,7 @@ public class Piece {
 	 * @param rank  The row of the new location
 	 * @param file  The column of the new location
 	 */
-	public void moveTo(int rank, int file) {
+	protected void moveTo(int rank, int file) {
 		this.rank = rank;
 		this.file = file;
 	}
