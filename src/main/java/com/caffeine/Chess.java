@@ -9,7 +9,8 @@ import com.caffeine.view.Core;
 public class Chess {
 
     public static void main(String[] args) {
-        Core mainWindow = new Core();
+        JockfishEngine engine = new JockfishEngine();
+        com.caffeine.logic.Game game = new com.caffeine.logic.Game();
+        Core mainWindow = new Core(game);
     }
-
 }

@@ -4,8 +4,8 @@ public class Piece {
 	String type;
 	int number;
 	boolean isWhite;
-	int rank; // 0-7 representing 1-8
-	int file; // 0-7 representing A-H
+	int rank; // 0-7 representing 1-8    -1 = taken
+	int file; // 0-7 representing A-H	 -1 = taken
 
 	/**
 	 * Initializes type, number, and side as passed in as parameters.
@@ -60,7 +60,7 @@ public class Piece {
 	 * @param rank  The row of the new location
 	 * @param file  The column of the new location
 	 */
-	public void moveTo(int rank, int file) {
+	protected void moveTo(int rank, int file) {
 		this.rank = rank;
 		this.file = file;
 	}

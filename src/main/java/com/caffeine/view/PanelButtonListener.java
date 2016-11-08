@@ -57,16 +57,19 @@ public class PanelButtonListener implements ActionListener {
 
             switch(playerColor){
                 case -1:
-                    break;
+                    return;
                 case 0:
+                    Core.game.setSide("black");
                     statusLabel.setText("[Upcoming Feature] - Now playing as Black");
                     break;
                 case 1:
+                    Core.game.setSide("white");
                     statusLabel.setText("[Upcoming Feature] - Now playing as White");
                     break;
                 case 2:
-                    break;
+                    return;
             }
+
         } else if (button.getText().equals("Tutorial")) {
 
             JOptionPane.showMessageDialog(window, "This is a simple walking skeleton, but does have some basic functionality.\n" +
@@ -91,10 +94,11 @@ public class PanelButtonListener implements ActionListener {
                             BoardSquare square = squares[i][j];
                             if (square.getPiece() != null && !square.getPiece().isWhite()) {
                                 square.setPieceColor(newColor);
-                                Core.blackColor = newColor;
                             }
                         }
                     }
+                    Core.blackColor = newColor;
+                    Core.takenPanel.setCaptByWhiteColor();
                     break;
                 case 1:  // change white pieces
                     newColor = JColorChooser.showDialog(window,
@@ -107,10 +111,11 @@ public class PanelButtonListener implements ActionListener {
                             BoardSquare square = squares[i][j];
                             if (square.getPiece() != null && square.getPiece().isWhite()) {
                                 square.setPieceColor(newColor);
-                                Core.whiteColor = newColor;
                             }
                         }
                     }
+                    Core.whiteColor = newColor;
+                    Core.takenPanel.setCaptByBlackColor();
                     break;
                 case 2: break;
             }
@@ -179,10 +184,11 @@ public class PanelButtonListener implements ActionListener {
             BoardListener.selected = null;
 
             // Place pieces in correct board locations
-            for (Piece p : Core.pieces) {
-                int x = p.getRank();
-                int y = p.getFile();
-                Core.squares[x][y].setPiece(p);
+            for (Piece p : Core.game.pieces) {
+                int rank = p.getRank();
+                int file = p.getFile();
+                if (rank == -1) continue;
+                Core.squares[7-rank][file].setPiece(p);
             }
 
             // Redo previously done theme change
@@ -202,6 +208,13 @@ public class PanelButtonListener implements ActionListener {
                     }
                 }
             }
+
+            // Also flip taken pieces panels
+            Component[] takenComponents = Core.takenPanel.getComponents();
+            Core.takenPanel.removeAll();
+            Core.takenPanel.add(takenComponents[0]);
+            Core.takenPanel.add(takenComponents[2]);
+            Core.takenPanel.add(takenComponents[1]);
         }
     }
 }
