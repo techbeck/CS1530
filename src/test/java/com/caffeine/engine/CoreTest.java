@@ -99,4 +99,48 @@ public class CoreTest {
 
         assertTrue(expected.equals(observed));
     }
+
+    @Test
+    public void testCoreMove(){
+        Core engine = new Core();
+
+        final String newBoard = "2r5/1p1nbqk1/8/8/8/8/1P1NBQK1/2R5 w - - 0 1";
+        final String expectedEnd = "r5k1/8/1n6/1q6/1Q6/1N6/7K/R7 w - - 0 8";
+
+        String observedEnd;
+
+        engine.setFEN(newBoard);
+        engine.move("b2b4"); // T: White pawn u 2
+        engine.move("b7b5"); // T: Black pawn d 2
+        engine.move("C1a1"); // T: White rook l 3 (Should be case insensitive)
+        engine.move("c8A8"); // T: Black rook r 3 (Should be case insensitive)
+        engine.move("d2b3"); // T: White knight u/l
+        engine.move("d7b6"); // T: Black knight d/l
+        engine.move("e2b5"); // T: White bishop takes black pawn, u/l
+        engine.move("e7b4"); // T: Black bishop takes white pawn, d/l
+        engine.move("F2H4"); // T: White queen u/r 2 (Should be case insensitive)
+        engine.move("f7f1"); // T: Black queen d 7 (White king in check)
+        engine.move("b5a6"); // F: White bishop, u/l, king still in check
+        engine.move("g2h2"); // T: White king r 1 (Moves out of check)
+        engine.move("g7h7"); // F: Black king r 1 (Moves into check)
+        engine.move("g7g8"); // T: Black king u 1
+        engine.move("h4b4"); // T: White queen takes black bishop
+        engine.move("f1b5"); // T: Black queen takes white bishop
+        observedEnd = engine.getFEN();
+
+        assertTrue(expectedEnd.equals(observedEnd));
+    }
+
+    @Test
+    public void testCoreCpuMove(){
+        // Plays 10 moves of Chess on modified board, expects checkmate.
+        Core engine = new Core();
+        String moveTest = "";
+
+        final String board = "kr6/8/8/8/8/8/8/K6r w - - 0 1";
+
+        engine.setFEN(board);
+        for (int i = 0; i < 10; i++){ moveTest = engine.cpuMove(0); }
+        if (!moveTest.equals("(none)")){ fail(); }
+    }
 }

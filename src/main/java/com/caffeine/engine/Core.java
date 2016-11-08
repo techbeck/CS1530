@@ -83,9 +83,6 @@ public class Core{
         return (newFen.equals(fen));
     }
 
-// ================= INCOMPLETE/WIP METHODS    ================================
-// ================= DO NOT USE THESE METHODS! ================================
-
     public String getBestMove(int timeout){
         // Gets suggested best move from Stockfish after a maximum time (ms).
         // Returns said move.
@@ -102,15 +99,38 @@ public class Core{
         return result;
     }
 
-    // TODO: USE UTILS PKG, FINISH AND TEST
     public boolean move(String move){
-        return false;
+        // Gets current board, performs a move, and tests to verify it happened.
+        String oldBoard, newBoard, sanMove;
+
+        sanMove = move.toLowerCase().trim();
+
+        oldBoard = getFEN();
+        write(String.format("position fen %s moves %s", oldBoard, sanMove));
+        newBoard = getFEN();
+
+        return (!newBoard.equals(oldBoard));
     }
 
-    // TODO: USE UTILS PKG, FINISH AND TEST
     public String cpuMove(int timeout){
         // Does suggested best move from Stockfish after a maximum time (ms).
         // Returns said move.
-        return "";
+        boolean pieceMoved;
+        String bestMove;
+        bestMove = getBestMove(timeout);
+        pieceMoved = move(bestMove);
+        if (pieceMoved){ return bestMove; }
+        else { return "(none)"; }
     }
+
+// ================= INCOMPLETE/WIP METHODS    ================================
+// ================= DO NOT USE THESE METHODS! ================================
+
+    public ArrayList<String> getCheckers(){
+        // Gets list of positions from which active color is in Check.
+        ArrayList<String> result = new ArrayList<String>();
+        return result;
+    }
+
+    // Look into using Stockfish to get list of moves with SEARCH
 }
