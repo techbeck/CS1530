@@ -160,4 +160,5 @@ public class Utils {
         move2 = isValidBoardPosition(move.substring(2,4));
         return (move1 && move2);
     }
+
 }
