@@ -1,5 +1,6 @@
 // First-Party Imports
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 // Third-Party Imports
 import org.junit.Test;
@@ -73,7 +74,68 @@ public class UtilsTest {
             }
         }
 
-        // TODO: Why failing?
         assertTrue(allIsWell);
     }
+
+    @Test
+    public void testValidateBoardPosition(){
+        String position;
+
+        // Test all the board squares!
+        for (int i = 1; i <= 8; i++){
+            for (int j = 65; j <= 72; j++){
+                position = String.format("%c%d", (char) j, i);
+
+                if (!Utils.isValidBoardPosition(position)){ fail(); }
+            }
+        }
+
+        // Test random invalid board squares
+        for (int i = 0; i < 64; i++){
+            position = String.format(
+                "%c%d",
+                (char) ThreadLocalRandom.current().nextInt(65, 90 + 1),
+                ThreadLocalRandom.current().nextInt(9, 100 + 1)
+            );
+            if (Utils.isValidBoardPosition(position)){ fail(); }
+        }
+
+        // Test both chars aren't digits
+        for (int i = 0; i < 64; i++){
+            position = String.format(
+                "%d%d",
+                ThreadLocalRandom.current().nextInt(0, 9 + 1),
+                ThreadLocalRandom.current().nextInt(0, 9 + 1)
+            );
+            if (Utils.isValidBoardPosition(position)){ fail(); }
+        }
+
+        // Test both chars aren't letters
+        for (int i = 0; i < 64; i++){
+            position = String.format(
+                "%c%c",
+                (char) ThreadLocalRandom.current().nextInt(65, 90 + 1),
+                (char) ThreadLocalRandom.current().nextInt(65, 90 + 1)
+            );
+            if (Utils.isValidBoardPosition(position)){ fail(); }
+        }
+    }
+
+    @Test
+    public void testValidateMove(){
+        // Test a few valids
+        if (!Utils.isValidMove("a2a3")){ fail(); }
+        if (!Utils.isValidMove("h5b6")){ fail(); }
+        if (!Utils.isValidMove("g4a3")){ fail(); }
+        if (!Utils.isValidMove("e1f8")){ fail(); }
+        if (!Utils.isValidMove("c5a3")){ fail(); }
+
+        // Test a few invalids
+        if ( Utils.isValidMove("z2a3")){ fail(); }
+        if ( Utils.isValidMove("q1bb")){ fail(); }
+        if ( Utils.isValidMove("a5q0")){ fail(); }
+        if ( Utils.isValidMove("g9r3")){ fail(); }
+        if ( Utils.isValidMove("d0a3")){ fail(); }
+    }
+
 }
