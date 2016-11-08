@@ -194,7 +194,7 @@ public class ChessTest {
         dropMenu.selectItem("Shamrock");
         optionPane.okButton().click();
         JPanelFixture panelFix = frame.panel("historyPanel");
-        panelFix.background().requireEqualTo(Color.decode(Core.themes[1][1]));
+        panelFix.background().requireEqualTo(Color.decode(Core.themes[2][1]));
     }
 
     @Test
