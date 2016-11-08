@@ -91,8 +91,10 @@ public class CoreTest {
     public void testCoreGetBestMove(){
         Core engine = new Core();
 
-        final String expected = "e2e4";
+        final String expected = "d4e5";
+        final String board = "k7/8/8/4q3/3B4/8/8/7K w - - 0 1";
 
+        engine.setFEN(board);
         String observed = engine.getBestMove(500);
 
         assertTrue(expected.equals(observed));
