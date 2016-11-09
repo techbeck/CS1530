@@ -5,7 +5,7 @@ import com.caffeine.view.Core;
 
 public class Game {
     public Piece[] pieces = new Piece[32];
-
+    
 	protected boolean whiteActive;
 	protected boolean userWhite;
 	protected String captByBlack;

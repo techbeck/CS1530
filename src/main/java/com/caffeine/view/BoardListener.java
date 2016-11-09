@@ -57,11 +57,16 @@ public class BoardListener implements ActionListener {
                 String oldLoc = (char)(oldFile+65) + "" + (oldRank+1);
                 String newLoc = (char)(newFile+65) + "" + (newRank+1);
                 Core.statusLabel.setText("Move: " + oldLoc + "," + newLoc);
+
+                // to be changed when computer is opponent
+                if (Chess.game.userWhite()) Chess.game.setSide("black");
+                else Chess.game.setSide("white");
             } else {
                 Core.statusLabel.setText("Invalid move");
             }
             selected.unselectSquare();
             selected = null;
+
         }
     }
 }

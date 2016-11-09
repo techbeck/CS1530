@@ -50,7 +50,15 @@ public class PanelButtonListener implements ActionListener {
                 statusLabel.setText("[Upcoming Feature] - Saving game to file: " + fileName + ".pgn");
 
             }
-        } else if (button.getText().equals("Choose Side")) {
+        } else if (button.getText().equals("New Game")) {
+
+            // to be removed after computer becomes opponent
+            // when playing against self, must start as white
+            statusLabel.setText("[Upcoming Feature] - Start a new game and choose side");
+            return;
+
+            /* commented out because it is currently unreachable but will be used once computer is opponent
+            // to do: include prompt to save game if game has been started
 
             String[] options = new String[] {"Black", "White", "Cancel"};
             int playerColor = JOptionPane.showOptionDialog(window, "Please choose a side", "Choose Side",
@@ -61,20 +69,22 @@ public class PanelButtonListener implements ActionListener {
                     return;
                 case 0:
                     Chess.game.setSide("black");
-                    statusLabel.setText("[Upcoming Feature] - Now playing as Black");
+                    statusLabel.setText("Now playing as Black");
                     break;
                 case 1:
                     Chess.game.setSide("white");
-                    statusLabel.setText("[Upcoming Feature] - Now playing as White");
+                    statusLabel.setText("Now playing as White");
                     break;
                 case 2:
                     return;
             }
-
+            */
         } else if (button.getText().equals("Tutorial")) {
 
-            JOptionPane.showMessageDialog(window, "This is a simple walking skeleton, but does have some basic functionality.\n" +
-                "Simply click on a piece and then another tile to move the piece to that tile.", "Tutorial", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(window, "This is a simple chess game where you play against yourself.\n" +
+                        "Simply click on a piece and then another square to move the piece to that tile.\n" +
+                        "After each valid move, your side automatically changes to make the next move in turn.",
+                        "Tutorial", JOptionPane.PLAIN_MESSAGE);
 
         } else if (button.getText().equals("Change Piece Color")) {
 
