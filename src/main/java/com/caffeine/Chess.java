@@ -6,9 +6,13 @@ package com.caffeine;
  */
 public class Chess {
 
+    public static com.caffeine.engine.Core engine;
+    public static com.caffeine.logic.Game game;
+    public static com.caffeine.view.Core view;
+
     public static void main(String[] args) {
-        com.caffeine.engine.Core engine = new com.caffeine.engine.Core();
-        com.caffeine.logic.Game game = new com.caffeine.logic.Game();
-        com.caffeine.view.Core view = new com.caffeine.view.Core(game);
+        engine = new com.caffeine.engine.Core();
+        game = new com.caffeine.logic.Game();
+        view = new com.caffeine.view.Core(game);
     }
 }
