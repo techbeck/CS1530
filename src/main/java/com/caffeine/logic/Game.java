@@ -1,5 +1,6 @@
 package com.caffeine.logic;
 
+import com.caffeine.Chess;
 import com.caffeine.view.Core;
 
 public class Game {
@@ -50,7 +51,7 @@ public class Game {
 	public boolean move(int oldRank, int oldFile, int newRank, int newFile) {
 		String oldLoc = (char)(oldFile+65) + "" + (oldRank+1);
 		String newLoc = (char)(newFile+65) + "" + (newRank+1);
-		if (true) {//(Engine.isValidMove(oldLoc+newLoc)) {
+		if (Chess.engine.move(oldLoc+newLoc)) {
 			Piece taken = getPieceMatching(newRank,newFile);
 			Piece moving = getPieceMatching(oldRank, oldFile);
 			

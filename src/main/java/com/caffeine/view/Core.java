@@ -1,5 +1,6 @@
 package com.caffeine.view;
 
+import com.caffeine.Chess;
 import com.caffeine.logic.Piece;
 import com.caffeine.logic.Game;
 
@@ -62,11 +63,7 @@ public class Core {
     protected static JPanel buttonPanel;
     protected static BoardPanel boardPanel;
 
-    protected static Game game;
-
-    public Core(Game game) {
-        this.game = game;
-
+    public Core() {
         window.setName("frame");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addMenu(window);

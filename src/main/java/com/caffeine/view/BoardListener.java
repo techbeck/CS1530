@@ -1,5 +1,6 @@
 package com.caffeine.view;
 
+import com.caffeine.Chess;
 import com.caffeine.logic.Piece;
 
 import java.util.*;
@@ -28,9 +29,9 @@ public class BoardListener implements ActionListener {
             if (squareButton.getPiece() != null) {
 
                 // Can't select opponent's pieces
-                if (squareButton.getPiece().isWhite() && !Core.game.userWhite())
+                if (squareButton.getPiece().isWhite() && !Chess.game.userWhite())
                     return;
-                if (!squareButton.getPiece().isWhite() && Core.game.userWhite())
+                if (!squareButton.getPiece().isWhite() && Chess.game.userWhite())
                     return;
 
                 selected = squareButton;
@@ -49,10 +50,17 @@ public class BoardListener implements ActionListener {
             int newFile = ((int) squareButton.getName().split(":")[1].split(",")[0].toCharArray()[0]) - 65;
 
             Piece piece = selected.getPiece();
-            Core.game.move(oldRank,oldFile,newRank,newFile);
+            if (Chess.game.move(oldRank,oldFile,newRank,newFile))
+            {
+                selected.removePiece();
+                squareButton.setPiece(piece);
+                String oldLoc = (char)(oldFile+65) + "" + (oldRank+1);
+                String newLoc = (char)(newFile+65) + "" + (newRank+1);
+                Core.statusLabel.setText("Move: " + oldLoc + "," + newLoc);
+            } else {
+                Core.statusLabel.setText("Invalid move");
+            }
             selected.unselectSquare();
-            selected.removePiece();
-            squareButton.setPiece(piece);
             selected = null;
         }
     }

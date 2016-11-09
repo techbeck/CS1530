@@ -1,5 +1,6 @@
 package com.caffeine.view;
 
+import com.caffeine.Chess;
 import com.caffeine.logic.Piece;
 
 import java.util.*;
@@ -59,11 +60,11 @@ public class PanelButtonListener implements ActionListener {
                 case -1:
                     return;
                 case 0:
-                    Core.game.setSide("black");
+                    Chess.game.setSide("black");
                     statusLabel.setText("[Upcoming Feature] - Now playing as Black");
                     break;
                 case 1:
-                    Core.game.setSide("white");
+                    Chess.game.setSide("white");
                     statusLabel.setText("[Upcoming Feature] - Now playing as White");
                     break;
                 case 2:
@@ -87,6 +88,13 @@ public class PanelButtonListener implements ActionListener {
                     Color newColor = JColorChooser.showDialog(window,
                             "Choose Color", Color.BLACK);
                     if (newColor == null) return; // user clicked cancel
+
+                    // Can't have both sides same color
+                    if (newColor.equals(Core.whiteColor)) {
+                        statusLabel.setText("Can't have both sides same color");
+                        return;
+                    }
+
                     statusLabel.setText("Changed color of black pieces");
                     for (int i = 0; i < 8; i++) {   // iterate through all rows and columns of board
                         for (int j = 0; j < 8; j++) {
@@ -104,6 +112,13 @@ public class PanelButtonListener implements ActionListener {
                     newColor = JColorChooser.showDialog(window,
                             "Choose Color", Color.WHITE);
                     if (newColor == null) return; // user clicked cancel
+
+                    // Can't have both sides same color
+                    if (newColor.equals(Core.blackColor)) {
+                        statusLabel.setText("Can't have both sides same color");
+                        return;
+                    }
+
                     statusLabel.setText("Changed color of white pieces");
                     for (int i = 0; i < 8; i++) {   // iterate through all rows and columns of board
                         for (int j = 0; j < 8; j++) {
@@ -184,7 +199,7 @@ public class PanelButtonListener implements ActionListener {
             BoardListener.selected = null;
 
             // Place pieces in correct board locations
-            for (Piece p : Core.game.pieces) {
+            for (Piece p : Chess.game.pieces) {
                 int rank = p.getRank();
                 int file = p.getFile();
                 if (rank == -1) continue;
