@@ -106,32 +106,6 @@ public class ChessTest {
     }
 
     @Test
-    public void testChooseSideButtonCreatesOptionPane(){
-        frame.button("chooseSideButton").click();
-        JOptionPaneFixture optionPane = findOptionPane().using(robot);
-        optionPane.requireTitle("Choose Side");
-        optionPane.cancelButton().click();
-    }
-
-    @Test
-    public void testChooseWhite(){
-        frame.button("chooseSideButton").click();
-        JOptionPaneFixture optionPane = findOptionPane().using(robot);
-        optionPane.buttonWithText("White").click();
-        String actualLabel = frame.label("statusLabel").text();
-        assertThat(actualLabel).contains("Now playing as White");
-    }
-
-    @Test
-    public void testChooseBlack(){
-        frame.button("chooseSideButton").click();
-        JOptionPaneFixture optionPane = findOptionPane().using(robot);
-        optionPane.buttonWithText("Black").click();
-        String actualLabel = frame.label("statusLabel").text();
-        assertThat(actualLabel).contains("Now playing as Black");
-    }
-
-    @Test
     public void testTutorialButtonCreatesOptionPane(){
         frame.button("tutorialButton").click();
         JOptionPaneFixture optionPane = findOptionPane().using(robot);

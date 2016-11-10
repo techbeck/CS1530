@@ -1,5 +1,6 @@
 package com.caffeine.view;
 
+import com.caffeine.Chess;
 import com.caffeine.logic.Piece;
 import com.caffeine.logic.Game;
 
@@ -62,11 +63,7 @@ public class Core {
     protected static JPanel buttonPanel;
     protected static BoardPanel boardPanel;
 
-    protected static Game game;
-
-    public Core(Game game) {
-        this.game = game;
-
+    public Core() {
         window.setName("frame");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addMenu(window);
@@ -244,8 +241,8 @@ public class Core {
         saveButton.addActionListener(buttonListener);
         buttonPanel.add(saveButton);
 
-        JButton chooseSideButton = new JButton("Choose Side");
-        chooseSideButton.setName("chooseSideButton");
+        JButton chooseSideButton = new JButton("New Game");
+        chooseSideButton.setName("newGame;Button");
         chooseSideButton.addActionListener(buttonListener);
         buttonPanel.add(chooseSideButton);
 
