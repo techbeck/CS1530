@@ -84,17 +84,4 @@ public class ViewTest {
 		assertEquals(returnPiece, testPiece1);
 		assertEquals(testPiece2, testSquare.getPiece());
 	}
-	
-	
-	//Piece unit tests
-	
-	@Test
-	public void testMoveTo(){
-		Piece testPiece = new Piece("test", 0, "test", 0, 0);
-		int rank = 0;
-		int file = 1;
-		testPiece.moveTo(rank, file);
-		assertEquals(rank, testPiece.getRank());
-		assertEquals(file, testPiece.getFile());
-	}
 }
