@@ -28,15 +28,15 @@ public class Core {
     public static Color whiteColor = Color.WHITE;
     public static Color blackColor = Color.BLACK;
 
-    // 	Constants for color theme hex Values      background, panels,     light,      dark
-    public static final String[][] themes = {   {"0xFFFFFF", "0xE0E0E0", "0x808080", "0xC0C0C0"}, // Grayscale
+    // Constants for color theme hex Values      background, panels,     light,      dark
+    public static final String[][] themes = {   {"0xFFFFFF", "0xE0E0E0", "0xC0C0C0", "0x808080"}, // Grayscale
                                                 {"0xFFAFC2", "0xFFDFE6", "0xFE73A6", "0xFE3C74"}, // Peppermint
                                                 {"0xaeffd4", "0x8CD0A1", "0x7dfa92", "0x34a762"}, // Shamrock
                                                 {"0xB07147", "0xf4d095", "0xfea645", "0x8F4120"}, // Pumpkin Spice
-                                                {"0xC4B5AF", "0xeeeeff", "0xE5F1FF", "0x9A7C60"}  }; // Iced Vanilla
+                                                {"0xC4B5AF", "0xeeeeff", "0xE5F1FF", "0x9A7C60"}}; // Iced Vanilla
     public static int currentTheme = 0; // match indices above
 
-    //	GUI Layout Values 
+    //	GUI Layout Values
     public static final Dimension sidePanelDimension = new Dimension(150,550);
     public static final Dimension centerPanelDimension = new Dimension(500,630);
 
@@ -174,7 +174,7 @@ public class Core {
         historyLabel.setName("historyLabel");
         historyPanel.add(historyLabel);
     }
-    
+
     /**
      * Formats the status panel and creates and adds a JLabel to display text.
      */
