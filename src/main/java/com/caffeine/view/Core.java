@@ -192,11 +192,6 @@ public class Core {
     /**
      * 	Initializes sub-panels to display the current game time,
      * 	the chess board, and commonly used gameplay options.
-<<<<<<< HEAD
-     *
-     *  @param centerPanel The JPanel upon which to create sub-panels
-=======
->>>>>>> master
      */
     private void formatCenterPanel() {
 
@@ -232,11 +227,6 @@ public class Core {
     /**
      * 	Initializes buttons for the user to readily access
      * 	common gameplay options.
-<<<<<<< HEAD
-     *
-     *  @param buttonPanel The JPanel upon which to place option buttons
-=======
->>>>>>> master
      */
     private void formatButtonPanel() {
 
