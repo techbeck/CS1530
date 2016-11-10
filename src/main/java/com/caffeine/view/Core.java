@@ -15,7 +15,7 @@ import java.awt.*;
  */
 public class Core {
 
-    // Unicode chess pieces
+    // 	Unicode chess pieces
     public static final String king = "\u265A";
     public static final String queen = "\u265B";
     public static final String rook = "\u265C";
@@ -23,11 +23,11 @@ public class Core {
     public static final String knight = "\u265E";
     public static final String pawn = "\u265F";
 
-    // Track colors of white pieces and black pieces
+    // 	Track colors of white pieces and black pieces
     public static Color whiteColor = Color.WHITE;
     public static Color blackColor = Color.BLACK;
 
-    // Constants for color theme hex Values      background, panels,     light,      dark
+    // 	Constants for color theme hex Values      background, panels,     light,      dark
     public static final String[][] themes = {   {"0xFFFFFF", "0xE0E0E0", "0x808080", "0xC0C0C0"}, // Grayscale
                                                 {"0xFFAFC2", "0xFFDFE6", "0xFE73A6", "0xFE3C74"}, // Peppermint
                                                 {"0xaeffd4", "0x8CD0A1", "0x7dfa92", "0x34a762"}, // Shamrock
@@ -35,15 +35,18 @@ public class Core {
                                                 {"0xC4B5AF", "0xeeeeff", "0xE5F1FF", "0x9A7C60"}  }; // Iced Vanilla
     public static int currentTheme = 0; // match indices above
 
-    /** GUI Layout Values **/
+    //	GUI Layout Values 
     public static final Dimension sidePanelDimension = new Dimension(150,550);
     public static final Dimension centerPanelDimension = new Dimension(500,630);
-    // Insets are padding between components
+
+    //	Insets are padding between components
     public static final Insets sidePadding = new Insets(0,5,0,5);
     public static final Insets noPadding = new Insets(0,0,0,0);
     public static final Insets topBottomPadding = new Insets(5,0,5,0);
-    // For layout to perform correctly, components need weight > 0
+
+    //	For layout to perform correctly, components need weight > 0
     public static final double AVERAGE_WEIGHT = 0.5;
+
     /**
      *	grid x/y and grid width/height are component specific for their
      * 	placements within the outer component they are in.
@@ -84,7 +87,7 @@ public class Core {
     /**
      * 	Initializes a menu for a given JFrame.
      *
-     *  @param window the JFrame to create a menu for
+     *  @param window The JFrame to create a menu for
      */
     private void addMenu(JFrame window) {
 
@@ -115,7 +118,7 @@ public class Core {
      * 	Initializes panels for a given JFrame to display move history,
      * 	the game board, chess pieces taken, and a status indicator.
      *
-     *  @param window the JFrame to create panels for
+     *  @param window The JFrame to create panels for
      */
     private void addMainPanels(JFrame window) {
         Container pane = window.getContentPane();
@@ -191,7 +194,7 @@ public class Core {
      * 	Initializes sub-panels to display the current game time,
      * 	the chess board, and commonly used gameplay options.
      *
-     *  @param centerPanel the JPanel upon which to create sub-panels
+     *  @param centerPanel The JPanel upon which to create sub-panels
      */
     private void formatCenterPanel(JPanel centerPanel) {
 
@@ -228,8 +231,7 @@ public class Core {
      * 	Initializes buttons for the user to readily access
      * 	common gameplay options.
      *
-     *
-     *  @param buttonPanel  the JPanel upon which to place option buttons
+     *  @param buttonPanel The JPanel upon which to place option buttons
      */
     private void formatButtonPanel(JPanel buttonPanel) {
         PanelButtonListener buttonListener = new PanelButtonListener();
