@@ -3,7 +3,7 @@ package com.caffeine.logic;
 import java.utils.Arrays;
 import java.utils.ArrayList;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.CharUtils;
 
 import com.caffeine.logic.Piece;
 import com.caffeine.logic.Utils;
@@ -46,7 +46,10 @@ public class Board {
             String exMsg = "Invalid FEN was encountered.";
             throw new IllegalArgumentException(exMsg);
         } else {
-            String validNums = "12345678";
+            // Initialize Array
+            for (int i = 0; i < 8; i++){ Arrays.fill(pieces[i], null); }
+
+            // Go over chars
             String validChars = "prnbkqPRNBKQ";
             String[] boardArray = fen.split(" ", 2)[0].split("/");
             for (int i = 0; i < 8; i++){
