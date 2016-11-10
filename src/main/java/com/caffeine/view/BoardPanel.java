@@ -1,5 +1,6 @@
 package com.caffeine.view;
 
+import com.caffeine.Chess;
 import com.caffeine.logic.Piece;
 
 import java.util.*;
@@ -152,25 +153,25 @@ public class BoardPanel extends JPanel {
      * Initializes board layout with black pieces on top
      */
     private void initializePiecePlacement() {
-        Core.squares[0][7].setPiece(Core.game.pieces[0]);
-        Core.squares[0][0].setPiece(Core.game.pieces[1]);
-        Core.squares[0][1].setPiece(Core.game.pieces[2]);
-        Core.squares[0][6].setPiece(Core.game.pieces[3]);
-        Core.squares[0][2].setPiece(Core.game.pieces[4]);
-        Core.squares[0][5].setPiece(Core.game.pieces[5]);
-        Core.squares[0][3].setPiece(Core.game.pieces[6]);
-        Core.squares[0][4].setPiece(Core.game.pieces[7]);
+        Core.squares[0][7].setPiece(Chess.game.pieces[0]);
+        Core.squares[0][0].setPiece(Chess.game.pieces[1]);
+        Core.squares[0][1].setPiece(Chess.game.pieces[2]);
+        Core.squares[0][6].setPiece(Chess.game.pieces[3]);
+        Core.squares[0][2].setPiece(Chess.game.pieces[4]);
+        Core.squares[0][5].setPiece(Chess.game.pieces[5]);
+        Core.squares[0][3].setPiece(Chess.game.pieces[6]);
+        Core.squares[0][4].setPiece(Chess.game.pieces[7]);
         for (int i = 0; i < 8; i++) {
-            Core.squares[1][i].setPiece(Core.game.pieces[i+8]);
-            Core.squares[6][i].setPiece(Core.game.pieces[i+16]);
+            Core.squares[1][i].setPiece(Chess.game.pieces[i+8]);
+            Core.squares[6][i].setPiece(Chess.game.pieces[i+16]);
         }
-        Core.squares[7][0].setPiece(Core.game.pieces[24]);
-        Core.squares[7][7].setPiece(Core.game.pieces[25]);
-        Core.squares[7][1].setPiece(Core.game.pieces[26]);
-        Core.squares[7][6].setPiece(Core.game.pieces[27]);
-        Core.squares[7][2].setPiece(Core.game.pieces[28]);
-        Core.squares[7][5].setPiece(Core.game.pieces[29]);
-        Core.squares[7][3].setPiece(Core.game.pieces[30]);
-        Core.squares[7][4].setPiece(Core.game.pieces[31]);
+        Core.squares[7][0].setPiece(Chess.game.pieces[24]);
+        Core.squares[7][7].setPiece(Chess.game.pieces[25]);
+        Core.squares[7][1].setPiece(Chess.game.pieces[26]);
+        Core.squares[7][6].setPiece(Chess.game.pieces[27]);
+        Core.squares[7][2].setPiece(Chess.game.pieces[28]);
+        Core.squares[7][5].setPiece(Chess.game.pieces[29]);
+        Core.squares[7][3].setPiece(Chess.game.pieces[30]);
+        Core.squares[7][4].setPiece(Chess.game.pieces[31]);
     }
 }
