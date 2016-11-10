@@ -52,7 +52,7 @@ public class BoardPanel extends JPanel {
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         BoardListener boardListener = new BoardListener();
-        boolean isWhiteSquare = true;
+        boolean isWhiteSquare = false;
 
         if (blackOnTop) {
 
