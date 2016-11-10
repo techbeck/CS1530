@@ -22,27 +22,37 @@ public class Board {
 
 
 
-    // Static Methods
-    public static Board fromFEN(String fen) throws IllegalArgumentException {
-        if (!Utils.isValid(fen)){
-            String exMsg = "Invalid FEN string was encountered.";
-            throw new IllegalArgumentException(exMsg);
-        } else {
-            Piece[][] board = new Piece[8][8];
-            String[] boardRowStrings = fen.split(" ", 2)[0].split("/");
-        }
-    }
-
-    public Piece getPieceAt(String position) throws IllegalArgumentException {
+    // Public Methods
+    public Piece get(String position) throws IllegalArgumentException {
         if (!Utils.isValidBoardPosition(position)){
             String exMsg = "Invalid position was encountered.";
             throw new IllegalArgumentException(exMsg);
         } else {
-            char file;
-            int rank;
-            int col, row;
-            file =
-            rank =
+            Integer[] idx = translate(position);
+            return
         }
     }
+
+    public boolean put(String position) throws IllegalArgumentException {
+        if (!Utils.isValidBoardPosition(position)){
+            String exMsg = "Invalid position was encountered.";
+            throw new IllegalArgumentException(exMsg);
+        } else {
+            break;
+        }
+    }
+
+    // Private Methods
+    private Integer[] translate(String position){
+        // File and Idx[0] are the letter.
+        String file, rank;
+        Integer col, row;
+        file = position.substring(0,1).toLowerCase();
+        rank = position.substring(1,2);
+        Integer[] indices = new Integer[2];
+        indices[0] = ((int)file.charAt(0))-97;
+        indices[1] = Integer.parseInt(rank)-1;
+        return indices;
+    }
+
 }

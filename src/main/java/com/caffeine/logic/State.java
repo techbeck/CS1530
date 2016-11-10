@@ -4,8 +4,6 @@ import com.caffeine.logic.Board;
 import com.caffeine.logic.Piece;
 
 public class State {
-    // TODO: Finish This Class
-
 
     // State Variables
     // Game details (See PGN for status and purpose)
@@ -19,10 +17,9 @@ public class State {
     private Integer halfMoves;
     private Integer fullMoves;
     // Misc
-    private ArrayList<Piece> capturedByBlack; // List of pieces taken by Black
-    private ArrayList<Piece> capturedByWhite; // List of pieces taken by White
-    private Pieces[] blackPieces; // Record of all Black Pieces
-    private Pieces[] whitePieces; // Record of all White Pieces
+    private String capturedByBlack; // Chars of pieces taken by Black
+    private String capturedByWhite; // Chars of pieces taken by White
+    private Pieces[] pieces; // 32 elems, all Black, then all White Pieces
 
 
 
