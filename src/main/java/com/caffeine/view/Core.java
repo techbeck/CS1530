@@ -1,5 +1,6 @@
 package com.caffeine.view;
 
+import com.caffeine.Chess;
 import com.caffeine.logic.Piece;
 import com.caffeine.logic.Game;
 
@@ -65,11 +66,7 @@ public class Core {
     protected static JPanel buttonPanel;
     protected static BoardPanel boardPanel;
 
-    protected static Game game;
-
-    public Core(Game game) {
-        this.game = game;
-
+    public Core() {
         window.setName("frame");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addMenu(window);
@@ -125,40 +122,25 @@ public class Core {
         pane.setBackground(Color.decode(themes[0][0]));
         pane.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
+        c.weightx = AVERAGE_WEIGHT;
+        c.weighty = AVERAGE_WEIGHT;
 
         historyPanel = new JPanel();
-        historyPanel.setName("historyPanel");
-        historyPanel.setBackground(Color.decode(themes[0][1]));
-        historyPanel.setMinimumSize(sidePanelDimension);
-        historyPanel.setMaximumSize(sidePanelDimension);
-        historyPanel.setPreferredSize(sidePanelDimension);
+        formatHistoryPanel();
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 1;
         c.gridheight = 12;
         c.insets = sidePadding;
-        c.weightx = AVERAGE_WEIGHT;
-        c.weighty = AVERAGE_WEIGHT;
-        JLabel historyLabel = new JLabel("<html>[Upcoming Feature]<br>Move History</html>", SwingConstants.CENTER);
-        historyLabel.setName("historyLabel");
-        historyPanel.add(historyLabel);
-        // eventually, formatHistoryPanel(historyPanel);
         pane.add(historyPanel, c);
 
         centerPanel = new JPanel();
-        centerPanel.setName("centerPanel");
-        centerPanel.setBackground(Color.decode(themes[0][0]));
-        centerPanel.setMinimumSize(centerPanelDimension);
-        centerPanel.setMaximumSize(centerPanelDimension);
-        centerPanel.setPreferredSize(centerPanelDimension);
         c.gridx = 1;
         c.gridy = 0;
         c.gridwidth = 6;
         c.gridheight = 12;
         c.insets = noPadding;
-        c.weightx = AVERAGE_WEIGHT;
-        c.weighty = AVERAGE_WEIGHT;
-        formatCenterPanel(centerPanel);
+        formatCenterPanel();
         pane.add(centerPanel, c);
 
         takenPanel = new TakenPanel();
@@ -167,36 +149,62 @@ public class Core {
         c.gridwidth = 1;
         c.gridheight = 12;
         c.insets = sidePadding;
-        c.weightx = AVERAGE_WEIGHT;
-        c.weighty = AVERAGE_WEIGHT;
         pane.add(takenPanel, c);
 
         statusPanel = new JPanel();
+        formatStatusPanel();
+        c.gridx = 0;
+        c.gridy = 12;
+        c.gridwidth = 8;
+        c.gridheight = 1;
+        c.insets = topBottomPadding;
+        pane.add(statusPanel, c);
+    }
+
+    /**
+     * Formats the history panel and will eventually change to display move history.
+     */
+    private void formatHistoryPanel() {
+        historyPanel.setName("historyPanel");
+        historyPanel.setBackground(Color.decode(themes[0][1]));
+        historyPanel.setMinimumSize(sidePanelDimension);
+        historyPanel.setMaximumSize(sidePanelDimension);
+        historyPanel.setPreferredSize(sidePanelDimension);
+        JLabel historyLabel = new JLabel("<html>[Upcoming Feature]<br>Move History</html>", SwingConstants.CENTER);
+        historyLabel.setName("historyLabel");
+        historyPanel.add(historyLabel);
+    }
+    
+    /**
+     * Formats the status panel and creates and adds a JLabel to display text.
+     */
+    private void formatStatusPanel() {
         statusPanel.setName("statusPanel");
         statusPanel.setBackground(Color.decode(themes[0][1]));
         Dimension statusPanelSize = new Dimension(800,30);
         statusPanel.setMinimumSize(statusPanelSize);
         statusPanel.setMaximumSize(statusPanelSize);
         statusPanel.setPreferredSize(statusPanelSize);
-        c.gridx = 0;
-        c.gridy = 12;
-        c.gridwidth = 8;
-        c.gridheight = 1;
-        c.insets = topBottomPadding;
-        c.weightx = AVERAGE_WEIGHT;
-        c.weighty = AVERAGE_WEIGHT;
         statusLabel.setName("statusLabel");
         statusPanel.add(statusLabel, SwingConstants.CENTER);
-        pane.add(statusPanel, c);
     }
 
     /**
      * 	Initializes sub-panels to display the current game time,
      * 	the chess board, and commonly used gameplay options.
+<<<<<<< HEAD
      *
      *  @param centerPanel The JPanel upon which to create sub-panels
+=======
+>>>>>>> master
      */
-    private void formatCenterPanel(JPanel centerPanel) {
+    private void formatCenterPanel() {
+
+        centerPanel.setName("centerPanel");
+        centerPanel.setBackground(Color.decode(themes[0][0]));
+        centerPanel.setMinimumSize(centerPanelDimension);
+        centerPanel.setMaximumSize(centerPanelDimension);
+        centerPanel.setPreferredSize(centerPanelDimension);
 
         centerPanel.setLayout(new FlowLayout());
 
@@ -217,23 +225,28 @@ public class Core {
         centerPanel.add(boardPanel);
 
         buttonPanel = new JPanel();
-        buttonPanel.setName("buttonPanel");
-        buttonPanel.setBackground(Color.decode(themes[0][1]));
-        Dimension buttonPanelSize = new Dimension(490,70);
-        buttonPanel.setMinimumSize(buttonPanelSize);
-        buttonPanel.setMaximumSize(buttonPanelSize);
-        buttonPanel.setPreferredSize(buttonPanelSize);
-        formatButtonPanel(buttonPanel);
+        formatButtonPanel();
         centerPanel.add(buttonPanel);
     }
 
     /**
      * 	Initializes buttons for the user to readily access
      * 	common gameplay options.
+<<<<<<< HEAD
      *
      *  @param buttonPanel The JPanel upon which to place option buttons
+=======
+>>>>>>> master
      */
-    private void formatButtonPanel(JPanel buttonPanel) {
+    private void formatButtonPanel() {
+
+        buttonPanel.setName("buttonPanel");
+        buttonPanel.setBackground(Color.decode(themes[0][1]));
+        Dimension buttonPanelSize = new Dimension(490,70);
+        buttonPanel.setMinimumSize(buttonPanelSize);
+        buttonPanel.setMaximumSize(buttonPanelSize);
+        buttonPanel.setPreferredSize(buttonPanelSize);
+
         PanelButtonListener buttonListener = new PanelButtonListener();
 
         JButton loadButton = new JButton("Load");
@@ -246,8 +259,8 @@ public class Core {
         saveButton.addActionListener(buttonListener);
         buttonPanel.add(saveButton);
 
-        JButton chooseSideButton = new JButton("Choose Side");
-        chooseSideButton.setName("chooseSideButton");
+        JButton chooseSideButton = new JButton("New Game");
+        chooseSideButton.setName("newGame;Button");
         chooseSideButton.addActionListener(buttonListener);
         buttonPanel.add(chooseSideButton);
 

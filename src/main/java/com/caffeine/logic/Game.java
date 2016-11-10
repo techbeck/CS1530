@@ -1,10 +1,11 @@
 package com.caffeine.logic;
 
+import com.caffeine.Chess;
 import com.caffeine.view.Core;
 
 public class Game {
     public Piece[] pieces = new Piece[32];
-
+    
 	protected boolean whiteActive;
 	protected boolean userWhite;
 	protected String captByBlack;
@@ -87,12 +88,7 @@ public class Game {
 		String oldLoc = (char)(oldFile+65) + "" + (oldRank+1);
 		String newLoc = (char)(newFile+65) + "" + (newRank+1);
 
-		/**
-		 *	Will turn into
-		 * 	-- (Engine.isValidMove(oldLoc+newLoc)) { --
-		 *  once Engine is fully operational
-		 */
-		if (true) {	
+		if (Chess.engine.move(oldLoc+newLoc)) {
 			Piece taken = getPieceMatching(newRank,newFile);
 			Piece moving = getPieceMatching(oldRank, oldFile);
 			
