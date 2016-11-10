@@ -6,6 +6,10 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 
+/**
+ * 	This JPanel displays the pieces that were taken
+ * 	by each player.
+ */
 public class TakenPanel extends JPanel {
 	private JLabel takenlabel = new JLabel("Taken Pieces");
 	private JLabel captByBlack = new JLabel();
@@ -44,18 +48,36 @@ public class TakenPanel extends JPanel {
         add(captByWhite);
 	}
 
+	/**
+	 *	Displays what pieces were taken by black.
+	 * 
+	 * 	@param str The list of white pieces taken thus far
+	 */
 	public void setCaptByBlack(String str) {
 		captByBlack.setText("<html><p>"+ str +"</p></html>");
 	}
 
+	/**
+	 *	Displays what pieces were taken by white.
+	 * 
+	 * 	@param str The list of black pieces taken thus far
+	 */
 	public void setCaptByWhite(String str) {
 		captByWhite.setText("<html><p>"+ str +"</p></html>");
 	}
 
+	/**
+	 * 	Changes the color of the white pieces to the color
+	 * 	requested by the user.
+	 */
 	public void setCaptByBlackColor() {
 		captByBlack.setForeground(Core.whiteColor);
 	}
 
+	/**
+	 * 	Changes the color of the black pieces to the color
+	 * 	requested by the user.
+	 */
 	public void setCaptByWhiteColor() {
 		captByWhite.setForeground(Core.blackColor);
 	}

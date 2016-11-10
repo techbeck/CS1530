@@ -19,6 +19,11 @@ public class Game {
 		initializesPieces();
 	}
 
+	/**
+	 * 	Sets the user as either white or black
+	 * 	
+	 *  @param side The color the user will play as
+	 */
 	public void setSide(String side) {
 		if (side.equals("white"))
 			userWhite = true;
@@ -26,31 +31,63 @@ public class Game {
 			userWhite = false;
 	}
 
+	/**
+	 * 	Getter for whether the user is playing as white or black
+	 * 	
+	 *  @return true if the user is playing as white, false if black
+	 */
 	public boolean userWhite() {
 		return userWhite;
 	}
 
+	/**
+	 * 	Adds a piece to the list of black pieces taken
+	 * 	
+	 *	@param piece The newly taken black piece
+	 */
 	public void captureBlackPiece(String piece) {
 		captByWhite = captByWhite.concat(" " + piece);
 		Core.takenPanel.setCaptByWhite(captByWhite);
 	}
 
+	/**
+	 * 	Adds a piece to the list of white pieces taken
+	 * 
+	 * 	@param piece The newly taken white piece
+	 */
 	public void captureWhitePiece(String piece) {
 		captByBlack = captByBlack.concat(" " + piece);
 		Core.takenPanel.setCaptByBlack(captByBlack);
 	}
 
+	/**
+	 * 	Getter for the current list of pieces taken by black
+	 * @return list of captured white pieces as a String
+	 */
 	public String getCaptByBlack() {
 		return captByBlack;
 	}
 
+	/**
+	 * 	Getter for the current list of pieces taken by white
+	 * @return list of captured black pieces as a String
+	 */
 	public String getCaptByWhite() {
 		return captByWhite;
 	}
 
+	/**
+	 * 	Move a piece from one set of coordinates to another
+	 *  @param  oldRank The current horizontal coordinate
+	 *  @param  oldFile The current vertical coordinate
+	 *  @param  newRank The new horizontal coordinate to move to
+	 *  @param  newFile The new vertical coordinate to move to
+	 *  @return true if move is successful, false otherwise
+	 */
 	public boolean move(int oldRank, int oldFile, int newRank, int newFile) {
 		String oldLoc = (char)(oldFile+65) + "" + (oldRank+1);
 		String newLoc = (char)(newFile+65) + "" + (newRank+1);
+
 		if (Chess.engine.move(oldLoc+newLoc)) {
 			Piece taken = getPieceMatching(newRank,newFile);
 			Piece moving = getPieceMatching(oldRank, oldFile);
@@ -68,6 +105,12 @@ public class Game {
 		return false;
 	}
 
+	/**
+	 * 	Gets the piece at a given position
+	 *  @param  rank 	The given x coordinate
+	 *  @param  file 	The given y coordinate
+	 *  @return a Piece if a Piece exists at the given position, null if not
+	 */
 	public Piece getPieceMatching(int rank, int file) {
 		for (Piece p : pieces) {
 			if (p.getRank() == rank) {
@@ -79,6 +122,9 @@ public class Game {
 		return null;
 	}
 
+	/**
+	 * 	Resets the game to the default settings
+	 */
 	public void reset() {
 		whiteActive = true;
 		userWhite = true;
@@ -87,6 +133,9 @@ public class Game {
 		initializesPieces();
 	}
 
+	/**
+	 * 	Populates the pieces array with the standard 32 chess pieces
+	 */
 	public void initializesPieces() {
 		pieces[0] = new Piece(Core.rook, 0, "black", 7, 7);
 		pieces[1] = new Piece(Core.rook, 1, "black", 7, 0);

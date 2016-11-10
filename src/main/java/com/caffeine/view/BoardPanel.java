@@ -20,6 +20,15 @@ public class BoardPanel extends JPanel {
         initializePiecePlacement();
     }
 
+    /*	reinitialize the board panel and check if black
+    	is on top*/
+
+    /**
+     * 	Reinitialize the board panel and check if black
+     * 	is currently on top
+     * 	
+     *  @param  top The current player on top (black or white)
+     */
     public BoardPanel(String top) {
         setName("boardPanel");
         setBackground(Color.decode(Core.themes[0][0]));
@@ -43,9 +52,8 @@ public class BoardPanel extends JPanel {
     /**
      *  Initializes an 8x8 Array of buttons to serve as the Core.squares
      *  for the chess board, along with grid notation.
-     *  Can initialize to black on top or white on top depending on boolean.
-     *
-     *  @param boardPanel the JPanel upon which to place the game Core.squares on
+     *  Can initialize to black on top or white on top depending upon
+     *  the blackOnTop boolean.
      */
     private void initializeBoard() {
 

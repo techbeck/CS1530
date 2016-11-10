@@ -7,7 +7,7 @@ import javax.swing.border.*;
 import java.awt.*;
 
 /**
- * This customized implementation of JButton makes buttons that appear as a game square
+ * 	This customized implementation of JButton makes buttons that appear as a game square
  */
 public class BoardSquare extends JButton {
 	Piece piece = null;
@@ -24,8 +24,8 @@ public class BoardSquare extends JButton {
     Font defaultFont = new Font("Arial Unicode MS", Font.PLAIN, 25);
 
 	/**
-	 * Initializes board square to the set up that appears the same across platforms
-	 * Static dimension forces the button to be square
+	 * 	Initializes board square to the set up that appears the same across platforms.
+	 *  Static dimension forces the button to be square
 	 */ 
 	public BoardSquare() {
         setOpaque(true);
@@ -37,9 +37,9 @@ public class BoardSquare extends JButton {
 	}
 	
 	/**
-	 * Colors game square either white or gray
+	 * 	Colors game square either white or gray
 	 *
-	 * @param  squareColor a Boolean to determine whether the button should be colored gray or not
+	 * 	@param  squareColor A Boolean to determine whether the button should be colored gray or not
 	 */
 	public void setBackgroundColor(boolean squareColor) {
         if (squareColor)
@@ -55,27 +55,27 @@ public class BoardSquare extends JButton {
 	}
 
 	/**
-	 * Returns whether or not piece is light
+	 * 	Returns whether or not piece is light
 	 *
-	 * @return  true if light square, otherwise false
+	 * 	@return  true if light square, otherwise false
 	 */
 	public boolean isLightSquare() {
 		return isLightSquare;
 	}
 
 	/**
-	 * Returns piece on square, or null if no piece found
+	 * 	Returns piece on square, or null if no piece found
 	 * 
-	 * @return  The Piece on the square
+	 * 	@return  The Piece on the square
 	 */
 	public Piece getPiece() {
 		return piece;
 	}
 
 	/**
-	 * Determines if the square has a piece on it
+	 * 	Determines if the square has a piece on it
 	 *
-	 * @return True if piece found, false if not
+	 * 	@return True if piece found, false if not
 	 */
 	public boolean hasPiece() {
 		if (piece == null) return false;
@@ -83,9 +83,9 @@ public class BoardSquare extends JButton {
 	}
 
 	/**
-	 * Changes the text of the square to the Unicode chess piece
+	 * 	Changes the text of the square to a chess piece's unicode character
 	 *
-	 * @param piece the unicode chess piece 
+	 * 	@param piece The chess piece 
 	 */
 	public void setPiece(Piece piece) {
 		if (piece == null) return;
@@ -99,7 +99,7 @@ public class BoardSquare extends JButton {
 	}
 
 	/**
-	 * Resets the square to empty
+	 * 	Resets the square to empty
 	 */
 	public void removePiece() {
 		setText(" ");
@@ -107,14 +107,14 @@ public class BoardSquare extends JButton {
 	}
 
 	/**
-	 * Selects a square by setting the foreground (text) to yellow
+	 * 	Selects a square by setting the foreground (text) to yellow
 	 */
 	public void selectSquare() {
         setForeground(Color.YELLOW);
 	}
 
 	/**
-	 * Returns a square to the regular foreground (text) color of the piece
+	 * 	Returns a square to the regular foreground (text) color of the piece
 	 */
 	public void unselectSquare() {
         if (piece == null) return;
@@ -126,20 +126,20 @@ public class BoardSquare extends JButton {
 	}
 
 	/**
-	 * Changes the color of the piece 
+	 * 	Changes the color of the piece 
 	 * 
-	 * @param color  The color to set the piece
+	 * 	@param color The color to set the piece
 	 */
 	public void setPieceColor(Color color) {
 		setForeground(color);
 	}
 
 	/**
-	 * When a piece is taken, this returns the taken piece
-	 * and sets the square to the new piece
+	 * 	When a piece is taken, this returns the taken piece
+	 *  and sets the square to the new piece
 	 *
-	 * @param piece  The piece that is taking the square
-	 * @return  the piece that was taken
+	 * 	@param piece The piece that is taking the square
+	 *  @return the piece that was taken
 	 */
 	public Piece takePiece(Piece piece) {
 		Piece taken = this.piece;

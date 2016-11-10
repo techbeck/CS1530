@@ -64,6 +64,7 @@ public class PanelButtonListener implements ActionListener {
             int playerColor = JOptionPane.showOptionDialog(window, "Please choose a side", "Choose Side",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
+            // 	case -1 and 2 are X'ed out of dialog box and Cancel
             switch(playerColor){
                 case -1:
                     return;
@@ -93,7 +94,8 @@ public class PanelButtonListener implements ActionListener {
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
             switch(playerColor) {
-                case -1: break;
+                case -1:
+                	break;
                 case 0:  // change black pieces
                     Color newColor = JColorChooser.showDialog(window,
                             "Choose Color", Color.BLACK);
@@ -142,7 +144,8 @@ public class PanelButtonListener implements ActionListener {
                     Core.whiteColor = newColor;
                     Core.takenPanel.setCaptByBlackColor();
                     break;
-                case 2: break;
+                case 2: 
+                	break;
             }
         } else if (button.getText().equals("Change Color Theme")) {
 

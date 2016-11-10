@@ -13,7 +13,7 @@ import java.awt.*;
 /**
  * 	This ActionListener listens for clicks upon the board and first saves
  * 	the chess icon of the square clicked (if there is one), then sets the text
- * 	of the next clicked square to the stored icon.
+ * 	of the next clicked square to the stored icon, if a valid move.
  */
 public class BoardListener implements ActionListener {
 
