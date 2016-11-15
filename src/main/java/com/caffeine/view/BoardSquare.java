@@ -19,14 +19,14 @@ public class BoardSquare extends JButton {
     final Border compound = new CompoundBorder(line, margin);
 	final Dimension buttonSize = new Dimension(60,60);
 
-    /* proprietary font that Windows/Mac have, but Linux will default to 
+    /* proprietary font that Windows/Mac have, but Linux will default to
     a font that will still display the chess pieces */
     Font defaultFont = new Font("Arial Unicode MS", Font.PLAIN, 25);
 
 	/**
 	 * Initializes board square to the set up that appears the same across platforms
 	 * Static dimension forces the button to be square
-	 */ 
+	 */
 	public BoardSquare() {
         setOpaque(true);
         setFont(defaultFont);
@@ -35,7 +35,7 @@ public class BoardSquare extends JButton {
         setMaximumSize(buttonSize);
         setPreferredSize(buttonSize);
 	}
-	
+
 	/**
 	 * Colors game square either white or gray
 	 *
@@ -65,7 +65,7 @@ public class BoardSquare extends JButton {
 
 	/**
 	 * Returns piece on square, or null if no piece found
-	 * 
+	 *
 	 * @return  The Piece on the square
 	 */
 	public Piece getPiece() {
@@ -85,12 +85,12 @@ public class BoardSquare extends JButton {
 	/**
 	 * Changes the text of the square to the Unicode chess piece
 	 *
-	 * @param piece the unicode chess piece 
+	 * @param piece the unicode chess piece
 	 */
 	public void setPiece(Piece piece) {
 		if (piece == null) return;
 		this.piece = piece;
-		setText(piece.getType());
+		setText(piece.getUnicode());
 		if (piece.isWhite()) {
 			setForeground(Core.whiteColor);
 		} else {
@@ -126,8 +126,8 @@ public class BoardSquare extends JButton {
 	}
 
 	/**
-	 * Changes the color of the piece 
-	 * 
+	 * Changes the color of the piece
+	 *
 	 * @param color  The color to set the piece
 	 */
 	public void setPieceColor(Color color) {

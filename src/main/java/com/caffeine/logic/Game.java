@@ -5,7 +5,7 @@ import com.caffeine.view.Core;
 
 public class Game {
     public Piece[] pieces = new Piece[32];
-    
+
 	protected boolean whiteActive;
 	protected boolean userWhite;
 	protected String captByBlack;
@@ -54,7 +54,7 @@ public class Game {
 		if (Chess.engine.move(oldLoc+newLoc)) {
 			Piece taken = getPieceMatching(newRank,newFile);
 			Piece moving = getPieceMatching(oldRank, oldFile);
-			
+
 			if (taken != null) {
 				taken.moveTo(-1,-1); // indicates piece has been taken
 				if (taken.isWhite())

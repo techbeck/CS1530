@@ -161,4 +161,25 @@ public class Utils {
         return (move1 && move2);
     }
 
+    public static Integer[] translateCoordinate(String position){
+        // Takes a board position (e.g. "a3" or "H7")
+        // File and Idx[0] are the letter.
+        String file, rank;
+        Integer[] indices;
+        file = position.substring(0,1).toLowerCase();
+        rank = position.substring(1,2);
+        indices = new Integer[]{ ((int)file.charAt(0))-97, Integer.parseInt(rank)-1 };
+        return indices;
+    }
+
+    public static String translateCoordinate(Integer[] indices){
+        // Col and Idx[0] are the letter.
+        int col, row;
+        String position;
+        col = indices[0]+97;
+        row = indices[1]+1;
+        position = String.format("%c%d", (char)col, row);
+        return position;
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.caffeine.logic;
 
+import java.util.HashMap;
+
 import com.caffeine.logic.Board;
 import com.caffeine.logic.Piece;
 
@@ -19,12 +21,10 @@ public class State {
     // Misc
     private String capturedByBlack; // Chars of pieces taken by Black
     private String capturedByWhite; // Chars of pieces taken by White
-    private Pieces[] pieces; // 32 elems, all Black, then all White Pieces
 
 
 
-    // Constructors
-    public State(){} // Don't bother with many constructors just yet.
+    public State(String fen){} // Trivial Default Constructor. Use a StateBuilder.
 
 
 

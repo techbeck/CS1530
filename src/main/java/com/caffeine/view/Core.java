@@ -16,14 +16,6 @@ import java.awt.*;
  */
 public class Core {
 
-    // Unicode chess pieces
-    public static final String king = "\u265A";
-    public static final String queen = "\u265B";
-    public static final String rook = "\u265C";
-    public static final String bishop = "\u265D";
-    public static final String knight = "\u265E";
-    public static final String pawn = "\u265F";
-
     // Track colors of white pieces and black pieces
     public static Color whiteColor = Color.WHITE;
     public static Color blackColor = Color.BLACK;
