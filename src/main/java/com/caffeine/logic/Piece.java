@@ -28,8 +28,8 @@ public class Piece {
 
 
     // Class Properties
-    Character type; // Defined as constants in Piece
-    String position; // This piece's position on the board.
+    private Character type; // Defined as constants in Piece
+    private String position; // This piece's position on the board.
 
 
 
@@ -124,10 +124,12 @@ public class Piece {
      * To be called when a piece is moved on the board.
      * Allows Piece to track location.
      *
-     *
      */
-    protected void updatePosition(String position) {
-        this.position = position.toLowerCase();
+    protected void setPosition(String position) {
+        if (position == null){ this.position = null; }
+        if (Utils.isValidBoardPosition(position)){
+            this.position = position.toLowerCase();
+        }
     }
 
 }

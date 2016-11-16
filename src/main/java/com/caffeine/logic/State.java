@@ -1,63 +1,197 @@
 package com.caffeine.logic;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.apache.commons.lang3.CharUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.caffeine.logic.Board;
 import com.caffeine.logic.Piece;
 
 public class State {
 
+    /* A collection of variables and data generally unfettered by methods. */
+
     // State Variables
-    // Game details (See PGN for status and purpose)
-    private HashMap<String, String> reqGameDetails; // See PGN -> Seven Tag Roster
-    private HashMap<String, String> optGameDetails; // See PGN -> Supplemental Tag Names
+    // Game Tags (See PGN for status and purpose)
+    private HashMap<String, String> reqGameTags; // See PGN -> Seven Tag Roster
+    private HashMap<String, String> optGameTags; // See PGN -> Supplemental Tag Names
+
     // Based on FEN String Fields, see PGN -> FEN Data Fields
-    private Board board;
-    private boolean isActiveColorWhite;
-    private String castling;
-    private String enPassant;
-    private Integer halfMoves;
-    private Integer fullMoves;
-    // Misc
-    private String capturedByBlack; // Chars of pieces taken by Black
-    private String capturedByWhite; // Chars of pieces taken by White
+    private Board board;       // See com.caffeine.logic.Board
+    private Character activeColor;  // 'w' or 'b'
+    private String castlers;   // At most 4 unique chars in [KQkq]
+    private String enPassant;  // A board position
+    private Integer halfMoves; // Positive non-zero int. Mind the 50-move rule.
+    private Integer fullMoves; // Positive non-zero int. Number of rounds so far.
+
+    // Supplemental PGN Data
+    private ArrayList<Piece> capturedByBlack; // Collection of 'w' Pieces taken
+    private ArrayList<Piece> capturedByWhite; // Collection of 'b' Pieces taken
 
 
 
-    public State(String fen){} // Trivial Default Constructor. Use a StateBuilder.
+    // Constructors
+    public State(){} // Trivial Default Constructor
 
 
 
     // Getters: Anything that reads State.
-    public String getDetail(String detailName){ return ""; }
+    public String getTag(String tagName){ return ""; }
 
-    public String getFEN(){ return ""; }
+    public Board getBoard(){ return board; }
 
-    public boolean isActiveColorWhite(){ return false; }
+    public String getFEN(){
+        // TODO
+        return "";
+    }
 
-    public String getCastlers(){ return "-"; }
+    public boolean activeColorWhite(){ return (activeColor.equals('w')); }
 
-    public String getEnPassant(){ return "-"; }
+    public String getCastlers(){ return castlers; }
 
-    public Integer getHalfMoves(){ return 0; }
+    public String getEnPassant(){ return enPassant; }
 
-    public Integer getFullMoves(){ return 0; }
+    public Integer getHalfMoves(){ return halfMoves; }
+
+    public Integer getFullMoves(){ return fullMoves; }
+
+    public ArrayList<Piece> getCapturedByBlack(){ return capturedByBlack; }
+
+    public ArrayList<Piece> getCapturedByWhite(){ return capturedByWhite; }
 
 
 
     // Setters: Anything that changes alters State. Returns success status.
-    public boolean setDetail(String detailName){ return false; }
+    public boolean setTag(String TagName){
+        // PGN allows for arbitrary information to be stored. We'll do this
+        // by having a hashmap of MANDATORY tags (see spec) and a hashmap
+        // of ARBITRARY tags, wherein we'll store any data OUR project needs
+        // even if it's not normally in the standard PGN spec.
 
-    public boolean setFEN(String fen){ return false; }
+        // TODO
+        return false;
+    }
 
-    public boolean setActiveColorWhite(boolean activeColorIsWhite){ return false; }
+    public boolean setFEN(String fen){
+        // TODO
+        return false;
+    }
 
-    public boolean setCastlers(String castlers){ return false; }
+    public boolean setWhiteActive(){
+        activeColor = 'w';
+        return true;
+    }
 
-    public boolean setEnPassant(String enPassant){ return false; }
+    public boolean setBlackActive(){
+        activeColor = 'b';
+        return true;
+    }
 
-    public boolean setHalfMoves(Integer moves){ return false; }
+    public boolean setCastlers(String newCastlers){
+        // Early Exit
+        if (newCastlers.equals("-")){ castlers = newCastlers; return true; }
+        // Property-based Validation
+        if (castlers.length() > 4){ return false; }
+        String validChars = "KQkq";
+        String wipString = "";
+        for (char c : castlers.toCharArray()){
+            if (!validChars.contains(Character.toString(c))){ return false; }
+            if ( validChars.contains(Character.toString(c))){ return false; }
+            // Has to be a character in [KQkq] unique to wipString; Add it!
+            wipString += Character.toString(c);
+        }
+        castlers = newCastlers;
+        return true;
+    }
 
-    public boolean setFullMoves(Integer moves){ return false; }
+    public boolean setEnPassant(String enPassant){
+        // Property-based Validation
+        //     I'm not entirely sure what properties this SHOULD have...
+        if (!Utils.isValidBoardPosition(enPassant)){ return false; }
+        return true;
+    }
 
+    public boolean setHalfMoves(Integer moves){
+        if (moves < 0){ return false; }
+        halfMoves = moves;
+        return true;
+    }
+
+    public boolean setFullMoves(Integer moves){
+        if (moves < 1){ return false; }
+        fullMoves = moves;
+        return true;
+    }
+
+    public boolean capturePieceAt(String position){
+        // Gets non-null piece, updates piece AND board, and registers as captured.
+        Piece piece;
+
+        if (!Utils.isValidBoardPosition(position)){ return false; }
+        piece = board.getPiece(position);
+        if (piece == null){ return false; }
+        board.rmPiece(position);
+        piece.setPosition(null);
+        if (piece.isWhite()){
+            capturedByBlack.add(piece);
+        } else {
+            capturedByWhite.add(piece);
+        }
+        return true;
+    }
+
+
+// ============================================================================
+//      GUI-Wrapped Functions (For State package-level access)
+// ============================================================================
+
+    public boolean move(String move){
+        String src, dst;
+        Piece piece;
+
+        src = Utils.split(move, 2)[0];
+        dst = Utils.split(move, 2)[1];
+        capturePieceAt(dst); // If null, does nothing.
+        piece = board.getPiece(src);
+        // Update Piece and Board location data
+        board.rmPiece(src);
+        piece.setPosition(dst);
+        // Commit the change.
+        board.putPiece(dst, piece);
+
+        return true;
+    }
+
+    public String getPiecesCapturedByBlack(){
+        String result = "";
+        for (Piece p : capturedByBlack){ result += p.getUnicode(); }
+        return result;
+    }
+
+    public String getPiecesCapturedByWhite(){
+        String result = "";
+        for (Piece p : capturedByWhite){ result += p.getUnicode(); }
+        return result;
+    }
+
+    public String getBoardAsString(){
+        String fenPartial = board.toFENPartial();
+        String result = "";
+
+        // Replace all num digits in FEN with a '-' String of that length.
+        int multiple;
+        for (char c : fenPartial.toCharArray()){
+            multiple = CharUtils.toIntValue(c, 0);
+            if (multiple > 0){
+                result += StringUtils.repeat('-', multiple);
+            }
+            else {
+                result += StringUtils.repeat(c, 1);
+            }
+        }
+
+        return result;
+    }
 }

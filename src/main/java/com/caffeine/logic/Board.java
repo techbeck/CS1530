@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 
 import org.apache.commons.lang3.CharUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.StringUtils;
 
 import com.caffeine.logic.Piece;
 import com.caffeine.logic.Utils;
@@ -17,13 +17,11 @@ public class Board {
 
 
     // Constructors
-    public Board(Piece[][] pieceArray){
-        pieces = pieceArray;
-    }
+    public Board(Piece[][] pieceArray){ pieces = pieceArray; }
 
-    public Board(){
-        this(Board.getEmptyBoard());
-    }
+    public Board(){ this(Board.getEmptyBoard()); }
+
+    public Board(String fenString){ this(pieceArrayFromFEN(fenString)); }
 
 
 
@@ -38,6 +36,11 @@ public class Board {
         }
     }
 
+    public boolean rmPiece(String position){
+        // An alias around putPiece with a null.
+        return putPiece(position, null);
+    }
+
     public boolean putPiece(String position, Piece piece) throws IllegalArgumentException {
         if (!Utils.isValidBoardPosition(position)){
             String exMsg = "Invalid position was encountered.";
@@ -49,10 +52,12 @@ public class Board {
         }
     }
 
-    public static Board fromFEN(String fen) throws IllegalArgumentException {
+    public Piece[][] pieceArrayFromFEN(String fen) throws IllegalArgumentException {
         if (!Utils.isValidFEN(fen)){
+
             String exMsg = "Invalid FEN was encountered.";
             throw new IllegalArgumentException(exMsg);
+
         } else {
 
             // Default: Board squares w/ no piece are null
@@ -86,9 +91,11 @@ public class Board {
                 }
             }
         }
+
+        return pieces;
     }
 
-    public String toFENFieldBoard(){
+    public String toFENPartial(){
         // Creates a String of the format 8/7/6/5/4/3/2/1 where:
         //     - Each '/'' separates a 'row' String meeting the criteria below.
         //     - The digit in the above corresponds to that row on a ches board.
@@ -102,18 +109,22 @@ public class Board {
         String result;
         String sep = "/";
         Piece currentPiece;
-        int nullCounter;
+        int lineCursor;
 
         result = "";
         for (int i = 0; i < 8; i++){ // Iterate over board's rows
-            for (int j = 0; j < 8; j++){ // Iterate over board's columns
-
-                // TODO: Method that iteratively builds this string
-
+            for (int j = 0; j < 8; ){ // Iterate over board's columns
+                do {
+                    currentPiece = getPiece(Utils.translateCoordinate(new Integer[]{i, j}));
+                    lineCursor++;
+                } while(currentPiece == null);
+                if (lineCursor > 1){ result += Integer.toString(lineCursor); }
+                result += currentPiece.getClass().toString();
+                j += lineCursor;
             }
             result += sep;
         }
-        result = result(substring(0, result.length()-1)); // Remove trailing '/'
+        result = StringUtils.chop(result); // Remove trailing '/'
     }
 
     public String toString(){

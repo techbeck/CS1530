@@ -1,112 +1,144 @@
 package com.caffeine.logic;
 
+import java.util.ArrayList;
+
 import com.caffeine.Chess;
-import com.caffeine.view.Core;
+import com.caffeine.logic.Board;
+import com.caffeine.logic.State;
 
 public class Game {
-    public Piece[] pieces = new Piece[32];
 
-	protected boolean whiteActive;
-	protected boolean userWhite;
-	protected String captByBlack;
-	protected String captByWhite;
+    // Instance vars
+    public State state;
+    public com.caffeine.engine.Core engine;
 
-	public Game() {
-		whiteActive = true;
-		userWhite = true;
-		captByBlack = "";
-		captByWhite = "";
-		initializesPieces();
-	}
 
-	public void setSide(String side) {
-		if (side.equals("white"))
-			userWhite = true;
-		else
-			userWhite = false;
-	}
 
-	public boolean userWhite() {
-		return userWhite;
-	}
+    // Constructors
+    public Game(){
+        state = new State();
+        engine = Chess.engine;
+    }
 
-	public void captureBlackPiece(String piece) {
-		captByWhite = captByWhite.concat(" " + piece);
-		Core.takenPanel.setCaptByWhite(captByWhite);
-	}
 
-	public void captureWhitePiece(String piece) {
-		captByBlack = captByBlack.concat(" " + piece);
-		Core.takenPanel.setCaptByBlack(captByBlack);
-	}
 
-	public String getCaptByBlack() {
-		return captByBlack;
-	}
 
-	public String getCaptByWhite() {
-		return captByWhite;
-	}
+/* =========================================================================
+                        View Layer API (GUI <---> Manager)
+   ========================================================================= */
 
-	public boolean move(int oldRank, int oldFile, int newRank, int newFile) {
-		String oldLoc = (char)(oldFile+65) + "" + (oldRank+1);
-		String newLoc = (char)(newFile+65) + "" + (newRank+1);
-		if (Chess.engine.move(oldLoc+newLoc)) {
-			Piece taken = getPieceMatching(newRank,newFile);
-			Piece moving = getPieceMatching(oldRank, oldFile);
 
-			if (taken != null) {
-				taken.moveTo(-1,-1); // indicates piece has been taken
-				if (taken.isWhite())
-					captureWhitePiece(taken.getType());
-				else
-					captureBlackPiece(taken.getType());
-			}
-			moving.moveTo(newRank, newFile);
-			return true;
-		}
-		return false;
-	}
+    /*
+     *   Setters: The view layer uses these to ALTER state.
+     */
+    public boolean move(String move){
+        // Takes a String composed of two valid board positions.
+        //
+        // Tests the move provided using Stockfish.
+        // If test move succeeds:
+        //     Updates the Piece's position on both Board & Piece.
+        //     Marks any captured pieces automatically.
+        //
+        // These changes manifest visually when the GUI refreshes itself.
+        boolean invalidMove;
 
-	public Piece getPieceMatching(int rank, int file) {
-		for (Piece p : pieces) {
-			if (p.getRank() == rank) {
-				if (p.getFile() == file) {
-					return p;
-				}
-			}
-		}
-		return null;
-	}
+        if (!Utils.isValidMove(move)){ return false; }
 
-	public void reset() {
-		whiteActive = true;
-		userWhite = true;
-		captByBlack = "";
-		captByWhite = "";
-		initializesPieces();
-	}
+        invalidMove = !engine.move(move);
+        if (invalidMove){ return false; } // Move didn't take in Stockfish.
+        else { return state.move(move); }
+        // (Delegated to State class for package access)
+    }
 
-	public void initializesPieces() {
-		pieces[0] = new Piece(Core.rook, 0, "black", 7, 7);
-		pieces[1] = new Piece(Core.rook, 1, "black", 7, 0);
-		pieces[2] = new Piece(Core.knight, 0, "black", 7, 1);
-		pieces[3] = new Piece(Core.knight, 1, "black", 7, 6);
-		pieces[4] = new Piece(Core.bishop, 0, "black", 7, 2);
-		pieces[5] = new Piece(Core.bishop, 1, "black", 7, 5);
-		pieces[6] = new Piece(Core.queen, 0, "black", 7, 3);
-		pieces[7] = new Piece(Core.king, 0, "black", 7, 4);
-		for (int i = 0; i < 8; i++) {
-			pieces[i+8] = new Piece(Core.pawn, i, "black", 6, i);
-			pieces[i+16] = new Piece(Core.pawn, i, "white", 1, i);
-		}
-		pieces[24] = new Piece(Core.rook, 0, "white", 0, 0);
-		pieces[25] = new Piece(Core.rook, 1, "white", 0, 7);
-		pieces[26] = new Piece(Core.knight, 0, "white", 0, 1);
-		pieces[27] = new Piece(Core.knight, 1, "white", 0, 6);
-		pieces[28] = new Piece(Core.bishop, 0, "white", 0, 2);
-		pieces[29] = new Piece(Core.bishop, 1, "white", 0, 5);
-		pieces[30] = new Piece(Core.queen, 0, "white", 0, 3);
-		pieces[31] = new Piece(Core.king, 0, "white", 0, 4);
-	}
+
+
+    /*
+     *   Getters: The view layer uses these to READ state.
+     */
+    public String getPiecesCapturedByBlack(){
+        // Returns a String of unicode symbols representing
+        // The white pieces that Black has captured.
+        return state.getPiecesCapturedByBlack();
+    }
+
+    public String getPiecesCapturedByWhite(){
+        // Returns a String of unicode symbols representing
+        // The black pieces that White has captured.
+        return state.getPiecesCapturedByBlack();
+    }
+
+    public String getBoard(){
+        // Returns the full board as one convenient String. Rows split by '/'.
+        //
+        // For example, the board:
+        //
+        // +---+---+---+---+---+---+---+---+
+        // |   |   | k | r |   |   | r |   |
+        // +---+---+---+---+---+---+---+---+
+        // |   | p | p | b |   | p |   | p |
+        // +---+---+---+---+---+---+---+---+
+        // |   |   |   |   |   |   |   |   |
+        // +---+---+---+---+---+---+---+---+
+        // | p | N | B | p |   | Q | p |   |
+        // +---+---+---+---+---+---+---+---+
+        // |   | n |   |   |   | B |   |   |
+        // +---+---+---+---+---+---+---+---+
+        // |   | P |   |   |   |   |   |   |
+        // +---+---+---+---+---+---+---+---+
+        // | P |   | P |   |   | P | P | P |
+        // +---+---+---+---+---+---+---+---+
+        // | R |   |   |   |   | R | K |   |
+        // +---+---+---+---+---+---+---+---+
+        //
+        //  Would be returned as:
+        //      --kr--r-/-ppb-p-p/--------/pNBp-Qp-/-n---B--/-P------/P-P--PPP/R----RK-
+        //
+        return state.getBoardAsString();
+    }
+
+    public ArrayList<String> getMoveHistory(){
+        // TODO
+        return new ArrayList<String>();
+    }
+
+    public boolean newGame(boolean userIsWhite){
+        // TODO
+        //     Will completely clear existing State and restart the match.
+        //
+        //     One way to implement this is to create a "New Game" save file
+        //     and make this an alias for 'loadGame(templateFilePath)'.
+        //
+        //     Another way (provided we keep ALL state in the State class)
+        //     would be to replace the existing state with 'new State()'.
+        //
+        return false;
+    }
+
+    public boolean loadGame(String filepath){
+        // TODO
+        //     Will delegate to FileManager class and create a State using the
+        //     selected file.
+        //
+        //     If there is a problem with the file, the State isn't affected and
+        //     this returns false.
+        //
+        //     Only returns 'true' if the new State was successfully loaded.
+        //
+        return false;
+    }
+
+    public boolean saveGame(String filepath){
+        // TODO
+        //     Will delegate to FileManager class which will translate the
+        //     current State into PGN format.
+        //
+        //     If there is any problem with the save file, this returns false.
+        //
+        //     Only returns 'true' if the new State was successfully saved.
+        //
+        return false;
+    }
+
+
+
 }

@@ -182,4 +182,11 @@ public class Utils {
         return position;
     }
 
+    public static String[] split(String input, int n){
+        if (StringUtils.isEmpty(input)){ return new String[]{"", ""}; }
+        if (n < 0){ return new String[]{"", input}; }
+        if (n >= input.length()){ return new String[]{input, ""}; }
+        return new String[]{ input.substring(0, n), input.substring(n, input.length()) };
+    }
+
 }
