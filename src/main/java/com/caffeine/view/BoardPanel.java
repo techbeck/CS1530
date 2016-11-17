@@ -45,7 +45,7 @@ public class BoardPanel extends JPanel {
         //        If board orientation is flipped (A1 top right), iterate backward over String.
 
         // Get Board as String, turn into an Array.
-        String boardString = Chess.game.getBoard();
+        String boardString = Chess.game.getBoardAsString();
 
         // Prepare BoardPanel.
         setLayout(new GridBagLayout());

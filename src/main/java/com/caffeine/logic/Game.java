@@ -16,8 +16,22 @@ public class Game {
 
     // Constructors
     public Game(){
-        state = new State();
+
         engine = Chess.engine;
+
+        ArrayList<String> newTags = new ArrayList<String>();
+        String template = "[%s \"%s\"]";
+        newTags.add(String.format(template, "Event", "Friendly Game"));
+        newTags.add(String.format(template, "Site", "MacLaboon Pro"));
+        newTags.add(String.format(template, "Date", java.text.SimpleDateFormat("yyyy.MM.dd").format(new Date())));
+        newTags.add(String.format(template, "Round", "1"));
+        newTags.add(String.format(template, "White", "Bill Laboon"));
+        newTags.add(String.format(template, "Black", "Lil Balloon"));
+        newTags.add(String.format(template, "Result", "*"));
+        ArrayList<String> moveSet = new ArrayList<String>();
+
+        state = new State( newgameTags, emptyMoveset );
+
     }
 
 
@@ -105,7 +119,7 @@ public class Game {
         return state.getPiecesCapturedByBlack();
     }
 
-    public String getBoard(){
+    public String getBoardAsString(){
         // Returns the full board as one convenient String.
         //
         // For example, the board:
@@ -132,6 +146,21 @@ public class Game {
         //      --kr--r--ppb-p-p--------pNBp-Qp--n---B---P------P-P--PPPR----RK-
         //
         return state.getBoardAsString();
+    }
+
+    public Character[][] getBoardAsCharArray(){
+        String b = getBoardAsString();
+        Character[][] c = new Character[][];
+        int idx;
+
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+                idx = (i * 8) + j;
+                c[i][j] = new Character(b.charAt(idx));
+            }
+        }
+
+        return c;
     }
 
     public ArrayList<String> getMoveHistory(){

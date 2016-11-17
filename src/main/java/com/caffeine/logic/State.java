@@ -34,7 +34,70 @@ public class State {
 
 
     // Constructors
-    public State(){} // Trivial Default Constructor
+    public State(
+        ArrayList<String> tags,
+        ArrayList<String> moveHistory
+    ){
+        // Process EVERY TAG
+        for (String tag : tags){
+
+            String key = parseTag(tag)[0];
+            String val = parseTag(tag)[1];
+
+            switch (key){
+                // Mandatory Seven-Tag Roster
+                case "Event":
+                    reqGameTags.put("Event", val);
+                    break;
+                case "Site":
+                    reqGameTags.put("Site", val);
+                    break;
+                case "Date":
+                    reqGameTags.put("Date", val);
+                    break;
+                case "Round":
+                    reqGameTags.put("Round", val);
+                    break;
+                case "White":
+                    reqGameTags.put("White", val);
+                    break;
+                case "Black":
+                    reqGameTags.put("Black", val);
+                    break;
+                case "Result":
+                    reqGameTags.put("Result", val);
+                    break;
+
+
+                // Special Cases (things LABOON CHESS cares about)
+                case "CapturedByBlack":
+                    capturedByBlack = new ArrayList<Piece>();
+                    for (Character c : val.toCharArray()){ capturedByBlack.add(new Piece(c)); }
+                    break;
+                case "CapturedByWhite":
+                    capturedByWhite = new ArrayList<Piece>();
+                    for (Character c : val.toCharArray()){ capturedByWhite.add(new Piece(c)); }
+                    break;
+                case "UserColor":
+                    userColor = ( StringUtils.isBlank(val) ? 'w' : val );
+                    break;
+
+                // FEN SetUp
+                case "SetUp":
+                    // TODO
+                    break;
+                case "FEN":
+                    // TODO
+                    break;
+
+                // All other tags whether or not we care.
+                default:
+                    optGameTags.put(key, val);
+                    break;
+            }
+
+        }
+    }
 
 
 
@@ -72,11 +135,6 @@ public class State {
         // of ARBITRARY tags, wherein we'll store any data OUR project needs
         // even if it's not normally in the standard PGN spec.
 
-        // TODO
-        return false;
-    }
-
-    public boolean setFEN(String fen){
         // TODO
         return false;
     }
@@ -151,6 +209,19 @@ public class State {
         return true;
     }
 
+
+
+    // Private Methods
+    private String[] parseTag(String tag){
+        if (StringUtils.isBlank(tag)){ return null; }
+        rawTag = tag.substring(1, tag.length()-1); // Remove brackets
+        String[] keyValPair = rawTag.split(" ", 2);
+        keyValPair[1] = keyValPair.substring(1, val.length()-1); // Remove quotes
+        return keyValPair;
+    }
+
+
+
 // ============================================================================
 //      GUI-Wrapped Functions (For State package-level access)
 // ============================================================================
@@ -202,4 +273,5 @@ public class State {
 
         return result;
     }
+
 }

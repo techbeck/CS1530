@@ -40,9 +40,13 @@ public class Piece {
      * @param type  The type of chess piece, defined as valid above
      * @param side  The side, eg. black or white
      */
-    public Piece(Character type, String position) {
-        this.type = type;       // eg. 'K', 'r', or "Piece.BLACK_QUEEN"
-        this.position = position.toLowerCase();
+    public Piece(Character newType, String newPosition) {
+        type = newType;       // eg. 'K', 'r', or "Piece.BLACK_QUEEN"
+        position = (StringUtils.isBlank(newPosition) ? null : newPosition.toLowerCase());
+    }
+
+    public Piece(Character newType){
+        this(newType, null);
     }
 
 
