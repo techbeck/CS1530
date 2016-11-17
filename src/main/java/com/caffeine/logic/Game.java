@@ -50,57 +50,6 @@ public class Game {
         // (Delegated to State class for package access)
     }
 
-
-
-    /*
-     *   Getters: The view layer uses these to READ state.
-     */
-    public String getPiecesCapturedByBlack(){
-        // Returns a String of unicode symbols representing
-        // The white pieces that Black has captured.
-        return state.getPiecesCapturedByBlack();
-    }
-
-    public String getPiecesCapturedByWhite(){
-        // Returns a String of unicode symbols representing
-        // The black pieces that White has captured.
-        return state.getPiecesCapturedByBlack();
-    }
-
-    public String getBoard(){
-        // Returns the full board as one convenient String. Rows split by '/'.
-        //
-        // For example, the board:
-        //
-        // +---+---+---+---+---+---+---+---+
-        // |   |   | k | r |   |   | r |   |
-        // +---+---+---+---+---+---+---+---+
-        // |   | p | p | b |   | p |   | p |
-        // +---+---+---+---+---+---+---+---+
-        // |   |   |   |   |   |   |   |   |
-        // +---+---+---+---+---+---+---+---+
-        // | p | N | B | p |   | Q | p |   |
-        // +---+---+---+---+---+---+---+---+
-        // |   | n |   |   |   | B |   |   |
-        // +---+---+---+---+---+---+---+---+
-        // |   | P |   |   |   |   |   |   |
-        // +---+---+---+---+---+---+---+---+
-        // | P |   | P |   |   | P | P | P |
-        // +---+---+---+---+---+---+---+---+
-        // | R |   |   |   |   | R | K |   |
-        // +---+---+---+---+---+---+---+---+
-        //
-        //  Would be returned as:
-        //      --kr--r-/-ppb-p-p/--------/pNBp-Qp-/-n---B--/-P------/P-P--PPP/R----RK-
-        //
-        return state.getBoardAsString();
-    }
-
-    public ArrayList<String> getMoveHistory(){
-        // TODO
-        return new ArrayList<String>();
-    }
-
     public boolean newGame(boolean userIsWhite){
         // TODO
         //     Will completely clear existing State and restart the match.
@@ -140,5 +89,59 @@ public class Game {
     }
 
 
+
+    /*
+     *   Getters: The view layer uses these to READ state.
+     */
+    public String getPiecesCapturedByBlack(){
+        // Returns a String of unicode symbols representing
+        // The white pieces that Black has captured.
+        return state.getPiecesCapturedByBlack();
+    }
+
+    public String getPiecesCapturedByWhite(){
+        // Returns a String of unicode symbols representing
+        // The black pieces that White has captured.
+        return state.getPiecesCapturedByBlack();
+    }
+
+    public String getBoard(){
+        // Returns the full board as one convenient String.
+        //
+        // For example, the board:
+        //
+        // +---+---+---+---+---+---+---+---+
+        // |   |   | k | r |   |   | r |   |
+        // +---+---+---+---+---+---+---+---+
+        // |   | p | p | b |   | p |   | p |
+        // +---+---+---+---+---+---+---+---+
+        // |   |   |   |   |   |   |   |   |
+        // +---+---+---+---+---+---+---+---+
+        // | p | N | B | p |   | Q | p |   |
+        // +---+---+---+---+---+---+---+---+
+        // |   | n |   |   |   | B |   |   |
+        // +---+---+---+---+---+---+---+---+
+        // |   | P |   |   |   |   |   |   |
+        // +---+---+---+---+---+---+---+---+
+        // | P |   | P |   |   | P | P | P |
+        // +---+---+---+---+---+---+---+---+
+        // | R |   |   |   |   | R | K |   |
+        // +---+---+---+---+---+---+---+---+
+        //
+        //  Would be returned as:
+        //      --kr--r--ppb-p-p--------pNBp-Qp--n---B---P------P-P--PPPR----RK-
+        //
+        return state.getBoardAsString();
+    }
+
+    public ArrayList<String> getMoveHistory(){
+        // TODO
+        return new ArrayList<String>();
+    }
+
+    public Character getUserColor(){
+        // Returns either 'w' or 'b'.
+        return state.getUserColor();
+    }
 
 }

@@ -84,37 +84,12 @@ public class Piece {
     public String getPosition(){ return position; }
 
     /**
-     * Returns the Unicode character corresponding to this Piece type.
+     * Returns the Unicode symbol corresponding to this Piece type.
      *
      * @return A single unicode character as a String.
      */
     public String getUnicode() {
-        Character typeLower = Character.toLowerCase(type);
-        String unicode;
-        switch(typeLower) {
-            case 'p':
-                unicode = UNICODE_PAWN;
-                break;
-            case 'r':
-                unicode = UNICODE_ROOK;
-                break;
-            case 'n':
-                unicode = UNICODE_KNIGHT;
-                break;
-            case 'b':
-                unicode = UNICODE_BISHOP;
-                break;
-            case 'k':
-                unicode = UNICODE_KING;
-                break;
-            case 'q':
-                unicode = UNICODE_QUEEN;
-                break;
-            default:
-                unicode = "?";
-                break;
-        }
-        return unicode;
+        return Utils.getPieceAsUnicode(type);
     }
 
 

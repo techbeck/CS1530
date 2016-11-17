@@ -1,14 +1,15 @@
 package com.caffeine.view;
 
-import com.caffeine.Chess;
-import com.caffeine.logic.Piece;
-
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.event.*;
 import java.awt.*;
+
+import com.caffeine.Chess;
+import com.caffeine.logic.Piece;
+import com.caffeine.logic.Utils;
 
 
 /**
@@ -190,10 +191,10 @@ public class PanelButtonListener implements ActionListener {
             }
         } else if (button.getText().equals("Flip the Board")) {
             BoardPanel replacement = null;
-            if (Core.boardPanel.blackOnTop()) {
-                replacement = new BoardPanel("white");
+            if (Core.boardPanel.isFlipped()) {
+                replacement = new BoardPanel(true);
             } else {
-                replacement = new BoardPanel("black");
+                replacement = new BoardPanel(false);
             }
             Container center = Core.boardPanel.getParent();
             Component[] components = center.getComponents();
@@ -208,13 +209,14 @@ public class PanelButtonListener implements ActionListener {
             Core.boardPanel = replacement;
             BoardListener.selected = null;
 
-            // Place pieces in correct board locations
-            for (Piece p : Chess.game.pieces) {
-                int rank = p.getRank();
-                int file = p.getFile();
-                if (rank == -1) continue;
-                Core.squares[7-rank][file].setPiece(p);
-            }
+            // // This shouldn't be needed anymore
+            // // Place pieces in correct board locations
+            // for (Piece p : Chess.game.pieces) {
+            //     int rank = p.getRank();
+            //     int file = p.getFile();
+            //     if (rank == -1) continue;
+            //     Core.squares[7-rank][file].setPiece(p);
+            // }
 
             // Redo previously done theme change
             if (Core.currentTheme != 0) {

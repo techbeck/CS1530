@@ -29,6 +29,7 @@ public class State {
     // Supplemental PGN Data
     private ArrayList<Piece> capturedByBlack; // Collection of 'w' Pieces taken
     private ArrayList<Piece> capturedByWhite; // Collection of 'b' Pieces taken
+    private Character userColor; // 'w' or 'b'
 
 
 
@@ -61,6 +62,7 @@ public class State {
 
     public ArrayList<Piece> getCapturedByWhite(){ return capturedByWhite; }
 
+    public Character getUserColor(){ return userColor; }
 
 
     // Setters: Anything that changes alters State. Returns success status.
@@ -142,6 +144,12 @@ public class State {
         return true;
     }
 
+    public boolean setUserColor(Character color){
+        String validChars = "wb";
+        if (!validChars.contains(color.toString())){ return false; }
+        userColor = color;
+        return true;
+    }
 
 // ============================================================================
 //      GUI-Wrapped Functions (For State package-level access)

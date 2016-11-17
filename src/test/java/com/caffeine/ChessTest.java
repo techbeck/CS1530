@@ -33,6 +33,7 @@ import com.caffeine.view.*;
                                 Integration Tests
 ============================================================================ */
 public class ChessTest {
+/*
 
     @Test // Sanity Check -- Is Chess properly imported and accessible?
     public void testChessIntegrated(){
@@ -188,4 +189,5 @@ public class ChessTest {
         squareFix = new JButtonFixture(robot, square);
         squareFix.foreground().requireEqualTo(Color.WHITE);
     }
+*/
 }

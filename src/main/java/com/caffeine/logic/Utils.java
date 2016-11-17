@@ -13,6 +13,14 @@ import org.apache.commons.lang3.StringUtils;
 */
 public class Utils {
 
+    // Unicode Constants
+    public static final String UNICODE_PAWN = "\u265F";
+    public static final String UNICODE_ROOK = "\u265C";
+    public static final String UNICODE_KING = "\u265A";
+    public static final String UNICODE_QUEEN = "\u265B";
+    public static final String UNICODE_BISHOP = "\u265D";
+    public static final String UNICODE_KNIGHT = "\u265E";
+
     public static boolean isValidFEN(String fen){
         /*  Assert that properties of the String are true, else return false.
             Properties can be found at:
@@ -187,6 +195,41 @@ public class Utils {
         if (n < 0){ return new String[]{"", input}; }
         if (n >= input.length()){ return new String[]{input, ""}; }
         return new String[]{ input.substring(0, n), input.substring(n, input.length()) };
+    }
+
+    /**
+     * Returns the Unicode symbol corresponding to the SAN representation of
+     * a given chess piece. Returns "?" if the character passed wasn't valid.
+     *
+     * @return A single unicode character as a String.
+     */
+    public static String getPieceAsUnicode(Character type){
+        Character typeLower = Character.toLowerCase(type);
+        String unicode;
+        switch(typeLower) {
+            case 'p':
+                unicode = Utils.UNICODE_PAWN;
+                break;
+            case 'r':
+                unicode = Utils.UNICODE_ROOK;
+                break;
+            case 'n':
+                unicode = Utils.UNICODE_KNIGHT;
+                break;
+            case 'b':
+                unicode = Utils.UNICODE_BISHOP;
+                break;
+            case 'k':
+                unicode = Utils.UNICODE_KING;
+                break;
+            case 'q':
+                unicode = Utils.UNICODE_QUEEN;
+                break;
+            default:
+                unicode = "?";
+                break;
+        }
+        return unicode;
     }
 
 }

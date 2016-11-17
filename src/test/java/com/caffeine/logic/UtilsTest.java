@@ -141,14 +141,14 @@ public class UtilsTest {
 
     @Test
     public void testTranslateBoardPositionToArrayIdx(){
-        if ( !Arrays.equals(Utils.translateCoordinate("a1"), new Integer[]{0,0}){ fail(); }
-        if ( !Arrays.equals(Utils.translateCoordinate("b2"), new Integer[]{1,1}){ fail(); }
-        if ( !Arrays.equals(Utils.translateCoordinate("c3"), new Integer[]{2,2}){ fail(); }
-        if ( !Arrays.equals(Utils.translateCoordinate("d4"), new Integer[]{3,3}){ fail(); }
-        if ( !Arrays.equals(Utils.translateCoordinate("e5"), new Integer[]{4,4}){ fail(); }
-        if ( !Arrays.equals(Utils.translateCoordinate("f6"), new Integer[]{5,5}){ fail(); }
-        if ( !Arrays.equals(Utils.translateCoordinate("g7"), new Integer[]{6,6}){ fail(); }
-        if ( !Arrays.equals(Utils.translateCoordinate("h8"), new Integer[]{7,7}){ fail(); }
+        if ( !Arrays.equals(Utils.translateCoordinate("a1"), new Integer[]{0,0}) ){ fail(); }
+        if ( !Arrays.equals(Utils.translateCoordinate("b2"), new Integer[]{1,1}) ){ fail(); }
+        if ( !Arrays.equals(Utils.translateCoordinate("c3"), new Integer[]{2,2}) ){ fail(); }
+        if ( !Arrays.equals(Utils.translateCoordinate("d4"), new Integer[]{3,3}) ){ fail(); }
+        if ( !Arrays.equals(Utils.translateCoordinate("e5"), new Integer[]{4,4}) ){ fail(); }
+        if ( !Arrays.equals(Utils.translateCoordinate("f6"), new Integer[]{5,5}) ){ fail(); }
+        if ( !Arrays.equals(Utils.translateCoordinate("g7"), new Integer[]{6,6}) ){ fail(); }
+        if ( !Arrays.equals(Utils.translateCoordinate("h8"), new Integer[]{7,7}) ){ fail(); }
     }
 
 }

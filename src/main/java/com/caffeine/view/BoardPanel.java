@@ -1,65 +1,113 @@
 package com.caffeine.view;
 
-import com.caffeine.Chess;
-import com.caffeine.logic.Piece;
-
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 
+import com.caffeine.Chess;
+import com.caffeine.logic.Utils;
+
 public class BoardPanel extends JPanel {
-    private boolean blackOnTop;
-    
-    public BoardPanel() {
+
+    private boolean orientationFlipped;
+
+    // Default Constructor
+    public BoardPanel(boolean flipped){
         setName("boardPanel");
         setBackground(Color.decode(Core.themes[0][0]));
-        blackOnTop = true;
-        initializeBoard();
-        initializePiecePlacement();
+        orientationFlipped = flipped;
+        drawBoard();
     }
 
-    public BoardPanel(String top) {
-        setName("boardPanel");
-        setBackground(Color.decode(Core.themes[0][0]));
-        if (top.equals("black")) {
-            blackOnTop = true;
-        } else {
-            blackOnTop = false;
-        }
-        initializeBoard();
+    // Shorthand Constructor
+    public BoardPanel(){
+        this(false);
     }
 
-    /**
-     * Returns whether or not black in at the top of the board or the bottom
-     * 
-     * @return  true if black on top, false if black on bottom
-     */
-    public boolean blackOnTop() {
-        return blackOnTop;
+
+
+    // Public Methods
+    public boolean isFlipped(){
+        return orientationFlipped;
     }
 
-    /**
-     *  Initializes an 8x8 Array of buttons to serve as the Core.squares
-     *  for the chess board, along with grid notation.
-     *  Can initialize to black on top or white on top depending on boolean.
-     *
-     *  @param boardPanel the JPanel upon which to place the game Core.squares on
-     */
-    private void initializeBoard() {
 
+
+    // Private Methods
+    private void drawBoard(){
+        // 1. Get a String of length 64 representing the board. Represents each
+        //    piece using Standard Algebraic Notation (PRNBQKprnbrqk).
+        // 2. Initialize and configure the BoardPanel.
+        // 3. Iterate over String, creating new BoardSquares as we do.
+        //        If board orientation is normal (A1 at bottom left), iterate forward over String.
+        //        If board orientation is flipped (A1 top right), iterate backward over String.
+
+        // Get Board as String, turn into an Array.
+        String boardString = Chess.game.getBoard();
+
+        // Prepare BoardPanel.
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         BoardListener boardListener = new BoardListener();
         boolean isWhiteSquare = true;
 
-        if (blackOnTop) {
+        // Create 8x8 Array representation of the Board based on our rowStrings.
+        //     Top Left square is A8 ([0,0]).
+        //     Bottom Right square is H1 ([8,8]).
+        // Each piece marked by the SAN equivalent.
+        // Empty board squares represented by '-'.
+        if (isFlipped()){
 
-            for (byte i = 0; i < 8; i++) {
+            // Iterate over String backwards.
+            for (int i = 7; i >= 0; i--){
+                // Configure Row
+                JLabel notationRow = new JLabel(String.valueOf( 8 - i ), SwingConstants.CENTER);
+                c.fill = GridBagConstraints.BOTH;
+                c.gridx = 0;
+                c.gridy = 8 - ( i + 1 );
+                c.insets = Core.sidePadding;
+                c.weightx = Core.AVERAGE_WEIGHT;
+                c.weighty = Core.AVERAGE_WEIGHT;
+                add(notationRow, c);
+                c.insets = Core.noPadding;
+                // Configure each BoardSquare and add it.
+                for (int j = 7; j >= 0; j--){
+                    int boardStringIdx = (i * 8) + j;
+                    Core.squares[i][j] = new BoardSquare();
+                    Core.squares[i][j].setBackgroundColor(isWhiteSquare);
+                    Core.squares[i][j].setName("BoardSquare:" + Utils.translateCoordinate(new Integer[]{i, j}));
+                    Core.squares[i][j].addActionListener(boardListener);
+                    Core.squares[i][j].setPiece(boardString.charAt(boardStringIdx)); // SAN notation
+                    c.fill = GridBagConstraints.BOTH;
+                    c.gridx = 8 - j;
+                    c.gridy = 8 - ( i + 1 );
+                    c.weightx = Core.AVERAGE_WEIGHT;
+                    c.weighty = Core.AVERAGE_WEIGHT;
+                    add(Core.squares[i][j], c);
+                    isWhiteSquare = !isWhiteSquare;
+                }
+            }
 
-                // grid notation row name
-                JLabel notationRow = new JLabel(String.valueOf(8-i), SwingConstants.CENTER);
+            // Last row are the board's File markers (A, B, C, ..., H).
+            for (int i = 7; i >= 0; i--) {
+                JLabel notationColumn = new JLabel(String.valueOf((char)( i + 65 )), SwingConstants.CENTER);
+                c.fill = GridBagConstraints.BOTH;
+                c.gridx = 8 - i;
+                c.gridy = 8;
+                c.insets = Core.topBottomPadding;
+                c.weightx = Core.AVERAGE_WEIGHT;
+                c.weighty = Core.AVERAGE_WEIGHT;
+                add(notationColumn, c);
+            }
+
+        } else {
+
+            // Iterate over String forwards.
+            for (int i = 0; i <= 7; i++){
+                // Row Labelling
+                JLabel notationRow = new JLabel(String.valueOf( 8 - i ), SwingConstants.CENTER);
                 c.fill = GridBagConstraints.BOTH;
                 c.gridx = 0;
                 c.gridy = i;
@@ -68,110 +116,35 @@ public class BoardPanel extends JPanel {
                 c.weighty = Core.AVERAGE_WEIGHT;
                 add(notationRow, c);
                 c.insets = Core.noPadding;
-
-                //row of buttons
-                for (byte j = 0; j < 8; j++) {
-                    
+                for (int j = 0; j <= 7; j++){
+                    int boardStringIdx = (i * 8) + j;
                     Core.squares[i][j] = new BoardSquare();
                     Core.squares[i][j].setBackgroundColor(isWhiteSquare);
-                    Core.squares[i][j].setName("BoardSquare:" + (char)(j+65) + "," + (8-i));
+                    Core.squares[i][j].setName("BoardSquare:" + Utils.translateCoordinate(new Integer[]{i, j}));
                     Core.squares[i][j].addActionListener(boardListener);
+                    Core.squares[i][j].setPiece(boardString.charAt(boardStringIdx)); // SAN notation
                     c.fill = GridBagConstraints.BOTH;
-                    c.gridx = j+1;
+                    c.gridx = j + 1;
                     c.gridy = i;
                     c.weightx = Core.AVERAGE_WEIGHT;
                     c.weighty = Core.AVERAGE_WEIGHT;
                     add(Core.squares[i][j], c);
                     isWhiteSquare = !isWhiteSquare;
                 }
-
-                isWhiteSquare = !isWhiteSquare; // creates the checkered pattern of Core.squares
             }
 
-            // grid notation column names
-            for (byte i = 0; i < 8; i++) {
-
-                JLabel notationColumn = new JLabel(String.valueOf((char)(i+65)), SwingConstants.CENTER);
+            // Last row are the board's File markers (A, B, C, ..., H).
+            for (int i = 0; i <= 7; i++) {
+                JLabel notationColumn = new JLabel(String.valueOf((char)(i + 65)), SwingConstants.CENTER);
                 c.fill = GridBagConstraints.BOTH;
-                c.gridx = i+1;
+                c.gridx = i + 1;
                 c.gridy = 8;
                 c.insets = Core.topBottomPadding;
                 c.weightx = Core.AVERAGE_WEIGHT;
                 c.weighty = Core.AVERAGE_WEIGHT;
                 add(notationColumn, c);
             }
-        } else { // loops run in reverse to flip the board from standard
 
-            for (byte i = 7; i >= 0; i--) {
-
-                // grid notation row name
-                JLabel notationRow = new JLabel(String.valueOf(8-i), SwingConstants.CENTER);
-                c.fill = GridBagConstraints.BOTH;
-                c.gridx = 0;
-                c.gridy = 8-(i+1);
-                c.insets = Core.sidePadding;
-                c.weightx = Core.AVERAGE_WEIGHT;
-                c.weighty = Core.AVERAGE_WEIGHT;
-                add(notationRow, c);
-                c.insets = Core.noPadding;
-
-                //row of buttons
-                for (byte j = 7; j >= 0; j--) {
-                    
-                    Core.squares[i][j] = new BoardSquare();
-                    Core.squares[i][j].setBackgroundColor(isWhiteSquare);
-                    Core.squares[i][j].setName("BoardSquare:" + (char)(j+65) + "," + (8-i));
-                    Core.squares[i][j].addActionListener(boardListener);
-                    c.fill = GridBagConstraints.BOTH;
-                    c.gridx = 8-(j);
-                    c.gridy = 8-(i+1);
-                    c.weightx = Core.AVERAGE_WEIGHT;
-                    c.weighty = Core.AVERAGE_WEIGHT;
-                    add(Core.squares[i][j], c);
-                    isWhiteSquare = !isWhiteSquare;
-                }
-
-                isWhiteSquare = !isWhiteSquare; // creates the checkered pattern of Core.squares
-            }
-
-            // grid notation column names
-            for (byte i = 7; i >= 0; i--) {
-
-                JLabel notationColumn = new JLabel(String.valueOf((char)(i+65)), SwingConstants.CENTER);
-                c.fill = GridBagConstraints.BOTH;
-                c.gridx = 8-i;
-                c.gridy = 8;
-                c.insets = Core.topBottomPadding;
-                c.weightx = Core.AVERAGE_WEIGHT;
-                c.weighty = Core.AVERAGE_WEIGHT;
-                add(notationColumn, c);
-            }
         }
-    }
-
-    /** 
-     * Initializes board layout with black pieces on top
-     */
-    private void initializePiecePlacement() {
-        Core.squares[0][7].setPiece(Chess.game.pieces[0]);
-        Core.squares[0][0].setPiece(Chess.game.pieces[1]);
-        Core.squares[0][1].setPiece(Chess.game.pieces[2]);
-        Core.squares[0][6].setPiece(Chess.game.pieces[3]);
-        Core.squares[0][2].setPiece(Chess.game.pieces[4]);
-        Core.squares[0][5].setPiece(Chess.game.pieces[5]);
-        Core.squares[0][3].setPiece(Chess.game.pieces[6]);
-        Core.squares[0][4].setPiece(Chess.game.pieces[7]);
-        for (int i = 0; i < 8; i++) {
-            Core.squares[1][i].setPiece(Chess.game.pieces[i+8]);
-            Core.squares[6][i].setPiece(Chess.game.pieces[i+16]);
-        }
-        Core.squares[7][0].setPiece(Chess.game.pieces[24]);
-        Core.squares[7][7].setPiece(Chess.game.pieces[25]);
-        Core.squares[7][1].setPiece(Chess.game.pieces[26]);
-        Core.squares[7][6].setPiece(Chess.game.pieces[27]);
-        Core.squares[7][2].setPiece(Chess.game.pieces[28]);
-        Core.squares[7][5].setPiece(Chess.game.pieces[29]);
-        Core.squares[7][3].setPiece(Chess.game.pieces[30]);
-        Core.squares[7][4].setPiece(Chess.game.pieces[31]);
     }
 }
