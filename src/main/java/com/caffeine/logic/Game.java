@@ -1,6 +1,8 @@
 package com.caffeine.logic;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 import com.caffeine.Chess;
 import com.caffeine.logic.Board;
@@ -19,16 +21,18 @@ public class Game {
 
         engine = Chess.engine;
 
-        ArrayList<String> newTags = new ArrayList<String>();
+        ArrayList<String> newgameTags = new ArrayList<String>();
         String template = "[%s \"%s\"]";
-        newTags.add(String.format(template, "Event", "Friendly Game"));
-        newTags.add(String.format(template, "Site", "MacLaboon Pro"));
-        newTags.add(String.format(template, "Date", java.text.SimpleDateFormat("yyyy.MM.dd").format(new Date())));
-        newTags.add(String.format(template, "Round", "1"));
-        newTags.add(String.format(template, "White", "Bill Laboon"));
-        newTags.add(String.format(template, "Black", "Lil Balloon"));
-        newTags.add(String.format(template, "Result", "*"));
-        ArrayList<String> moveSet = new ArrayList<String>();
+        newgameTags.add(String.format(template, "Event", "Friendly Game"));
+        newgameTags.add(String.format(template, "Site", "MacLaboon Pro"));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+        Date d = new Date();
+        newgameTags.add(String.format(template, "Date", sdf.format(d)));
+        newgameTags.add(String.format(template, "Round", "1"));
+        newgameTags.add(String.format(template, "White", "Bill Laboon"));
+        newgameTags.add(String.format(template, "Black", "Lil Balloon"));
+        newgameTags.add(String.format(template, "Result", "*"));
+        ArrayList<String> emptyMoveset = new ArrayList<String>();
 
         state = new State( newgameTags, emptyMoveset );
 
@@ -150,7 +154,7 @@ public class Game {
 
     public Character[][] getBoardAsCharArray(){
         String b = getBoardAsString();
-        Character[][] c = new Character[][];
+        Character[][] c = new Character[8][8];
         int idx;
 
         for (int i = 0; i < 8; i++){

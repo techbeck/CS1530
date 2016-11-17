@@ -1,5 +1,7 @@
 package com.caffeine.logic;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Piece {
 
     // Constants

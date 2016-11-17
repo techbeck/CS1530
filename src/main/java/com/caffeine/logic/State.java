@@ -79,15 +79,15 @@ public class State {
                     for (Character c : val.toCharArray()){ capturedByWhite.add(new Piece(c)); }
                     break;
                 case "UserColor":
-                    userColor = ( StringUtils.isBlank(val) ? 'w' : val );
+                    userColor = ( StringUtils.isBlank(val) ? 'w' : val.toCharArray()[0] );
                     break;
 
                 // FEN SetUp
                 case "SetUp":
-                    // TODO
+                    optGameTags.put("SetUp", val);
                     break;
                 case "FEN":
-                    // TODO
+                    optGameTags.put("FEN", val);
                     break;
 
                 // All other tags whether or not we care.
@@ -95,8 +95,19 @@ public class State {
                     optGameTags.put(key, val);
                     break;
             }
-
         }
+
+        // TODO: Method that reads 'SetUp' tag.
+        //           If '0', set these vals to newgame defaults:
+        //           If '1', sets these vals accordingly:
+        board = null;
+        activeColor = null;
+        castlers = null;
+        enPassant = null;
+        halfMoves = null;
+        fullMoves = null;
+
+        // Tags are processed. FEN parsed. Now process the move history.
     }
 
 
@@ -214,9 +225,9 @@ public class State {
     // Private Methods
     private String[] parseTag(String tag){
         if (StringUtils.isBlank(tag)){ return null; }
-        rawTag = tag.substring(1, tag.length()-1); // Remove brackets
+        String rawTag = tag.substring(1, tag.length()-1); // Remove brackets
         String[] keyValPair = rawTag.split(" ", 2);
-        keyValPair[1] = keyValPair.substring(1, val.length()-1); // Remove quotes
+        keyValPair[1] = keyValPair[1].substring(1, keyValPair[1].length()-1); // Remove quotes
         return keyValPair;
     }
 
