@@ -202,6 +202,7 @@ public class Game {
         	}
         }
         for (int i = pieceInd; i < 32; i++) {
+        	// taken pieces no longer in array, these are placeholders
         	pieces[pieceInd] = new Piece("null","null",-1,-1);
         }
 
