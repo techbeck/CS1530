@@ -192,9 +192,10 @@ public class Game {
         			if (rowCursor == 0) {
         				pieces[pieceInd] = new Piece(typeToUnicode(currentChar),typeToSide(currentChar),7-i,j);
         			} else {
-        				pieces[pieceInd] = new Piece(typeToUnicode(currentChar),typeToSide(currentChar),7-i,j+rowCursor-1);
+        				pieces[pieceInd] = new Piece(typeToUnicode(currentChar),typeToSide(currentChar),7-i,rowCursor);
         			}
         			pieceInd++;
+        			rowCursor++;
         		} else { // number of empty squares
         			rowCursor += charVal;
         		}
