@@ -11,6 +11,11 @@ import com.caffeine.logic.Utils;
 
 public class Board {
 
+    // Constants
+    public final static String NEW_BOARD_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
+
+
     // Board Represented by an 8x8 Piece array.
     private Piece[][] pieces = new Piece[8][8];
 
@@ -127,7 +132,6 @@ public class Board {
             String[] board = fen.split(" ", 2)[0].split("/");
             // The current line examined in the for loop, and its length
             String currentLine;
-            int currentLineLen;
             // The current character in the currentLine String AND its num val.
             Character currentChar;
             Integer charVal;
@@ -135,9 +139,8 @@ public class Board {
             int rowCursor;
             for (int i = 0; i < 8; i++){ // Iterate over rows
                 currentLine = board[i];
-                currentLineLen = currentLine.length();
                 rowCursor = 0;
-                for (int j = 0; i < currentLineLen; j++){ // Iterate over currentLine
+                for (int j = 0; j < currentLine.length(); j++){ // Iterate over currentLine
                     currentChar = currentLine.charAt(j); // Current character.
                     charVal = CharUtils.toIntValue(currentChar, 0); // Numeric value of current character
                     if (charVal == 0){

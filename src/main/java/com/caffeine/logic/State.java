@@ -1,7 +1,9 @@
 package com.caffeine.logic;
 
+import java.lang.StringBuilder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -34,103 +36,75 @@ public class State {
 
 
     // Constructors
-    public State(
-        ArrayList<String> tags,
-        ArrayList<String> moveHistory
-    ){
-        // Process EVERY TAG
-        for (String tag : tags){
-
-            String key = parseTag(tag)[0];
-            String val = parseTag(tag)[1];
-
-            switch (key){
-                // Mandatory Seven-Tag Roster
-                case "Event":
-                    reqGameTags.put("Event", val);
-                    break;
-                case "Site":
-                    reqGameTags.put("Site", val);
-                    break;
-                case "Date":
-                    reqGameTags.put("Date", val);
-                    break;
-                case "Round":
-                    reqGameTags.put("Round", val);
-                    break;
-                case "White":
-                    reqGameTags.put("White", val);
-                    break;
-                case "Black":
-                    reqGameTags.put("Black", val);
-                    break;
-                case "Result":
-                    reqGameTags.put("Result", val);
-                    break;
-
-
-                // Special Cases (things LABOON CHESS cares about)
-                case "CapturedByBlack":
-                    capturedByBlack = new ArrayList<Piece>();
-                    for (Character c : val.toCharArray()){ capturedByBlack.add(new Piece(c)); }
-                    break;
-                case "CapturedByWhite":
-                    capturedByWhite = new ArrayList<Piece>();
-                    for (Character c : val.toCharArray()){ capturedByWhite.add(new Piece(c)); }
-                    break;
-                case "UserColor":
-                    userColor = ( StringUtils.isBlank(val) ? 'w' : val.toCharArray()[0] );
-                    break;
-
-                // FEN SetUp
-                case "SetUp":
-                    optGameTags.put("SetUp", val);
-                    break;
-                case "FEN":
-                    optGameTags.put("FEN", val);
-                    break;
-
-                // All other tags whether or not we care.
-                default:
-                    optGameTags.put(key, val);
-                    break;
-            }
-        }
-
-        // TODO: Method that reads 'SetUp' tag.
-        //           If '0', set these vals to newgame defaults:
-        //           If '1', sets these vals accordingly:
-        board = null;
-        activeColor = null;
-        castlers = null;
-        enPassant = null;
-        halfMoves = null;
-        fullMoves = null;
-
-        // Tags are processed. FEN parsed. Now process the move history.
+    public State(){
+        // Always starts brand new game
+        reqGameTags = new HashMap<String, String>();
+        optGameTags = new HashMap<String, String>();
+        board = new Board(Board.NEW_BOARD_FEN);
+        activeColor = 'w';
+        castlers = "KQkq";
+        enPassant = "-";
+        halfMoves = 0;
+        fullMoves = 1;
+        capturedByBlack = new ArrayList<Piece>();
+        capturedByWhite = new ArrayList<Piece>();
+        userColor = 'w';
     }
 
 
 
     // Getters: Anything that reads State.
-    public String getTag(String tagName){ return ""; }
-
-    public Board getBoard(){ return board; }
-
-    public String getFEN(){
-        // TODO
-        return "";
+    public String getTag(String tagName){
+        String result;
+        if (StringUtils.isBlank(tagName)){ return ""; }
+        result = reqGameTags.getOrDefault(tagName, "");
+        if (StringUtils.isBlank(result)){ return result; }
+        result = optGameTags.getOrDefault(tagName, "");
+        return result;
     }
 
-    public boolean activeColorWhite(){ return (activeColor.equals('w')); }
+    public Board getBoard(){
+        return board;
+    }
 
-    public String getCastlers(){ return castlers; }
+    public boolean activeColorWhite(){
+        return (activeColor.equals('w'));
+    }
 
-    public String getEnPassant(){ return enPassant; }
+    public String getCastlers(){
+        return castlers;
+    }
 
-    public Integer getHalfMoves(){ return halfMoves; }
+    public String getEnPassant(){
+        return enPassant;
+    }
 
-    public Integer getFullMoves(){ return fullMoves; }
+    public Integer getHalfMoves(){
+        return halfMoves;
+    }
+
+    public Integer getFullMoves(){
+        return fullMoves;
+    }
+
+    public String getFEN(){
+        String fenBoardString = board.toFENPartial();
+        String fenActiveColor = ( activeColorWhite() ? "w" : "b" );
+        String fenCastlers = getCastlers();
+        String fenEnPassant = getEnPassant();
+        String fenHalfMoves = getHalfMoves().toString();
+        String fenFullMoves = getFullMoves().toString();
+        String fen = String.format(
+            "%s %s %s %s %s %s",
+            fenBoardString,
+            fenActiveColor,
+            fenCastlers,
+            fenEnPassant,
+            fenHalfMoves,
+            fenFullMoves
+        );
+        return fen;
+    }
 
     public ArrayList<Piece> getCapturedByBlack(){ return capturedByBlack; }
 
@@ -140,14 +114,80 @@ public class State {
 
 
     // Setters: Anything that changes alters State. Returns success status.
-    public boolean setTag(String TagName){
+    public boolean addTag(String key, String val){
         // PGN allows for arbitrary information to be stored. We'll do this
         // by having a hashmap of MANDATORY tags (see spec) and a hashmap
         // of ARBITRARY tags, wherein we'll store any data OUR project needs
         // even if it's not normally in the standard PGN spec.
+        switch (key){
+        // Mandatory Seven-Tag Roster
+        case "Event":
+            reqGameTags.put("Event", val);
+            break;
+        case "Site":
+            reqGameTags.put("Site", val);
+            break;
+        case "Date":
+            reqGameTags.put("Date", val);
+            break;
+        case "Round":
+            reqGameTags.put("Round", val);
+            break;
+        case "White":
+            reqGameTags.put("White", val);
+            break;
+        case "Black":
+            reqGameTags.put("Black", val);
+            break;
+        case "Result":
+            reqGameTags.put("Result", val);
+            break;
+        // Special Cases (things LABOON CHESS cares about)
+        case "CapturedByBlack":
+            capturedByBlack = new ArrayList<Piece>();
+            for (Character c : val.toCharArray()){ capturedByBlack.add(new Piece(c)); }
+            break;
+        case "CapturedByWhite":
+            capturedByWhite = new ArrayList<Piece>();
+            for (Character c : val.toCharArray()){ capturedByWhite.add(new Piece(c)); }
+            break;
+        case "UserColor":
+            String validColors = "wb";
+            if (validColors.contains(val)){ userColor = val.toCharArray()[0]; }
+            break;
+        // FEN SetUp
+        case "SetUp":
+            String validSetUps = "01";
+            if (validSetUps.contains(val)){ optGameTags.put("SetUp", val); }
+            break;
+        case "FEN":
+            if (Utils.isValidFEN(val)){
+                String[] fenFields = val.split(" ");
+                board = new Board(fenFields[0]);
+                setActiveColor(fenFields[1].charAt(0));
+                setCastlers(fenFields[2]);
+                setEnPassant(fenFields[3]);
+                setHalfMoves(Integer.parseInt(fenFields[4]));
+                setFullMoves(Integer.parseInt(fenFields[5]));
+            }
+            break;
+        // All other tags whether or not we care.
+        default:
+            optGameTags.put(key, val);
+            break;
+        }
+        return true;
+    }
 
-        // TODO
-        return false;
+    public boolean setActiveColor(Character color){
+        switch (color){
+        case 'w':
+        case 'b':
+            activeColor = color;
+            return true;
+        default:
+            return false;
+        }
     }
 
     public boolean setWhiteActive(){
@@ -285,4 +325,37 @@ public class State {
         return result;
     }
 
+
+
+// ============================================================================
+//      FileManager-Wrapped Functions (Of interest to file operations)
+// ============================================================================
+
+    public ArrayList<String> getTags(){
+
+        ArrayList<String> result = new ArrayList<String>();
+        String t = "[%s \"%s\"]";
+
+        // Add Seven-Tag-Roster
+        for (Map.Entry<String, String> e : reqGameTags.entrySet()){ result.add(String.format(t, e.getKey(), e.getValue())); }
+
+        // Special-Case Tags
+        // Board FEN state
+        result.add(String.format(t, "SetUp", "1"));
+        result.add(String.format(t, "FEN", getFEN()));
+        // Get Captured strings
+        StringBuilder sb = new StringBuilder(); // New String Builder
+        for (Piece p : capturedByBlack){ sb.append(p.getType()); }
+        result.add(String.format(t, "CapturedByBlack", sb.toString()));
+        sb.setLength(0); // Restart String Builder
+        for (Piece p : capturedByWhite){ sb.append(p.getType()); }
+        result.add(String.format(t, "CapturedByWhite", sb.toString()));
+        // Get chosen color of User
+        result.add(String.format(t, "UserColor", userColor.toString()));
+
+        // Add all other optional tags
+        for (Map.Entry<String, String> e : optGameTags.entrySet()){ result.add(String.format(t, e.getKey(), e.getValue())); }
+
+            return result;
+    }
 }

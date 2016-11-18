@@ -13,6 +13,7 @@ public class Game {
     // Instance vars
     public State state;
     public com.caffeine.engine.Core engine;
+    public com.caffeine.view.Core view;
 
 
 
@@ -20,22 +21,20 @@ public class Game {
     public Game(){
 
         engine = Chess.engine;
-
-        ArrayList<String> newgameTags = new ArrayList<String>();
-        String template = "[%s \"%s\"]";
-        newgameTags.add(String.format(template, "Event", "Friendly Game"));
-        newgameTags.add(String.format(template, "Site", "MacLaboon Pro"));
+        // Initialize and configure state
+        state = new State(); // Starts default game
+        // Add Seven-Tag Roster
+        state.addTag("Event", "Friendly Game");
+        state.addTag("Site", "MacLaboon Pro");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
         Date d = new Date();
-        newgameTags.add(String.format(template, "Date", sdf.format(d)));
-        newgameTags.add(String.format(template, "Round", "1"));
-        newgameTags.add(String.format(template, "White", "Bill Laboon"));
-        newgameTags.add(String.format(template, "Black", "Lil Balloon"));
-        newgameTags.add(String.format(template, "Result", "*"));
-        ArrayList<String> emptyMoveset = new ArrayList<String>();
-
-        state = new State( newgameTags, emptyMoveset );
-
+        state.addTag("Date", sdf.format(d));
+        state.addTag("Round", "1");
+        state.addTag("White", "Bill Laboon");
+        state.addTag("Black", "Lil Balloon");
+        state.addTag("Result", "*");
+        // Additional options
+        state.addTag("UserColor", "w");
     }
 
 
