@@ -66,10 +66,11 @@ public class Core {
         window.setResizable(false);
         window.setVisible(true);
 
-        // 	Windows doesn't permit a VM to initially bring a window to focus,
-        // 	so this forces the chess window to be focused
+        //  Windows doesn't permit a VM to initially bring a window to focus,
+        //  so this forces the chess window to be focused
         window.setAlwaysOnTop(true);
         window.setAlwaysOnTop(false);
+
     }
 
     /**
