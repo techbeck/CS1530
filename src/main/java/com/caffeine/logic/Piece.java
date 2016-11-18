@@ -2,23 +2,20 @@ package com.caffeine.logic;
 
 public class Piece {
 	String type;
-	int number;
 	boolean isWhite;
 	int rank; // 0-7 representing 1-8    -1 = taken
 	int file; // 0-7 representing A-H	 -1 = taken
 
 	/**
-	 * 	Initializes a Piece's type, number, side, and position as specified in parameters.
+	 * 	Initializes a Piece's type, side, and position as specified in parameters.
 	 *
 	 * 	@param type 	The type of chess piece
-	 *  @param number 	The number, to differentiate between pieces of same type
 	 *  @param side 	The side the Piece should be on, eg. black or white
 	 *  @param rank 	The X coordinate the Piece should start at
 	 *  @param file 	The Y coordinate the Piece should start at
 	 */
-	public Piece(String type, int number, String side, int rank, int file) {
+	public Piece(String type, String side, int rank, int file) {
 		this.type = type;		// eg. king or knight
-		this.number = number;	// eg. knight 0 or 1
 		if (side.equals("white")) {
 			isWhite = true;
 		} else {
@@ -35,15 +32,6 @@ public class Piece {
 	 */
 	public String getType() {
 		return type;
-	}
-
-	/**
-	 * 	Returns the numeric ID of the piece.
-	 *
-	 * 	@return the ID to differentiate between pieces of same type
-	 */
-	public int getNumber() {
-		return number;
 	}
 
 	/**

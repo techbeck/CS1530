@@ -59,6 +59,10 @@ public class BoardPanel extends JPanel {
 
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
+        c.weightx = Core.AVERAGE_WEIGHT;
+        c.weighty = Core.AVERAGE_WEIGHT;
+        c.fill = GridBagConstraints.BOTH;
+        
         BoardListener boardListener = new BoardListener();
         boolean isWhiteSquare = true;  //  top right is white square
 
@@ -68,12 +72,9 @@ public class BoardPanel extends JPanel {
 
                 // grid notation row name
                 JLabel notationRow = new JLabel(String.valueOf(8-i), SwingConstants.CENTER);
-                c.fill = GridBagConstraints.BOTH;
                 c.gridx = 0;
                 c.gridy = i;
                 c.insets = Core.sidePadding;
-                c.weightx = Core.AVERAGE_WEIGHT;
-                c.weighty = Core.AVERAGE_WEIGHT;
                 add(notationRow, c);
                 c.insets = Core.noPadding;
 
@@ -84,11 +85,8 @@ public class BoardPanel extends JPanel {
                     Core.squares[i][j].setBackgroundColor(isWhiteSquare);
                     Core.squares[i][j].setName("BoardSquare:" + (char)(j+65) + "," + (8-i));
                     Core.squares[i][j].addActionListener(boardListener);
-                    c.fill = GridBagConstraints.BOTH;
                     c.gridx = j+1;
                     c.gridy = i;
-                    c.weightx = Core.AVERAGE_WEIGHT;
-                    c.weighty = Core.AVERAGE_WEIGHT;
                     add(Core.squares[i][j], c);
                     isWhiteSquare = !isWhiteSquare;
                 }
@@ -100,12 +98,9 @@ public class BoardPanel extends JPanel {
             for (byte i = 0; i < 8; i++) {
 
                 JLabel notationColumn = new JLabel(String.valueOf((char)(i+65)), SwingConstants.CENTER);
-                c.fill = GridBagConstraints.BOTH;
                 c.gridx = i+1;
                 c.gridy = 8;
                 c.insets = Core.topBottomPadding;
-                c.weightx = Core.AVERAGE_WEIGHT;
-                c.weighty = Core.AVERAGE_WEIGHT;
                 add(notationColumn, c);
             }
         } else { // loops run in reverse to flip the board from standard
@@ -114,12 +109,9 @@ public class BoardPanel extends JPanel {
 
                 // grid notation row name
                 JLabel notationRow = new JLabel(String.valueOf(8-i), SwingConstants.CENTER);
-                c.fill = GridBagConstraints.BOTH;
                 c.gridx = 0;
                 c.gridy = 8-(i+1);
                 c.insets = Core.sidePadding;
-                c.weightx = Core.AVERAGE_WEIGHT;
-                c.weighty = Core.AVERAGE_WEIGHT;
                 add(notationRow, c);
                 c.insets = Core.noPadding;
 
@@ -130,11 +122,8 @@ public class BoardPanel extends JPanel {
                     Core.squares[i][j].setBackgroundColor(isWhiteSquare);
                     Core.squares[i][j].setName("BoardSquare:" + (char)(j+65) + "," + (8-i));
                     Core.squares[i][j].addActionListener(boardListener);
-                    c.fill = GridBagConstraints.BOTH;
                     c.gridx = 8-(j);
                     c.gridy = 8-(i+1);
-                    c.weightx = Core.AVERAGE_WEIGHT;
-                    c.weighty = Core.AVERAGE_WEIGHT;
                     add(Core.squares[i][j], c);
                     isWhiteSquare = !isWhiteSquare;
                 }
@@ -146,12 +135,9 @@ public class BoardPanel extends JPanel {
             for (byte i = 7; i >= 0; i--) {
 
                 JLabel notationColumn = new JLabel(String.valueOf((char)(i+65)), SwingConstants.CENTER);
-                c.fill = GridBagConstraints.BOTH;
                 c.gridx = 8-i;
                 c.gridy = 8;
                 c.insets = Core.topBottomPadding;
-                c.weightx = Core.AVERAGE_WEIGHT;
-                c.weighty = Core.AVERAGE_WEIGHT;
                 add(notationColumn, c);
             }
         }
@@ -161,25 +147,25 @@ public class BoardPanel extends JPanel {
      * Initializes board layout with black pieces on top
      */
     private void initializePiecePlacement() {
-        Core.squares[0][7].setPiece(Chess.game.pieces[0]);
-        Core.squares[0][0].setPiece(Chess.game.pieces[1]);
-        Core.squares[0][1].setPiece(Chess.game.pieces[2]);
-        Core.squares[0][6].setPiece(Chess.game.pieces[3]);
-        Core.squares[0][2].setPiece(Chess.game.pieces[4]);
+        Core.squares[0][0].setPiece(Chess.game.pieces[0]);
+        Core.squares[0][1].setPiece(Chess.game.pieces[1]);
+        Core.squares[0][2].setPiece(Chess.game.pieces[2]);
+        Core.squares[0][3].setPiece(Chess.game.pieces[3]);
+        Core.squares[0][4].setPiece(Chess.game.pieces[4]);
         Core.squares[0][5].setPiece(Chess.game.pieces[5]);
-        Core.squares[0][3].setPiece(Chess.game.pieces[6]);
-        Core.squares[0][4].setPiece(Chess.game.pieces[7]);
+        Core.squares[0][6].setPiece(Chess.game.pieces[6]);
+        Core.squares[0][7].setPiece(Chess.game.pieces[7]);
         for (int i = 0; i < 8; i++) {
             Core.squares[1][i].setPiece(Chess.game.pieces[i+8]);
             Core.squares[6][i].setPiece(Chess.game.pieces[i+16]);
         }
         Core.squares[7][0].setPiece(Chess.game.pieces[24]);
-        Core.squares[7][7].setPiece(Chess.game.pieces[25]);
-        Core.squares[7][1].setPiece(Chess.game.pieces[26]);
-        Core.squares[7][6].setPiece(Chess.game.pieces[27]);
-        Core.squares[7][2].setPiece(Chess.game.pieces[28]);
+        Core.squares[7][1].setPiece(Chess.game.pieces[25]);
+        Core.squares[7][2].setPiece(Chess.game.pieces[26]);
+        Core.squares[7][3].setPiece(Chess.game.pieces[27]);
+        Core.squares[7][4].setPiece(Chess.game.pieces[28]);
         Core.squares[7][5].setPiece(Chess.game.pieces[29]);
-        Core.squares[7][3].setPiece(Chess.game.pieces[30]);
-        Core.squares[7][4].setPiece(Chess.game.pieces[31]);
+        Core.squares[7][6].setPiece(Chess.game.pieces[30]);
+        Core.squares[7][7].setPiece(Chess.game.pieces[31]);
     }
 }
