@@ -99,7 +99,13 @@ public class Game {
 				else
 					captureBlackPiece(taken.getType());
 			}
-			moving.moveTo(newRank, newFile);
+
+			String fen = Chess.engine.getFEN();
+			if (!Utils.isValidFEN(fen)) {
+				return false;
+			}
+			setPiecesFromFEN(fen);
+
 			return true;
 		}
 		return false;
@@ -137,25 +143,98 @@ public class Game {
 	 * 	Populates the pieces array with the standard 32 chess pieces
 	 */
 	public void initializesPieces() {
-		pieces[0] = new Piece(Core.rook, 0, "black", 7, 7);
-		pieces[1] = new Piece(Core.rook, 1, "black", 7, 0);
-		pieces[2] = new Piece(Core.knight, 0, "black", 7, 1);
-		pieces[3] = new Piece(Core.knight, 1, "black", 7, 6);
-		pieces[4] = new Piece(Core.bishop, 0, "black", 7, 2);
-		pieces[5] = new Piece(Core.bishop, 1, "black", 7, 5);
-		pieces[6] = new Piece(Core.queen, 0, "black", 7, 3);
-		pieces[7] = new Piece(Core.king, 0, "black", 7, 4);
+		pieces[0] = new Piece(Core.rook, "black", 7, 0);
+		pieces[1] = new Piece(Core.knight, "black", 7, 1);
+		pieces[2] = new Piece(Core.bishop, "black", 7, 2);
+		pieces[3] = new Piece(Core.queen, "black", 7, 3);
+		pieces[4] = new Piece(Core.king, "black", 7, 4);
+		pieces[5] = new Piece(Core.bishop, "black", 7, 5);
+		pieces[6] = new Piece(Core.knight, "black", 7, 6);
+		pieces[7] = new Piece(Core.rook, "black", 7, 7);
 		for (int i = 0; i < 8; i++) {
-			pieces[i+8] = new Piece(Core.pawn, i, "black", 6, i);
-			pieces[i+16] = new Piece(Core.pawn, i, "white", 1, i);
+			pieces[i+8] = new Piece(Core.pawn, "black", 6, i);
+			pieces[i+16] = new Piece(Core.pawn, "white", 1, i);
 		}
-		pieces[24] = new Piece(Core.rook, 0, "white", 0, 0);
-		pieces[25] = new Piece(Core.rook, 1, "white", 0, 7);
-		pieces[26] = new Piece(Core.knight, 0, "white", 0, 1);
-		pieces[27] = new Piece(Core.knight, 1, "white", 0, 6);
-		pieces[28] = new Piece(Core.bishop, 0, "white", 0, 2);
-		pieces[29] = new Piece(Core.bishop, 1, "white", 0, 5);
-		pieces[30] = new Piece(Core.queen, 0, "white", 0, 3);
-		pieces[31] = new Piece(Core.king, 0, "white", 0, 4);
+		pieces[24] = new Piece(Core.rook, "white", 0, 0);
+		pieces[25] = new Piece(Core.knight, "white", 0, 1);
+		pieces[26] = new Piece(Core.bishop, "white", 0, 2);
+		pieces[27] = new Piece(Core.queen, "white", 0, 3);
+		pieces[28] = new Piece(Core.king, "white", 0, 4);
+		pieces[29] = new Piece(Core.bishop, "white", 0, 5);
+		pieces[30] = new Piece(Core.knight, "white", 0, 6);
+		pieces[31] = new Piece(Core.rook, "white", 0, 7);
+	}
+
+	public void setPiecesFromFEN(String fen) {
+
+		//System.out.println(fen);
+
+		// new array for pieces
+		Piece[] pieces = new Piece[32];
+		// Get board as String[8] where [0] is row 8 and [7] is row 1.
+		String[] board = fen.split(" ", 2)[0].split("/");
+		// The current line examined in the for loop, and its length
+        String currentLine;
+        // The current character in the currentLine String AND its num val.
+        char currentChar;
+        int charVal;
+        // The progress through the current board row
+        int rowCursor;
+        // Overall progress through pieces
+        int pieceInd = 0;
+        for (int i = 0; i < 8; i++) {
+        	currentLine = board[i];
+        	rowCursor = 0;
+        	for (int j = 0; j < currentLine.length(); j++) {
+        		currentChar = currentLine.charAt(j);
+        		charVal = (int) currentChar - '0';
+        		if (charVal > 9) { // piece character
+        			if (rowCursor == 0) {
+        				pieces[pieceInd] = new Piece(typeToUnicode(currentChar),typeToSide(currentChar),7-i,j);
+        			} else {
+        				pieces[pieceInd] = new Piece(typeToUnicode(currentChar),typeToSide(currentChar),7-i,j+rowCursor-1);
+        			}
+        			pieceInd++;
+        		} else { // number of empty squares
+        			rowCursor += charVal;
+        		}
+        	}
+        }
+        for (int i = pieceInd; i < 32; i++) {
+        	pieces[pieceInd] = new Piece("null","null",-1,-1);
+        }
+
+        this.pieces = pieces;
+	}
+
+	public String typeToUnicode(char type) {
+		// 	Unicode chess pieces
+		String king = "\u265A";
+		String queen = "\u265B";
+		String rook = "\u265C";
+		String bishop = "\u265D";
+		String knight = "\u265E";
+		String pawn = "\u265F";
+
+		switch(type) {
+			case 'K':
+			case 'k': return king;
+			case 'Q':
+			case 'q': return queen;
+			case 'R':
+			case 'r': return rook;
+			case 'B':
+			case 'b': return bishop;
+			case 'N':
+			case 'n': return knight;
+			case 'P':
+			case 'p': return pawn;
+			default: return "null";
+		}
+	}
+
+	public String typeToSide(char type) {
+		if (((int) type) < 90) return "white";
+		else return "black";
 	}
 }
