@@ -67,6 +67,16 @@ public class BoardListener implements ActionListener {
             selected.unselectSquare();
             selected = null;
 
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if (Chess.game.getPieceMatching(7-i,j) != null) {
+                        Core.squares[i][j].setPiece(Chess.game.getPieceMatching(7-i,j));
+                    } else {
+                        Core.squares[i][j].removePiece();
+                    }
+                }
+            }
+
         }
     }
 }

@@ -113,7 +113,7 @@ public class ChessTest {
         optionPane.okButton().click();
     }
 
-    @Test
+    /*@Test
     public void testChessPieceMove(){
         ComponentFinder newFinder = robot.finder();
         JButton firstSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,2", BoardSquare.class);
@@ -125,6 +125,53 @@ public class ChessTest {
         secondSquareFix.click();
         firstSquareFix.requireText(" ");
         secondSquareFix.requireText(expectedText);
+    }*/
+
+    @Test
+    public void testCastling(){
+        ComponentFinder newFinder = robot.finder();
+        JButton c5 = (JButton) newFinder.findByName(frame.target(), "BoardSquare:C,5", BoardSquare.class);
+        JButton c7 = (JButton) newFinder.findByName(frame.target(), "BoardSquare:C,7", BoardSquare.class);
+        JButton e1 = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,1", BoardSquare.class);
+        JButton e2 = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,2", BoardSquare.class);
+        JButton e4 = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,4", BoardSquare.class);
+        JButton e5 = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,5", BoardSquare.class);
+        JButton e7 = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,7", BoardSquare.class);
+        JButton f1 = (JButton) newFinder.findByName(frame.target(), "BoardSquare:F,1", BoardSquare.class);
+        JButton f3 = (JButton) newFinder.findByName(frame.target(), "BoardSquare:F,3", BoardSquare.class);
+        JButton f5 = (JButton) newFinder.findByName(frame.target(), "BoardSquare:F,5", BoardSquare.class);
+        JButton f7 = (JButton) newFinder.findByName(frame.target(), "BoardSquare:F,7", BoardSquare.class);
+        JButton g1 = (JButton) newFinder.findByName(frame.target(), "BoardSquare:G,1", BoardSquare.class);
+        JButton h1 = (JButton) newFinder.findByName(frame.target(), "BoardSquare:H,1", BoardSquare.class);
+        JButtonFixture c5Fix = new JButtonFixture(robot, c5);
+        JButtonFixture c7Fix = new JButtonFixture(robot, c7);
+        JButtonFixture e1Fix = new JButtonFixture(robot, e1);
+        JButtonFixture e2Fix = new JButtonFixture(robot, e2);
+        JButtonFixture e4Fix = new JButtonFixture(robot, e4);
+        JButtonFixture e5Fix = new JButtonFixture(robot, e5);
+        JButtonFixture e7Fix = new JButtonFixture(robot, e7);
+        JButtonFixture f1Fix = new JButtonFixture(robot, f1);
+        JButtonFixture f3Fix = new JButtonFixture(robot, f3);
+        JButtonFixture f5Fix = new JButtonFixture(robot, f5);
+        JButtonFixture f7Fix = new JButtonFixture(robot, f7);
+        JButtonFixture g1Fix = new JButtonFixture(robot, g1);
+        JButtonFixture h1Fix = new JButtonFixture(robot, h1);
+        String expectedText = h1Fix.text();
+        e2Fix.click();
+        e4Fix.click();
+        c7Fix.click();
+        c5Fix.click();
+        f1Fix.click();
+        e2Fix.click();
+        e7Fix.click();
+        e5Fix.click();
+        g1Fix.click();
+        f3Fix.click();
+        f7Fix.click();
+        f5Fix.click();
+        e1Fix.click();
+        g1Fix.click();
+        f1Fix.requireText(expectedText);
     }
 
     @Test
