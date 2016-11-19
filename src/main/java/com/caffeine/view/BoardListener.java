@@ -60,8 +60,9 @@ public class BoardListener implements ActionListener {
 
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
-                        if (Chess.game.getPieceMatching(7-i,j) != null) {
-                            Core.squares[i][j].setPiece(Chess.game.getPieceMatching(7-i,j));
+                        Piece currPiece = Chess.game.getPieceMatching(7-i,j);
+                        if (currPiece != null) {
+                            Core.squares[i][j].setPiece(currPiece);
                         } else {
                             Core.squares[i][j].removePiece();
                         }
@@ -73,8 +74,9 @@ public class BoardListener implements ActionListener {
 
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
-                        if (Chess.game.getPieceMatching(7-i,j) != null) {
-                            Core.squares[i][j].setPiece(Chess.game.getPieceMatching(7-i,j));
+                        Piece currPiece = Chess.game.getPieceMatching(7-i,j);
+                        if (currPiece != null) {
+                            Core.squares[i][j].setPiece(currPiece);
                         } else {
                             Core.squares[i][j].removePiece();
                         }

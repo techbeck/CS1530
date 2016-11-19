@@ -138,17 +138,26 @@ public class Game {
 	 *  @return true if move is successful, false otherwise
 	 */
 	public boolean move(int oldRank, int oldFile, int newRank, int newFile) {
-		String oldLoc = (char)(oldFile+65) + "" + (oldRank+1);
-		String newLoc = (char)(newFile+65) + "" + (newRank+1);
+		String oldLoc = (char)(oldFile+97) + "" + (oldRank+1);
+		String newLoc = (char)(newFile+97) + "" + (newRank+1);
 
 		if (Chess.engine.move(oldLoc+newLoc)) {
-			doMove(oldRank, oldFile, newRank, newFile);
-			addToMoveHistory(oldLoc+newLoc);
+			boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
+			if (pieceTaken) {
+				addToMoveHistory(oldLoc + "x" + newLoc);
+			} else {
+				addToMoveHistory(oldLoc+newLoc);
+			}
 			return true;
 		}
 		return false;
 	}
 
+	/**
+	 * 	Move a piece as decided by the engine
+	 *
+	 *  @return true if move is successful, false otherwise
+	 */
 	public boolean cpuMove() {
 		int timeout = timeoutsForModes[mode];
 		String move = Chess.engine.cpuMove(timeout);
@@ -158,19 +167,35 @@ public class Game {
 		int oldFile = (int) moveData[0] - 'a';
 		int newRank = (int) moveData[3] - '1';
 		int newFile = (int) moveData[2] - 'a';
-		doMove(oldRank, oldFile, newRank, newFile);
+		boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
 
-		addToMoveHistory(move);
+		if (pieceTaken) {
+			String moveString = moveData[0] + "" + moveData[1] + "x" + moveData[2] + "" + moveData[3];
+			addToMoveHistory(moveString);
+		} else {
+			addToMoveHistory(move);
+		}
 
 		return true;
 	}
 
-	public void doMove(int oldRank, int oldFile, int newRank, int newFile) {
+	/**
+	 * Do the move functionality: taking pieces, en passant checking, setting pieces array
+	 *  @param  oldRank The current horizontal coordinate
+	 *  @param  oldFile The current vertical coordinate
+	 *  @param  newRank The new horizontal coordinate to move to
+	 *  @param  newFile The new vertical coordinate to move to
+	 *  @return true if move takes a piece, false otherwise
+	 */
+	public boolean doMove(int oldRank, int oldFile, int newRank, int newFile) {
+		boolean pieceTaken = false;
+
 		Piece taken = getPieceMatching(newRank,newFile);
 		Piece moving = getPieceMatching(oldRank, oldFile);
 		
 		if (taken != null) {
 			takePiece(taken);
+			pieceTaken = true;
 		}
 
 		String fen = Chess.engine.getFEN();
@@ -181,6 +206,7 @@ public class Game {
 				int enPassantRank = (int) enPassantLoc.charAt(1) - '1';
 				int enPassantFile = (int) enPassantLoc.charAt(0) - 'a';
 				if (newRank == enPassantRank && newFile == enPassantFile) {
+					pieceTaken = true;
 					if (moving.isWhite()) {
 						takePiece(getPieceMatching(newRank-1,newFile));
 					} else {
@@ -192,6 +218,8 @@ public class Game {
 		enPassantLoc = fen.split(" ")[3];
 
 		setPiecesFromFEN(fen);
+
+		return pieceTaken;
 	}
 
 	/**
@@ -248,9 +276,12 @@ public class Game {
 		pieces[31] = new Piece(Core.rook, "white", 0, 7);
 	}
 
+	/**
+	 * Sets pieces array based on data from FEN string passed in
+	 *
+	 * @param fen  The FEN string that determines piece placement
+	 */
 	public void setPiecesFromFEN(String fen) {
-
-		//System.out.println(fen);
 
 		// new array for pieces
 		Piece[] pieces = new Piece[32];
@@ -273,9 +304,11 @@ public class Game {
         		charVal = (int) currentChar - '0';
         		if (charVal > 9) { // piece character
         			if (rowCursor == 0) {
-        				pieces[pieceInd] = new Piece(typeToUnicode(currentChar),typeToSide(currentChar),7-i,j);
+        				pieces[pieceInd] = new Piece(typeToUnicode(currentChar),
+        										typeToSide(currentChar),7-i,j);
         			} else {
-        				pieces[pieceInd] = new Piece(typeToUnicode(currentChar),typeToSide(currentChar),7-i,rowCursor);
+        				pieces[pieceInd] = new Piece(typeToUnicode(currentChar),
+        										typeToSide(currentChar),7-i,rowCursor);
         			}
         			pieceInd++;
         			rowCursor++;
@@ -292,6 +325,11 @@ public class Game {
         this.pieces = pieces;
 	}
 
+	/** 
+	 * Converts from type KQRBNPkqrbnp to equivalent Unicode characters
+	 *
+	 * @param type  the type to be converted
+	 */
 	public String typeToUnicode(char type) {
 
 		switch(type) {
@@ -311,6 +349,11 @@ public class Game {
 		}
 	}
 
+	/** 
+	 * Converts from type KQRBNPkqrbnp to equivalent side black/white
+	 *
+	 * @param type  the type to be converted
+	 */
 	public String typeToSide(char type) {
 		if (((int) type) < 90) return "white";
 		else return "black";

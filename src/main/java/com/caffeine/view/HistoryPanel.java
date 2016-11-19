@@ -9,7 +9,7 @@ import java.awt.event.*;
 import java.awt.*;
 
 /**
- * 	This JPanel displays the move history.
+ * 	This custom JPanel displays the move history.
  */
 public class HistoryPanel extends JPanel {
 	private JLabel historylabel;
@@ -29,6 +29,12 @@ public class HistoryPanel extends JPanel {
         add(moveHistoryLabel);
 	}
 
+	/**
+	 * Updates the move history panel based on the ArrayList passed in.
+	 * Two moves in the ArrayList count as one full move.
+	 *
+	 * @param moveHistory  The ArrayList holding the moves to be displayed
+	 */
 	public void updateMoveHistory(ArrayList<String> moveHistory) {
 		int currMoveNum = 1;
 		String currHalfMove = null;
