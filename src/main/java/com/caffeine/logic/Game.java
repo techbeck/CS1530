@@ -5,6 +5,9 @@ import com.caffeine.view.Core;
 
 public class Game {
     public Piece[] pieces = new Piece[32];
+
+	private int mode = 0; // 0 = easy, 1 = medium, 2 = hard
+	private static final int[] timeoutsForModes = {500, 2000, 5000};
     
 	protected boolean whiteActive;
 	protected boolean userWhite;
@@ -40,6 +43,18 @@ public class Game {
 			userWhite = true;
 		else
 			userWhite = false;
+	}
+
+	/**
+	 * Sets the mode based on the string passed in.
+	 * Default is easy.
+	 *
+	 * @param mode  The string to determine which mode to set.
+	 */
+	public void setMode(String mode) {
+		if (mode.equals("hard")) this.mode = 2;
+		else if (mode.equals("medium")) this.mode = 1;
+		else this.mode = 0;
 	}
 
 	/**
@@ -108,36 +123,52 @@ public class Game {
 		String newLoc = (char)(newFile+65) + "" + (newRank+1);
 
 		if (Chess.engine.move(oldLoc+newLoc)) {
-			Piece taken = getPieceMatching(newRank,newFile);
-			Piece moving = getPieceMatching(oldRank, oldFile);
-			
-			if (taken != null) {
-				takePiece(taken);
-			}
-
-			String fen = Chess.engine.getFEN();
-			
-			// check for en passant and taking of en passant
-			if (!enPassantLoc.equals("-")) {
-				if (moving.getType().equals(pawn)) {
-					int enPassantRank = (int) enPassantLoc.charAt(1) - '1';
-					int enPassantFile = (int) enPassantLoc.charAt(0) - 'a';
-					if (newRank == enPassantRank && newFile == enPassantFile) {
-						if (moving.isWhite()) {
-							takePiece(getPieceMatching(newRank-1,newFile));
-						} else {
-							takePiece(getPieceMatching(newRank+1,newFile));
-						}
-					}
-				}
-			}
-			enPassantLoc = fen.split(" ")[3];
-
-			setPiecesFromFEN(fen);
-
+			doMove(oldRank, oldFile, newRank, newFile);
 			return true;
 		}
 		return false;
+	}
+
+	public boolean cpuMove() {
+		int timeout = timeoutsForModes[mode];
+		String move = Chess.engine.cpuMove(timeout);
+		if (move.equals("(none)")) return false;
+		char[] moveData = move.toCharArray();
+		int oldRank = (int) moveData[1] - '1';
+		int oldFile = (int) moveData[0] - 'a';
+		int newRank = (int) moveData[3] - '1';
+		int newFile = (int) moveData[2] - 'a';
+		doMove(oldRank, oldFile, newRank, newFile);
+		return true;
+	}
+
+	public void doMove(int oldRank, int oldFile, int newRank, int newFile) {
+		Piece taken = getPieceMatching(newRank,newFile);
+		Piece moving = getPieceMatching(oldRank, oldFile);
+		
+		if (taken != null) {
+			takePiece(taken);
+		}
+
+		String fen = Chess.engine.getFEN();
+
+		// check for en passant and taking of en passant
+		if (!enPassantLoc.equals("-")) {
+			if (moving.getType().equals(pawn)) {
+				int enPassantRank = (int) enPassantLoc.charAt(1) - '1';
+				int enPassantFile = (int) enPassantLoc.charAt(0) - 'a';
+				if (newRank == enPassantRank && newFile == enPassantFile) {
+					if (moving.isWhite()) {
+						takePiece(getPieceMatching(newRank-1,newFile));
+					} else {
+						takePiece(getPieceMatching(newRank+1,newFile));
+					}
+				}
+			}
+		}
+		enPassantLoc = fen.split(" ")[3];
+
+		setPiecesFromFEN(fen);
 	}
 
 	/**
