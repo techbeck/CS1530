@@ -3,8 +3,12 @@ package com.caffeine.logic;
 import com.caffeine.Chess;
 import com.caffeine.view.Core;
 
+import java.util.ArrayList;
+
 public class Game {
     public Piece[] pieces = new Piece[32];
+
+    public ArrayList<String> moveHistory = new ArrayList<String>();
 
 	private int mode = 0; // 0 = easy, 1 = medium, 2 = hard
 	private static final int[] timeoutsForModes = {500, 2000, 5000};
@@ -66,6 +70,11 @@ public class Game {
 		return userWhite;
 	}
 
+	/** 
+	 * Add the piece passed in to one of the captured strings.
+	 * 
+	 * @param taken  The piece taken.
+	 */
 	public void takePiece(Piece taken) {
 		taken.moveTo(-1,-1); // indicates piece has been taken
 		if (taken.isWhite())
@@ -111,6 +120,16 @@ public class Game {
 	}
 
 	/**
+	 * 	Adds a move to the move history panel
+	 * 
+	 * 	@param move  The newly made move
+	 */
+	public void addToMoveHistory(String move) {
+		moveHistory.add(move);
+		Core.historyPanel.updateMoveHistory();
+	}
+
+	/**
 	 * 	Move a piece from one set of coordinates to another
 	 *  @param  oldRank The current horizontal coordinate
 	 *  @param  oldFile The current vertical coordinate
@@ -124,6 +143,7 @@ public class Game {
 
 		if (Chess.engine.move(oldLoc+newLoc)) {
 			doMove(oldRank, oldFile, newRank, newFile);
+			addToMoveHistory(oldLoc+newLoc);
 			return true;
 		}
 		return false;
@@ -139,6 +159,11 @@ public class Game {
 		int newRank = (int) moveData[3] - '1';
 		int newFile = (int) moveData[2] - 'a';
 		doMove(oldRank, oldFile, newRank, newFile);
+
+		String oldLoc = (char)(oldFile+65) + "" + (oldRank+1);
+		String newLoc = (char)(newFile+65) + "" + (newRank+1);
+		addToMoveHistory(oldLoc + newLoc);
+
 		return true;
 	}
 

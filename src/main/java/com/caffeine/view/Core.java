@@ -58,8 +58,8 @@ public class Core {
     public static JLabel statusLabel = new JLabel("Status Bar");
     public static BoardSquare[][] squares = new BoardSquare[8][8];
     public static TakenPanel takenPanel;
+    public static HistoryPanel historyPanel;
 
-    protected static JPanel historyPanel;
     protected static JPanel statusPanel;
     protected static JPanel centerPanel;
     protected static JPanel timerPanel;
@@ -125,8 +125,7 @@ public class Core {
         c.weightx = AVERAGE_WEIGHT;
         c.weighty = AVERAGE_WEIGHT;
 
-        historyPanel = new JPanel();
-        formatHistoryPanel();
+        historyPanel = new HistoryPanel();
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 1;
@@ -159,20 +158,6 @@ public class Core {
         c.gridheight = 1;
         c.insets = topBottomPadding;
         pane.add(statusPanel, c);
-    }
-
-    /**
-     * Formats the history panel and will eventually change to display move history.
-     */
-    private void formatHistoryPanel() {
-        historyPanel.setName("historyPanel");
-        historyPanel.setBackground(Color.decode(themes[0][1]));
-        historyPanel.setMinimumSize(sidePanelDimension);
-        historyPanel.setMaximumSize(sidePanelDimension);
-        historyPanel.setPreferredSize(sidePanelDimension);
-        JLabel historyLabel = new JLabel("<html>[Upcoming Feature]<br>Move History</html>", SwingConstants.CENTER);
-        historyLabel.setName("historyLabel");
-        historyPanel.add(historyLabel);
     }
 
     /**

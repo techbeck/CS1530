@@ -71,7 +71,6 @@ public class BoardListener implements ActionListener {
                 // Do CPU Move in response
                 Chess.game.cpuMove();
 
-
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
                         if (Chess.game.getPieceMatching(7-i,j) != null) {
