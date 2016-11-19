@@ -34,9 +34,9 @@ public class UtilsTest {
         validFENs.add("r1R5/1PPp1PN1/1P1bP1bp/p2P4/1p1pqnBQ/k1p2p1P/p1n1PK2/1r1RB2N w - - 0 1");
         validFENs.add("Nb3K1B/Rn4Qp/3kp1P1/NPpP1bP1/r1PpB1Pp/2pn1Pq1/2p1P1pr/R7 w - - 0 1");
         validFENs.add("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-        validFENs.add("4RR2/2p1PB1p/4Pp1B/Nn1r3p/2PP1Kpb/qpPPP2r/Q1P1b1pp/n4k1N w - - 0 1");
-        validFENs.add("Nn1R1n2/2RPqPP1/bpp4p/2pN1P1P/P3pr1p/2b1Pkp1/Br1P2pQ/B5K1 w - - 0 1");
-        validFENs.add("q2b2R1/1ppkppKR/PP2r1np/B1P2N2/PQ1p3p/3P2np/PPB1P1b1/1r2N3 w - - 0 1");
+        validFENs.add("4RR2/2p1PB1p/4Pp1B/Nn1r3p/2PP1Kpb/qpPPP2r/Q1P1b1pp/n4k1N w - d6 0 1");
+        validFENs.add("Nn1R1n2/2RPqPP1/bpp4p/2pN1P1P/P3pr1p/2b1Pkp1/Br1P2pQ/B5K1 w - a3 0 1");
+        validFENs.add("q2b2R1/1ppkppKR/PP2r1np/B1P2N2/PQ1p3p/3P2np/PPB1P1b1/1r2N3 w - h3 0 1");
         ArrayList<String> invalidFENs = new ArrayList<String>();
         invalidFENs.add("rnbqkZnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b QK - 0 1"); // Field 1
         invalidFENs.add("rnbqkbnr/ppp3pppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"); // Field 1

@@ -16,10 +16,10 @@ public class Utils {
     /**
      *  Parses through a FEN string and checks whether
      *  it is UCI compliant.
-     *  
+     *
      *  Proper notation for a FEN string can be found here:
      *  https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
-     *  
+     *
      *  @param  fen The string to be validated
      *  @return true if valid, or false if invalid
      */
@@ -40,7 +40,7 @@ public class Utils {
 
         /**
          *  FEN Field 1 is Piece Placement from Rows 8 to 1 delimited by '/'.
-         *  
+         *
          *  Player 1 (White)'s Pieces are within "PNBRQK",
          *  Player 2 (Black)'s Pieces are within "pnbrqk",
          *  Empty squares grouped as digits within [1,8] (incl.)
@@ -104,24 +104,13 @@ public class Utils {
         String enPassantStatus = fenFields[3].toLowerCase();
 
         // If '-', no en-passant and we can skip all this.
-        if (!enPassantStatus.equals("-")){
-            if (enPassantStatus.length() > 0 && enPassantStatus.length() <= 2){
-                return false;
-            }
-            char[] enPassantArray = enPassantStatus.toCharArray();
+        boolean passantValidPos = isValidBoardPosition(enPassantStatus);
+        boolean passantNonPos = enPassantStatus.equals("-");
 
-            // If not '-' it has to be a char in [a-h] followed by a digit in [1-8]
-            validOptions = "abcdefgh";
-            if (!validOptions.contains(new String(""+enPassantArray[0]))){
-                return false;
-            }
-            validOptions = "12345678";
-            if (!validOptions.contains(new String(""+enPassantArray[1]))){
-                return false;
-            }
-        }
+        if ( !passantValidPos && !passantNonPos ){ return false; }
 
-        // FEN Field 5: 
+
+        // FEN Field 5:
         // Halfmove Clock (number of halfmoves since last capture or pawn move).
         String halfmoveClock = fenFields[4];
 
@@ -156,14 +145,14 @@ public class Utils {
          *  edge cases.
          *  If we're still here, we've most likely got a valid FEN String!
          */
-              
+
         return true;
     }
 
     /**
      *  Checks whether a given board position has proper X (rank)
      *  and Y (file) coordinates.
-     *  
+     *
      *  @param  position The given coordinate as a String
      *  @return true if the given coordinate exists on a board, false otherwise
      */
@@ -181,7 +170,7 @@ public class Utils {
     /**
      *  Checks whether a piece's movement both starts and ends
      *  on valid positions.
-     * 
+     *
      *  @param  move A piece's move as a String
      *  @return true if the given move starts and ends on valid positions, false otherwise
      */
