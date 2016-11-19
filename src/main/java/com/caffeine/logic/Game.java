@@ -11,6 +11,17 @@ public class Game {
 	protected String captByBlack;
 	protected String captByWhite;
 
+	protected String enPassantLoc = "-";
+	protected Piece enPassantPiece = null;
+
+	// 	Unicode chess pieces
+	protected static final String king = "\u265A";
+	protected static final String queen = "\u265B";
+	protected static final String rook = "\u265C";
+	protected static final String bishop = "\u265D";
+	protected static final String knight = "\u265E";
+	protected static final String pawn = "\u265F";
+
 	public Game() {
 		whiteActive = true;
 		userWhite = true;
@@ -38,6 +49,14 @@ public class Game {
 	 */
 	public boolean userWhite() {
 		return userWhite;
+	}
+
+	public void takePiece(Piece taken) {
+		taken.moveTo(-1,-1); // indicates piece has been taken
+		if (taken.isWhite())
+			captureWhitePiece(taken.getType());
+		else
+			captureBlackPiece(taken.getType());
 	}
 
 	/**
@@ -93,17 +112,27 @@ public class Game {
 			Piece moving = getPieceMatching(oldRank, oldFile);
 			
 			if (taken != null) {
-				taken.moveTo(-1,-1); // indicates piece has been taken
-				if (taken.isWhite())
-					captureWhitePiece(taken.getType());
-				else
-					captureBlackPiece(taken.getType());
+				takePiece(taken);
 			}
 
 			String fen = Chess.engine.getFEN();
-			if (!Utils.isValidFEN(fen)) {
-				return false;
+			
+			// check for en passant and taking of en passant
+			if (!enPassantLoc.equals("-")) {
+				if (moving.getType().equals(pawn)) {
+					int enPassantRank = (int) enPassantLoc.charAt(1) - '1';
+					int enPassantFile = (int) enPassantLoc.charAt(0) - 'a';
+					if (newRank == enPassantRank && newFile == enPassantFile) {
+						if (moving.isWhite()) {
+							takePiece(getPieceMatching(newRank-1,newFile));
+						} else {
+							takePiece(getPieceMatching(newRank+1,newFile));
+						}
+					}
+				}
 			}
+			enPassantLoc = fen.split(" ")[3];
+
 			setPiecesFromFEN(fen);
 
 			return true;
@@ -119,7 +148,7 @@ public class Game {
 	 */
 	public Piece getPieceMatching(int rank, int file) {
 		for (Piece p : pieces) {
-			if (p.getRank() == rank) {
+			if (p != null && p.getRank() == rank) {
 				if (p.getFile() == file) {
 					return p;
 				}
@@ -210,13 +239,6 @@ public class Game {
 	}
 
 	public String typeToUnicode(char type) {
-		// 	Unicode chess pieces
-		String king = "\u265A";
-		String queen = "\u265B";
-		String rook = "\u265C";
-		String bishop = "\u265D";
-		String knight = "\u265E";
-		String pawn = "\u265F";
 
 		switch(type) {
 			case 'K':
