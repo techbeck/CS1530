@@ -122,11 +122,11 @@ public class Game {
 	/**
 	 * 	Adds a move to the move history panel
 	 * 
-	 * 	@param move  The newly made move
+	 * 	@param currMove  The newly made move
 	 */
-	public void addToMoveHistory(String move) {
-		moveHistory.add(move);
-		Core.historyPanel.updateMoveHistory();
+	public void addToMoveHistory(String currMove) {
+		moveHistory.add(currMove);
+		Core.historyPanel.updateMoveHistory(moveHistory);
 	}
 
 	/**
@@ -160,9 +160,7 @@ public class Game {
 		int newFile = (int) moveData[2] - 'a';
 		doMove(oldRank, oldFile, newRank, newFile);
 
-		String oldLoc = (char)(oldFile+65) + "" + (oldRank+1);
-		String newLoc = (char)(newFile+65) + "" + (newRank+1);
-		addToMoveHistory(oldLoc + newLoc);
+		addToMoveHistory(move);
 
 		return true;
 	}

@@ -15,9 +15,6 @@ public class HistoryPanel extends JPanel {
 	private JLabel historylabel;
 	private JLabel moveHistoryLabel = new JLabel();
 
-	private String currHalfMove;
-	private int currMoveNum = 0;
-
 	public HistoryPanel() {
         setName("historyPanel");
         setBackground(Color.decode(Core.themes[0][1]));
@@ -32,8 +29,10 @@ public class HistoryPanel extends JPanel {
         add(moveHistoryLabel);
 	}
 
-	public void updateMoveHistory() {
-		ArrayList<String> moveHistory = Chess.game.moveHistory;
+	public void updateMoveHistory(ArrayList<String> moveHistory) {
+		int currMoveNum = 1;
+		String currHalfMove = null;
+
 		moveHistoryLabel.setText("<html>");
 		for (String halfMove : moveHistory) {
 			if (currHalfMove == null) {
@@ -42,6 +41,7 @@ public class HistoryPanel extends JPanel {
 				String fullMove = currMoveNum + ". " + currHalfMove + " " + halfMove;
 				moveHistoryLabel.setText(moveHistoryLabel.getText() + fullMove + "<br>");
 				currMoveNum++;
+				currHalfMove = null;
 			}
 		}
 		moveHistoryLabel.setText(moveHistoryLabel.getText() + "</html>");
