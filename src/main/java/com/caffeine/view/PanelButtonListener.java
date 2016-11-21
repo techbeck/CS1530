@@ -26,6 +26,25 @@ public class PanelButtonListener implements ActionListener {
 
         if (button.getText().equals("Load")){
 
+            if (Chess.game.gameStarted) {
+                int dialogResult = JOptionPane.showConfirmDialog(window, "Would you like to save your current game first?","Warning", JOptionPane.YES_NO_CANCEL_OPTION);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    String fileName = JOptionPane.showInputDialog(window,
+                        "Please enter a file name to save your game: ", "Save Game", JOptionPane.PLAIN_MESSAGE);
+                    if (fileName != null && fileName.length() != 0) {
+                        if (fileName.toLowerCase().endsWith(".pgn")){
+                            statusLabel.setText("Saving game to file: " + fileName.toLowerCase());
+                            FileManager.save(fileName.toLowerCase());
+                        } else{
+                            statusLabel.setText("Saving game to file: " + fileName.toLowerCase() + ".pgn");
+                            FileManager.save(fileName.toLowerCase()+".pgn");
+                        }
+                    }
+                } else if (dialogResult == JOptionPane.CANCEL_OPTION) {
+                    return;
+                }
+            }
+
             String fileName = JOptionPane.showInputDialog(window,
                 "Please enter file name to load a game: ", "Load Game", JOptionPane.PLAIN_MESSAGE);
 
@@ -45,27 +64,42 @@ public class PanelButtonListener implements ActionListener {
             }
         } else if (button.getText().equals("Save")) {
 
-            String fileName = JOptionPane.showInputDialog(window,
-                "Please enter a file name to save your game: ", "Save Game", JOptionPane.PLAIN_MESSAGE);
-
-            if (fileName != null && fileName.length() != 0) {
-
-                if (fileName.toLowerCase().endsWith(".pgn")){
-
-                    statusLabel.setText("Saving game to file: " + fileName.toLowerCase());
-                    FileManager.save(fileName.toLowerCase());
-
-                } else{
-
-                    statusLabel.setText("Saving game to file: " + fileName.toLowerCase() + ".pgn");
-                    FileManager.save(fileName.toLowerCase()+".pgn");
-
+            if (Chess.game.gameStarted) {
+                String fileName = JOptionPane.showInputDialog(window,
+                    "Please enter a file name to save your game: ", "Save Game", JOptionPane.PLAIN_MESSAGE);
+                if (fileName != null && fileName.length() != 0) {
+                    if (fileName.toLowerCase().endsWith(".pgn")){
+                        statusLabel.setText("Saving game to file: " + fileName.toLowerCase());
+                        FileManager.save(fileName.toLowerCase());
+                    } else{
+                        statusLabel.setText("Saving game to file: " + fileName.toLowerCase() + ".pgn");
+                        FileManager.save(fileName.toLowerCase()+".pgn");
+                    }
                 }
-
+            } else {
+                statusLabel.setText("No current game to save");
             }
+
         } else if (button.getText().equals("New Game")) {
 
-            // to do: include prompt to save game if game has been started
+            if (Chess.game.gameStarted) {
+                int dialogResult = JOptionPane.showConfirmDialog(window, "Would you like to save your current game first?","Warning", JOptionPane.YES_NO_CANCEL_OPTION);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    String fileName = JOptionPane.showInputDialog(window,
+                        "Please enter a file name to save your game: ", "Save Game", JOptionPane.PLAIN_MESSAGE);
+                    if (fileName != null && fileName.length() != 0) {
+                        if (fileName.toLowerCase().endsWith(".pgn")){
+                            statusLabel.setText("Saving game to file: " + fileName.toLowerCase());
+                            FileManager.save(fileName.toLowerCase());
+                        } else{
+                            statusLabel.setText("Saving game to file: " + fileName.toLowerCase() + ".pgn");
+                            FileManager.save(fileName.toLowerCase()+".pgn");
+                        }
+                    }
+                } else if (dialogResult == JOptionPane.CANCEL_OPTION) {
+                    return;
+                }
+            }
 
             String[] options = new String[] {"Black", "White", "Cancel"};
             int playerColor = JOptionPane.showOptionDialog(window, "Please choose a side", "Choose Side",
