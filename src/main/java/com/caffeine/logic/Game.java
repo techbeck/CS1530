@@ -20,6 +20,9 @@ public class Game {
 	protected String captByBlack;
 	protected String captByWhite;
 
+	protected String lastFEN = null;
+	protected String currFEN = startFEN;
+
 	protected String enPassantLoc = "-";
 	protected Piece enPassantPiece = null;
 
@@ -145,11 +148,34 @@ public class Game {
 
 		if (Chess.engine.move(oldLoc+newLoc)) {
 			boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
-			if (pieceTaken) {
-				addToMoveHistory(oldLoc + "x" + newLoc);
-			} else {
-				addToMoveHistory(oldLoc+newLoc);
+			lastFEN = currFEN;
+			currFEN = Chess.engine.getFEN();
+
+			boolean kingside = false;
+			boolean queenside = false;
+			if (!currFEN.split(" ")[2].equals(lastFEN.split(" ")[2])) {
+				if (oldLoc.equals("e1") || oldLoc.equals("e8")) {
+					if (newLoc.equals("g1") || newLoc.equals("g8")) {
+						kingside = true;
+					}
+					if (newLoc.equals("c1") || newLoc.equals("c8")) {
+						queenside = true;
+					}
+				}				
 			}
+
+			if (kingside) {
+				addToMoveHistory("O-O");
+			} else if (queenside) {
+				addToMoveHistory("O-O-O");
+			} else {
+				if (pieceTaken) {
+					addToMoveHistory(oldLoc + "x" + newLoc);
+				} else {
+					addToMoveHistory(oldLoc+newLoc);
+				}
+			}
+
 			return true;
 		}
 		return false;
@@ -170,6 +196,8 @@ public class Game {
 		int newRank = (int) moveData[3] - '1';
 		int newFile = (int) moveData[2] - 'a';
 		boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
+		lastFEN = currFEN;
+		currFEN = Chess.engine.getFEN();
 
 		if (pieceTaken) {
 			String moveString = moveData[0] + "" + moveData[1] + "x" + moveData[2] + "" + moveData[3];
@@ -177,7 +205,6 @@ public class Game {
 		} else {
 			addToMoveHistory(move);
 		}
-
 		return move;
 	}
 
