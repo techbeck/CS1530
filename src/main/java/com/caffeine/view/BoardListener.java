@@ -56,7 +56,7 @@ public class BoardListener implements ActionListener {
                 squareButton.setPiece(piece);
                 String oldLoc = (char)(oldFile+65) + "" + (oldRank+1);
                 String newLoc = (char)(newFile+65) + "" + (newRank+1);
-                Core.statusLabel.setText("Move: " + oldLoc + "," + newLoc);
+                Core.statusLabel.setText("User Move: " + oldLoc + "," + newLoc);
 
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
@@ -70,7 +70,12 @@ public class BoardListener implements ActionListener {
                 }
 
                 // Do CPU Move in response
-                Chess.game.cpuMove();
+                String cpuMove = Chess.game.cpuMove();
+
+                String[] moveData = cpuMove.split("");
+                moveData[0] = moveData[0].toUpperCase();
+                moveData[2] = moveData[2].toUpperCase();
+                Core.statusLabel.setText("CPU Move: " + moveData[0] + "" + moveData[1] + "," + moveData[2] + "" + moveData[3]);
 
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {

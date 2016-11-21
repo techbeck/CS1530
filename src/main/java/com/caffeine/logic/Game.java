@@ -11,7 +11,9 @@ public class Game {
     public ArrayList<String> moveHistory = new ArrayList<String>();
 
 	private int mode = 0; // 0 = easy, 1 = medium, 2 = hard
-	private static final int[] timeoutsForModes = {500, 2000, 5000};
+	private static final int[] timeoutsForModes = {5, 100, 200};
+
+	private static final String startFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     
 	protected boolean whiteActive;
 	protected boolean userWhite;
@@ -154,14 +156,14 @@ public class Game {
 	}
 
 	/**
-	 * 	Move a piece as decided by the engine
+	 * 	Move a piece as decided by the engine and return the move made.
 	 *
-	 *  @return true if move is successful, false otherwise
+	 *  @return The move made if successful. null otherwise.
 	 */
-	public boolean cpuMove() {
+	public String cpuMove() {
 		int timeout = timeoutsForModes[mode];
 		String move = Chess.engine.cpuMove(timeout);
-		if (move.equals("(none)")) return false;
+		if (move.equals("(none)")) return null;
 		char[] moveData = move.toCharArray();
 		int oldRank = (int) moveData[1] - '1';
 		int oldFile = (int) moveData[0] - 'a';
@@ -176,7 +178,7 @@ public class Game {
 			addToMoveHistory(move);
 		}
 
-		return true;
+		return move;
 	}
 
 	/**
@@ -254,26 +256,7 @@ public class Game {
 	 * 	Populates the pieces array with the standard 32 chess pieces
 	 */
 	public void initializesPieces() {
-		pieces[0] = new Piece(Core.rook, "black", 7, 0);
-		pieces[1] = new Piece(Core.knight, "black", 7, 1);
-		pieces[2] = new Piece(Core.bishop, "black", 7, 2);
-		pieces[3] = new Piece(Core.queen, "black", 7, 3);
-		pieces[4] = new Piece(Core.king, "black", 7, 4);
-		pieces[5] = new Piece(Core.bishop, "black", 7, 5);
-		pieces[6] = new Piece(Core.knight, "black", 7, 6);
-		pieces[7] = new Piece(Core.rook, "black", 7, 7);
-		for (int i = 0; i < 8; i++) {
-			pieces[i+8] = new Piece(Core.pawn, "black", 6, i);
-			pieces[i+16] = new Piece(Core.pawn, "white", 1, i);
-		}
-		pieces[24] = new Piece(Core.rook, "white", 0, 0);
-		pieces[25] = new Piece(Core.knight, "white", 0, 1);
-		pieces[26] = new Piece(Core.bishop, "white", 0, 2);
-		pieces[27] = new Piece(Core.queen, "white", 0, 3);
-		pieces[28] = new Piece(Core.king, "white", 0, 4);
-		pieces[29] = new Piece(Core.bishop, "white", 0, 5);
-		pieces[30] = new Piece(Core.knight, "white", 0, 6);
-		pieces[31] = new Piece(Core.rook, "white", 0, 7);
+		setPiecesFromFEN(startFEN);
 	}
 
 	/**
