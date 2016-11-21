@@ -133,17 +133,4 @@ public class BoardSquare extends JButton {
 	public void setPieceColor(Color color) {
 		setForeground(color);
 	}
-
-	/**
-	 * 	When a piece is taken, this returns the taken piece
-	 *  and sets the square to the new piece
-	 *
-	 * 	@param piece The piece that is taking the square
-	 *  @return the piece that was taken
-	 */
-	public Piece takePiece(Piece piece) {
-		Piece taken = this.piece;
-		setPiece(piece);	// both sets this.piece and foreground color
-		return taken;
-	}
 }

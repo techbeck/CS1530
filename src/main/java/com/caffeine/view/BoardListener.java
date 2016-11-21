@@ -56,27 +56,43 @@ public class BoardListener implements ActionListener {
                 squareButton.setPiece(piece);
                 String oldLoc = (char)(oldFile+65) + "" + (oldRank+1);
                 String newLoc = (char)(newFile+65) + "" + (newRank+1);
-                Core.statusLabel.setText("Move: " + oldLoc + "," + newLoc);
+                Core.statusLabel.setText("User Move: " + oldLoc + "," + newLoc);
 
-                // to be changed when computer is opponent
-                if (Chess.game.userWhite()) Chess.game.setSide("black");
-                else Chess.game.setSide("white");
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        Piece currPiece = Chess.game.getPieceMatching(7-i,j);
+                        if (currPiece != null) {
+                            Core.squares[i][j].setPiece(currPiece);
+                        } else {
+                            Core.squares[i][j].removePiece();
+                        }
+                    }
+                }
+
+                // Do CPU Move in response
+                String cpuMove = Chess.game.cpuMove();
+
+                String[] moveData = cpuMove.split("");
+                moveData[0] = moveData[0].toUpperCase();
+                moveData[2] = moveData[2].toUpperCase();
+                Core.statusLabel.setText("CPU Move: " + moveData[0] + "" + moveData[1] + "," + moveData[2] + "" + moveData[3]);
+
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        Piece currPiece = Chess.game.getPieceMatching(7-i,j);
+                        if (currPiece != null) {
+                            Core.squares[i][j].setPiece(currPiece);
+                        } else {
+                            Core.squares[i][j].removePiece();
+                        }
+                    }
+                }
+
             } else {
                 Core.statusLabel.setText("Invalid move");
             }
             selected.unselectSquare();
             selected = null;
-
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    if (Chess.game.getPieceMatching(7-i,j) != null) {
-                        Core.squares[i][j].setPiece(Chess.game.getPieceMatching(7-i,j));
-                    } else {
-                        Core.squares[i][j].removePiece();
-                    }
-                }
-            }
-
         }
     }
 }
