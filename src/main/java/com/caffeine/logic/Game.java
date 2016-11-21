@@ -43,15 +43,8 @@ public class Game {
 		userWhite = true;
 		captByBlack = "";
 		captByWhite = "";
-		initializesPieces();
 		initializePGN();
-	}
-
-	/**
-	 * 	Populates the pieces array with the standard 32 chess pieces
-	 */
-	public void initializesPieces() {
-		setPiecesFromFEN(startFEN);
+		Chess.engine.setFEN(startFEN);
 	}
 
 	/**
@@ -71,6 +64,15 @@ public class Game {
 	 */
 	public void startGame() {
 		gameStarted = true;
+		initializesPieces();
+		ViewUtils.refreshBoard();
+	}
+
+	/**
+	 * 	Populates the pieces array with the standard 32 chess pieces
+	 */
+	public void initializesPieces() {
+		setPiecesFromFEN(startFEN);
 	}
 
 	/**

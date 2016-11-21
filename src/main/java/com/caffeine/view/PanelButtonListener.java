@@ -1,6 +1,7 @@
 package com.caffeine.view;
 
 import com.caffeine.Chess;
+import com.caffeine.logic.Game;
 import com.caffeine.logic.Piece;
 import com.caffeine.logic.FileManager;
 
@@ -110,6 +111,7 @@ public class PanelButtonListener implements ActionListener {
                 case -1:
                     return;
                 case 0:
+                    Chess.game = new Game();
                     Chess.game.startGame();
                     Chess.game.setSide("black");
                     statusLabel.setText("Game Started - Now playing as Black");
@@ -118,6 +120,7 @@ public class PanelButtonListener implements ActionListener {
                     ViewUtils.refreshBoard();
                     break;
                 case 1:
+                    Chess.game = new Game();
                     Chess.game.startGame();
                     Chess.game.setSide("white");
                     statusLabel.setText("Game Started - Now playing as White");
@@ -129,7 +132,8 @@ public class PanelButtonListener implements ActionListener {
         } else if (button.getText().equals("Tutorial")) {
 
             JOptionPane.showMessageDialog(window, "This is a simple chess game where you play against a CPU opponent.\n" +
-                        "Simply click on a piece and then another square to move the piece to that tile.\n",
+                        "Click New Game and choose a side to get started playing.\n" +
+                        "Simply click on a piece and then another square to move the piece to that square.\n",
                         "Tutorial", JOptionPane.PLAIN_MESSAGE);
 
         } else if (button.getText().equals("Change Piece Color")) {

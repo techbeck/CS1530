@@ -17,11 +17,7 @@ public class BoardPanel extends JPanel {
         setBackground(Color.decode(Core.themes[0][0]));
         blackOnTop = true;
         initializeBoard();
-        initializePiecePlacement();
     }
-
-    /*	reinitialize the board panel and check if black
-    	is on top*/
 
     /**
      * 	Reinitialize the board panel and check if black
@@ -140,18 +136,6 @@ public class BoardPanel extends JPanel {
                 c.insets = Core.topBottomPadding;
                 add(notationColumn, c);
             }
-        }
-    }
-
-    /** 
-     * Initializes board layout with black pieces on top
-     */
-    private void initializePiecePlacement() {
-        for (int i = 0; i < 8; i++) {
-            Core.squares[0][i].setPiece(Chess.game.getPieceMatching(7,i));
-            Core.squares[1][i].setPiece(Chess.game.getPieceMatching(6,i));
-            Core.squares[6][i].setPiece(Chess.game.getPieceMatching(1,i));
-            Core.squares[7][i].setPiece(Chess.game.getPieceMatching(0,i));
         }
     }
 }
