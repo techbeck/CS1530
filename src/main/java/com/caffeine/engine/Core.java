@@ -80,6 +80,25 @@ public class Core{
     }
 
     /**
+     *  Retrieves the list of pieces that are checking the king
+     *  @return the list of checkers as a string
+     */
+    public String getCheckers(){
+        String result = "";
+        String responseLine;
+        write("d");
+        write("isready");
+        while (true){
+            responseLine = readLine();
+            if (responseLine.equals("readyok")){ break; }
+            if (responseLine.contains("Checkers")){
+                result = responseLine;
+            }
+        }
+        return result;
+    }
+
+    /**
      *  Sets the chess board in Stockfish
      *  @param  fen The desired chess board as a FEN string
      *  @return true if successful, false otherwise
@@ -147,12 +166,11 @@ public class Core{
 
 // ================= INCOMPLETE/WIP METHODS    ================================
 // ================= DO NOT USE THESE METHODS! ================================
-
-    public ArrayList<String> getCheckers(){
+/*    public ArrayList<String> getCheckers(){
         // Gets list of positions from which active color is in Check.
         ArrayList<String> result = new ArrayList<String>();
         return result;
     }
-
+*/
     // Look into using Stockfish to get list of moves with SEARCH
 }

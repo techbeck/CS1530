@@ -14,7 +14,7 @@ public class Game {
 	private static final int[] timeoutsForModes = {5, 100, 200};
 
 	private static final String startFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-    
+
 	protected boolean whiteActive;
 	protected boolean userWhite;
 	protected String captByBlack;
@@ -44,7 +44,7 @@ public class Game {
 
 	/**
 	 * 	Sets the user as either white or black
-	 * 	
+	 *
 	 *  @param side The color the user will play as
 	 */
 	public void setSide(String side) {
@@ -68,16 +68,16 @@ public class Game {
 
 	/**
 	 * 	Getter for whether the user is playing as white or black
-	 * 	
+	 *
 	 *  @return true if the user is playing as white, false if black
 	 */
 	public boolean userWhite() {
 		return userWhite;
 	}
 
-	/** 
+	/**
 	 * Add the piece passed in to one of the captured strings.
-	 * 
+	 *
 	 * @param taken  The piece taken.
 	 */
 	public void takePiece(Piece taken) {
@@ -90,7 +90,7 @@ public class Game {
 
 	/**
 	 * 	Adds a piece to the list of black pieces taken
-	 * 	
+	 *
 	 *	@param piece The newly taken black piece
 	 */
 	public void captureBlackPiece(String piece) {
@@ -100,7 +100,7 @@ public class Game {
 
 	/**
 	 * 	Adds a piece to the list of white pieces taken
-	 * 
+	 *
 	 * 	@param piece The newly taken white piece
 	 */
 	public void captureWhitePiece(String piece) {
@@ -126,7 +126,7 @@ public class Game {
 
 	/**
 	 * 	Adds a move to the move history panel
-	 * 
+	 *
 	 * 	@param currMove  The newly made move
 	 */
 	public void addToMoveHistory(String currMove) {
@@ -161,7 +161,7 @@ public class Game {
 					if (newLoc.equals("c1") || newLoc.equals("c8")) {
 						queenside = true;
 					}
-				}				
+				}
 			}
 
 			if (kingside) {
@@ -221,7 +221,7 @@ public class Game {
 
 		Piece taken = getPieceMatching(newRank,newFile);
 		Piece moving = getPieceMatching(oldRank, oldFile);
-		
+
 		if (taken != null) {
 			takePiece(taken);
 			pieceTaken = true;
@@ -335,7 +335,7 @@ public class Game {
         this.pieces = pieces;
 	}
 
-	/** 
+	/**
 	 * Converts from type KQRBNPkqrbnp to equivalent Unicode characters
 	 *
 	 * @param type  the type to be converted
@@ -359,7 +359,7 @@ public class Game {
 		}
 	}
 
-	/** 
+	/**
 	 * Converts from type KQRBNPkqrbnp to equivalent side black/white
 	 *
 	 * @param type  the type to be converted
@@ -368,4 +368,66 @@ public class Game {
 		if (((int) type) < 90) return "white";
 		else return "black";
 	}
+
+    /**
+     * 	Checks to see if Jockfish thinks we have a next best move.
+     * Stockfish returns ""(none)" if there are no best moves, which indicates
+     * obliquely that it is checkmate, stalemate, or a draw
+     * @return boolean value of whether there are best moves remaining
+     */
+    public boolean hasBestMove(){
+        String nextMove = Chess.engine.getBestMove(1);
+        return !nextMove.contains("none");
+    }
+
+    /**
+     * Checks to see if the list of checkers from stockfish's debug mode is empty
+     * @return boolean value of whether there are pieces checking the king
+     */
+    public boolean hasCheckers(){
+        String checkersList = Chess.engine.getCheckers();
+        return !checkersList.equals("Checkers:");
+    }
+
+    /**
+     * If the king is in check, (there are checkers) and there is no best move
+     * that indicates that the game is in checkmate
+     * @return boolean value of whether the game is in checkmate
+     */
+    public boolean isCheckmate(){
+        boolean toReturn = false;
+        if(hasCheckers() && !hasBestMove()){
+            toReturn = true;
+
+        }
+        return toReturn;
+    }
+
+    /**
+     * If the king is not in check, (there are no checkers) and there is no best move
+     * that indicates that the game is in stalemate
+     * @return boolean value of whether the game is in stalemate
+     */
+    public boolean isStalemate(){
+        boolean toReturn = false;
+        if(!hasCheckers() && !hasBestMove()){
+            toReturn = true;
+        }
+        return toReturn;
+    }
+
+    /**
+     * A check to see if the game has ended.
+     * @return int. 0 means game goes on, 1 means checkmate, 2 means stalemate. 
+     */
+    public int getGameEndStatus(){
+        int gamesStatus = 0;
+        if(isCheckmate()){
+            gamesStatus = 1;
+        }
+        else if(isStalemate()){
+            gameStatus = 2;
+        }
+        return gameStatus;
+    }
 }

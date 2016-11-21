@@ -43,7 +43,7 @@ public class BoardListener implements ActionListener {
                 return;
             }
         } else {
-        	// else move the previously selected chess piece to the clicked square 
+        	// else move the previously selected chess piece to the clicked square
             int oldRank = Integer.parseInt(selected.getName().split(":")[1].split(",")[1]) - 1;
             int oldFile = ((int) selected.getName().split(":")[1].split(",")[0].toCharArray()[0]) - 65;
             int newRank = Integer.parseInt(squareButton.getName().split(":")[1].split(",")[1]) - 1;
@@ -70,8 +70,9 @@ public class BoardListener implements ActionListener {
                 }
 
                 // Do CPU Move in response
+                int endGame = Chess.game.getGameEndStatus();
                 String cpuMove = Chess.game.cpuMove();
-
+                int endGame = Chess.game.getGameEndStatus();
                 String[] moveData = cpuMove.split("");
                 moveData[0] = moveData[0].toUpperCase();
                 moveData[2] = moveData[2].toUpperCase();
