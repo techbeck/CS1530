@@ -2,6 +2,7 @@ package com.caffeine.view;
 
 import com.caffeine.Chess;
 import com.caffeine.logic.Piece;
+import com.caffeine.logic.FileManager;
 
 import java.util.*;
 import java.io.*;
@@ -32,11 +33,13 @@ public class PanelButtonListener implements ActionListener {
 
                 if (fileName.toLowerCase().endsWith(".pgn")){
 
-                    statusLabel.setText("[Upcoming Feature] - Loading game from file: " + fileName);
+                    statusLabel.setText("Loading game from file: " + fileName.toLowerCase());
+                    FileManager.load(fileName.toLowerCase());
 
                 } else{
 
-                    statusLabel.setText("[Upcoming Feature] - Loading game from file: " + fileName + ".pgn");
+                    statusLabel.setText("Loading game from file: " + fileName.toLowerCase() + ".pgn");
+                    FileManager.load(fileName.toLowerCase()+".pgn");
 
                 }
             }
@@ -47,17 +50,21 @@ public class PanelButtonListener implements ActionListener {
 
             if (fileName != null && fileName.length() != 0) {
 
-                statusLabel.setText("[Upcoming Feature] - Saving game to file: " + fileName + ".pgn");
+                if (fileName.toLowerCase().endsWith(".pgn")){
+
+                    statusLabel.setText("Saving game to file: " + fileName.toLowerCase());
+                    FileManager.save(fileName.toLowerCase());
+
+                } else{
+
+                    statusLabel.setText("Saving game to file: " + fileName.toLowerCase() + ".pgn");
+                    FileManager.save(fileName.toLowerCase()+".pgn");
+
+                }
 
             }
         } else if (button.getText().equals("New Game")) {
 
-            // to be removed after computer becomes opponent
-            // when playing against self, must start as white
-            statusLabel.setText("[Upcoming Feature] - Start a new game and choose side");
-            return;
-
-            /* commented out because it is currently unreachable but will be used once computer is opponent
             // to do: include prompt to save game if game has been started
 
             String[] options = new String[] {"Black", "White", "Cancel"};
@@ -69,22 +76,26 @@ public class PanelButtonListener implements ActionListener {
                 case -1:
                     return;
                 case 0:
+                    Chess.game.startGame();
                     Chess.game.setSide("black");
-                    statusLabel.setText("Now playing as Black");
+                    statusLabel.setText("Game Started - Now playing as Black");
+                    // CPU moves immediately
+                    String cpuMove = Chess.game.cpuMove();
+                    ViewUtils.refreshBoard();
                     break;
                 case 1:
+                    Chess.game.startGame();
                     Chess.game.setSide("white");
-                    statusLabel.setText("Now playing as White");
+                    statusLabel.setText("Game Started - Now playing as White");
                     break;
                 case 2:
                     return;
             }
-            */
+
         } else if (button.getText().equals("Tutorial")) {
 
-            JOptionPane.showMessageDialog(window, "This is a simple chess game where you play against yourself.\n" +
-                        "Simply click on a piece and then another square to move the piece to that tile.\n" +
-                        "After each valid move, your side automatically changes to make the next move in turn.",
+            JOptionPane.showMessageDialog(window, "This is a simple chess game where you play against a CPU opponent.\n" +
+                        "Simply click on a piece and then another square to move the piece to that tile.\n",
                         "Tutorial", JOptionPane.PLAIN_MESSAGE);
 
         } else if (button.getText().equals("Change Piece Color")) {

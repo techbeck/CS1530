@@ -2,19 +2,23 @@ package com.caffeine.logic;
 
 import com.caffeine.Chess;
 import com.caffeine.view.Core;
+import com.caffeine.view.ViewUtils;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Game {
     public Piece[] pieces = new Piece[32];
-
     public ArrayList<String> moveHistory = new ArrayList<String>();
+    public boolean gameStarted = false;
+    public int gameResult = 0; // 0 = ongoing, 1 = white won, 2 = black won, 3 = draw
 
 	private int mode = 0; // 0 = easy, 1 = medium, 2 = hard
 	private static final int[] timeoutsForModes = {5, 100, 200};
 
 	private static final String startFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     
+	protected HashMap<String,String> pgnTags;
+
 	protected boolean whiteActive;
 	protected boolean userWhite;
 	protected String captByBlack;
@@ -40,6 +44,33 @@ public class Game {
 		captByBlack = "";
 		captByWhite = "";
 		initializesPieces();
+		initializePGN();
+	}
+
+	/**
+	 * 	Populates the pieces array with the standard 32 chess pieces
+	 */
+	public void initializesPieces() {
+		setPiecesFromFEN(startFEN);
+	}
+
+	/**
+	 * Initialize PGN tags
+	 */
+	public void initializePGN() {
+		pgnTags = new HashMap<String,String>();
+		pgnTags.put("Event", "CS1530");
+		pgnTags.put("Site", "Pittsburgh, PA, USA");
+		pgnTags.put("Date", "Fall 2016");
+		pgnTags.put("Round", "420");
+		pgnTags.put("FEN", currFEN);
+	}
+
+	/**
+	 * Starts the game.
+	 */
+	public void startGame() {
+		gameStarted = true;
 	}
 
 	/**
@@ -48,22 +79,26 @@ public class Game {
 	 *  @param side The color the user will play as
 	 */
 	public void setSide(String side) {
-		if (side.equals("white"))
+		if (side.equals("white")) {
 			userWhite = true;
-		else
+			pgnTags.put("White", "User");
+			pgnTags.put("Black", "CPU");
+		}
+		else {
 			userWhite = false;
+			pgnTags.put("White", "CPU");
+			pgnTags.put("Black", "User");
+		}
 	}
 
 	/**
 	 * Sets the mode based on the string passed in.
-	 * Default is easy.
+	 * Default is easy if this method is not called.
 	 *
-	 * @param mode  The string to determine which mode to set.
+	 * @param mode  The mode to determine difficulty of the CPU opponent.
 	 */
-	public void setMode(String mode) {
-		if (mode.equals("hard")) this.mode = 2;
-		else if (mode.equals("medium")) this.mode = 1;
-		else this.mode = 0;
+	public void setMode(int mode) {
+		this.mode = mode;
 	}
 
 	/**
@@ -150,6 +185,7 @@ public class Game {
 			boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
 			lastFEN = currFEN;
 			currFEN = Chess.engine.getFEN();
+			pgnTags.put("FEN", currFEN);
 
 			boolean kingside = false;
 			boolean queenside = false;
@@ -198,6 +234,7 @@ public class Game {
 		boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
 		lastFEN = currFEN;
 		currFEN = Chess.engine.getFEN();
+		pgnTags.put("FEN", currFEN);
 
 		if (pieceTaken) {
 			String moveString = moveData[0] + "" + moveData[1] + "x" + moveData[2] + "" + moveData[3];
@@ -266,24 +303,6 @@ public class Game {
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * 	Resets the game to the default settings
-	 */
-	public void reset() {
-		whiteActive = true;
-		userWhite = true;
-		captByBlack = "";
-		captByWhite = "";
-		initializesPieces();
-	}
-
-	/**
-	 * 	Populates the pieces array with the standard 32 chess pieces
-	 */
-	public void initializesPieces() {
-		setPiecesFromFEN(startFEN);
 	}
 
 	/**
@@ -367,5 +386,35 @@ public class Game {
 	public String typeToSide(char type) {
 		if (((int) type) < 90) return "white";
 		else return "black";
+	}
+
+	/**
+	 * For game loading.
+	 *
+	 * @param fen  The fen string to load.
+	 */
+	public void loadFEN(String fen) {
+		setPiecesFromFEN(fen);
+		ViewUtils.refreshBoard();
+		enPassantLoc = fen.split(" ")[3];
+		Chess.engine.setFEN(fen);
+		// TO DO: set taken from fen
+		Character[] pieces = {'K','Q','R','B','N','P','k','q','r','b','n','p'};
+		ArrayList<Character> possTaken = new ArrayList<Character>(Arrays.asList(pieces));
+		for (int i = 0; i < 7; i++) {
+			possTaken.add(Character.valueOf('p'));
+			possTaken.add(Character.valueOf('P'));
+		}
+		char[] fenArray = fen.split(" ")[0].toCharArray();
+		for (int i = 0; i < fenArray.length; i++) {
+			if (fenArray[i] > '9') {
+				possTaken.remove(Character.valueOf(fenArray[i]));
+			}
+		}
+		for (Character c : possTaken) {
+			Piece p = new Piece(typeToUnicode(c), typeToSide(c),-1,-1);
+			takePiece(p);
+		}
+
 	}
 }

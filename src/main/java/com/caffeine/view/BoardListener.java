@@ -21,6 +21,8 @@ public class BoardListener implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
 
+        if (!Chess.game.gameStarted) return;
+
         BoardSquare squareButton = (BoardSquare) e.getSource();
 
         if (selected == null) {
@@ -58,16 +60,7 @@ public class BoardListener implements ActionListener {
                 String newLoc = (char)(newFile+65) + "" + (newRank+1);
                 Core.statusLabel.setText("User Move: " + oldLoc + "," + newLoc);
 
-                for (int i = 0; i < 8; i++) {
-                    for (int j = 0; j < 8; j++) {
-                        Piece currPiece = Chess.game.getPieceMatching(7-i,j);
-                        if (currPiece != null) {
-                            Core.squares[i][j].setPiece(currPiece);
-                        } else {
-                            Core.squares[i][j].removePiece();
-                        }
-                    }
-                }
+                ViewUtils.refreshBoard();
 
                 // Do CPU Move in response
                 String cpuMove = Chess.game.cpuMove();
@@ -77,16 +70,7 @@ public class BoardListener implements ActionListener {
                 moveData[2] = moveData[2].toUpperCase();
                 Core.statusLabel.setText("CPU Move: " + moveData[0] + "" + moveData[1] + "," + moveData[2] + "" + moveData[3]);
 
-                for (int i = 0; i < 8; i++) {
-                    for (int j = 0; j < 8; j++) {
-                        Piece currPiece = Chess.game.getPieceMatching(7-i,j);
-                        if (currPiece != null) {
-                            Core.squares[i][j].setPiece(currPiece);
-                        } else {
-                            Core.squares[i][j].removePiece();
-                        }
-                    }
-                }
+                ViewUtils.refreshBoard();
 
             } else {
                 Core.statusLabel.setText("Invalid move");

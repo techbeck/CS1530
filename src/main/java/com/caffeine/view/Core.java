@@ -93,7 +93,7 @@ public class Core {
         window.setJMenuBar(menuBar);
         JMenu menu = new JMenu("Menu");
         menuBar.add(menu);
-        JMenuItem setGameTimer = new JMenuItem("Set game timer");
+        JMenuItem setGameTimer = new JMenuItem("Change CPU Mode");
         setGameTimer.setName("menuSetGameTimer");
         JMenuItem setMoveTimer = new JMenuItem("Set move timer");
         setMoveTimer.setName("menuSetMoveTimer");
