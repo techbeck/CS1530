@@ -92,6 +92,7 @@ public class FileManager {
 		}
 		String fen = fileLine.split("\"")[1];
 		Chess.game = new Game();
+		Chess.game.startGame();
 		Chess.game.setSide(userSide);
 		Chess.game.loadFEN(fen);
 		input.nextLine();
@@ -102,7 +103,6 @@ public class FileManager {
 				Chess.game.addToMoveHistory(move);
 			}
 		}
-		Chess.game.startGame();
 		input.close();
 	}
 }

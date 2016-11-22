@@ -39,6 +39,8 @@ public class BoardListener implements ActionListener {
                 selected = squareButton;
                 selected.selectSquare();
 
+                Core.statusLabel.setText("Selected: " + selected.getName().split(":")[1]);
+
             } else {
 
                 // no previously selected button and button clicked is empty

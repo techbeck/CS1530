@@ -9,6 +9,7 @@ import java.util.*;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.JFileChooser;
 import java.awt.event.*;
 import java.awt.*;
 
@@ -18,6 +19,7 @@ import java.awt.*;
  * 	upon the panel buttons and displays the appropriate dialog window
  */
 public class PanelButtonListener implements ActionListener {
+    JFileChooser fc = new JFileChooser("SavedGames/");
     public void actionPerformed(ActionEvent e) {
         JLabel statusLabel = Core.statusLabel;
         JFrame window = Core.window;
@@ -30,9 +32,9 @@ public class PanelButtonListener implements ActionListener {
             if (Chess.game.gameStarted) {
                 int dialogResult = JOptionPane.showConfirmDialog(window, "Would you like to save your current game first?","Warning", JOptionPane.YES_NO_CANCEL_OPTION);
                 if (dialogResult == JOptionPane.YES_OPTION) {
-                    String fileName = JOptionPane.showInputDialog(window,
-                        "Please enter a file name to save your game: ", "Save Game", JOptionPane.PLAIN_MESSAGE);
-                    if (fileName != null && fileName.length() != 0) {
+                    int returnVal = fc.showSaveDialog(window);
+                    if (returnVal == JFileChooser.APPROVE_OPTION) {
+                        String fileName = fc.getSelectedFile().getName();
                         if (fileName.toLowerCase().endsWith(".pgn")){
                             statusLabel.setText("Saving game to file: " + fileName.toLowerCase());
                             FileManager.save(fileName.toLowerCase());
@@ -46,11 +48,9 @@ public class PanelButtonListener implements ActionListener {
                 }
             }
 
-            String fileName = JOptionPane.showInputDialog(window,
-                "Please enter file name to load a game: ", "Load Game", JOptionPane.PLAIN_MESSAGE);
-
-            if (fileName != null && fileName.length() != 0) {
-
+            int returnVal = fc.showOpenDialog(window);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                String fileName = fc.getSelectedFile().getName();
                 if (fileName.toLowerCase().endsWith(".pgn")){
 
                     statusLabel.setText("Loading game from file: " + fileName.toLowerCase());
@@ -66,9 +66,9 @@ public class PanelButtonListener implements ActionListener {
         } else if (button.getText().equals("Save")) {
 
             if (Chess.game.gameStarted) {
-                String fileName = JOptionPane.showInputDialog(window,
-                    "Please enter a file name to save your game: ", "Save Game", JOptionPane.PLAIN_MESSAGE);
-                if (fileName != null && fileName.length() != 0) {
+                int returnVal = fc.showSaveDialog(window);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    String fileName = fc.getSelectedFile().getName();
                     if (fileName.toLowerCase().endsWith(".pgn")){
                         statusLabel.setText("Saving game to file: " + fileName.toLowerCase());
                         FileManager.save(fileName.toLowerCase());
@@ -86,9 +86,9 @@ public class PanelButtonListener implements ActionListener {
             if (Chess.game.gameStarted) {
                 int dialogResult = JOptionPane.showConfirmDialog(window, "Would you like to save your current game first?","Warning", JOptionPane.YES_NO_CANCEL_OPTION);
                 if (dialogResult == JOptionPane.YES_OPTION) {
-                    String fileName = JOptionPane.showInputDialog(window,
-                        "Please enter a file name to save your game: ", "Save Game", JOptionPane.PLAIN_MESSAGE);
-                    if (fileName != null && fileName.length() != 0) {
+                    int returnVal = fc.showSaveDialog(window);
+                    if (returnVal == JFileChooser.APPROVE_OPTION) {
+                        String fileName = fc.getSelectedFile().getName();
                         if (fileName.toLowerCase().endsWith(".pgn")){
                             statusLabel.setText("Saving game to file: " + fileName.toLowerCase());
                             FileManager.save(fileName.toLowerCase());
