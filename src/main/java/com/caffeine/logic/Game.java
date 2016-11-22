@@ -13,7 +13,7 @@ public class Game {
     public int gameResult = 0; // 0 = ongoing, 1 = white won, 2 = black won, 3 = draw
 
 	private int mode = 0; // 0 = easy, 1 = medium, 2 = hard
-	private static final int[] timeoutsForModes = {5, 100, 200};
+	private static final int[] timeoutsForModes = {1, 5, 10};
 
 	private static final String startFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     
@@ -400,10 +400,11 @@ public class Game {
 		ViewUtils.refreshBoard();
 		enPassantLoc = fen.split(" ")[3];
 		Chess.engine.setFEN(fen);
-		// TO DO: set taken from fen
+		// Parse taken from fen
 		Character[] pieces = {'K','Q','R','B','N','P','k','q','r','b','n','p'};
 		ArrayList<Character> possTaken = new ArrayList<Character>(Arrays.asList(pieces));
 		for (int i = 0; i < 7; i++) {
+			// Add repetitions of pawn pieces
 			possTaken.add(Character.valueOf('p'));
 			possTaken.add(Character.valueOf('P'));
 		}
