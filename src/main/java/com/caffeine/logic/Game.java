@@ -81,7 +81,7 @@ public class Game {
 	 *  @param side The color the user will play as
 	 */
 	public void setSide(String side) {
-		if (side.equals("white")) {
+		if (side.equals("white") || side.equals("White")) {
 			userWhite = true;
 			pgnTags.put("White", "User");
 			pgnTags.put("Black", "CPU");
