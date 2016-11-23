@@ -15,7 +15,8 @@ public class Game {
 	private int mode = 0; // 0 = easy, 1 = medium, 2 = hard
 	private static final int[] timeoutsForModes = {1, 5, 10};
 
-	private static final String startFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+	private static final String startFEN = "rnbqkbnr/pppppppp/8/8/8/8/" + 
+												"PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     
 	protected HashMap<String,String> pgnTags;
 
@@ -229,7 +230,7 @@ public class Game {
 	/**
 	 * 	Move a piece as decided by the engine and return the move made.
 	 *
-	 *  @return The move made if successful. null otherwise.
+	 *  @return A string representation of the move made if successful. null otherwise.
 	 */
 	public String cpuMove() {
 		int timeout = timeoutsForModes[mode];
@@ -247,7 +248,8 @@ public class Game {
 		pgnTags.put("FEN", currFEN);
 
 		if (pieceTaken) {
-			String moveString = moveData[0] + "" + moveData[1] + "x" + moveData[2] + "" + moveData[3];
+			String moveString = moveData[0] + "" + moveData[1] + "x" + 
+									moveData[2] + "" + moveData[3];
 			addToMoveHistory(moveString);
 		} else {
 			addToMoveHistory(move);
@@ -256,7 +258,8 @@ public class Game {
 	}
 
 	/**
-	 * Do the move functionality: taking pieces, en passant checking, setting pieces array
+	 * Do the move functionality:
+	 * taking pieces, en passant checking, setting pieces array
 	 *  @param  oldRank The current horizontal coordinate
 	 *  @param  oldFile The current vertical coordinate
 	 *  @param  newRank The new horizontal coordinate to move to
@@ -399,7 +402,8 @@ public class Game {
 	}
 
 	/**
-	 * For game loading.
+	 * Loads the game state from the passed in FEN string.
+	 * Used for loading from a file.
 	 *
 	 * @param fen  The fen string to load.
 	 */
@@ -444,6 +448,10 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Undoes up to the last player move.
+	 * If computer moved since last player move, that is undone as well.
+	 */
 	public void undoMove() {
 		if (lastFEN == null) {
 
@@ -458,7 +466,7 @@ public class Game {
 			}
 			rollbackFEN();
 		} else {
-			// player white - undo both their move and responding cpu move
+			// player white - undo both their move and responding CPU move
 			String move = moveHistory.remove(moveHistory.size()-1);
 			if (move.contains("x")) {
 				captByBlack = captByBlack.substring(0,captByBlack.lastIndexOf(' '));
@@ -475,6 +483,10 @@ public class Game {
 		Core.historyPanel.updateMoveHistory(moveHistory);
 	}
 
+	/**
+	 * Rolls back the stored FEN strings by one, sets the pieces array accordingly,
+	 * and refreshes the board to visualize the change.
+	 */
 	private void rollbackFEN() {
 		currFEN = lastFEN;
 		lastFEN = prevFEN;

@@ -9,6 +9,11 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class FileManager {
+	/**
+	 * Saves the game state in PGN format to the correct file.
+	 *
+	 * @param fileName  The pgn file to be written
+	 */
 	public static void save(String fileName) {
 		File file = new File("SavedGames/" + fileName);
 		PrintWriter output;
@@ -75,6 +80,12 @@ public class FileManager {
 
 		output.close();
 	}
+
+	/**
+	 * Loads the game state from the correct file in PGN format.
+	 *
+	 * @param fileName  The pgn file to be read
+	 */
 	public static void load(String fileName) {
 		File file = new File("SavedGames/" + fileName);
 		Scanner input;
