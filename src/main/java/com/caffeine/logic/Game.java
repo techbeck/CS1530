@@ -401,9 +401,24 @@ public class Game {
 		enPassantLoc = fen.split(" ")[3];
 		Chess.engine.setFEN(fen);
 		// Parse taken from fen
-		Character[] pieces = {'K','Q','R','B','N','P','k','q','r','b','n','p'};
-		ArrayList<Character> possTaken = new ArrayList<Character>(Arrays.asList(pieces));
-		for (int i = 0; i < 7; i++) {
+		ArrayList<Character> possTaken = new ArrayList<Character>();
+		possTaken.add(Character.valueOf('K'));
+		possTaken.add(Character.valueOf('k'));
+		possTaken.add(Character.valueOf('Q'));
+		possTaken.add(Character.valueOf('q'));
+		possTaken.add(Character.valueOf('R'));
+		possTaken.add(Character.valueOf('R'));
+		possTaken.add(Character.valueOf('r'));
+		possTaken.add(Character.valueOf('r'));
+		possTaken.add(Character.valueOf('B'));
+		possTaken.add(Character.valueOf('B'));
+		possTaken.add(Character.valueOf('b'));
+		possTaken.add(Character.valueOf('b'));
+		possTaken.add(Character.valueOf('N'));
+		possTaken.add(Character.valueOf('N'));
+		possTaken.add(Character.valueOf('n'));
+		possTaken.add(Character.valueOf('n'));
+		for (int i = 0; i < 8; i++) {
 			// Add repetitions of pawn pieces
 			possTaken.add(Character.valueOf('p'));
 			possTaken.add(Character.valueOf('P'));

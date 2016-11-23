@@ -2,6 +2,7 @@ package com.caffeine.logic;
 
 import com.caffeine.Chess;
 import com.caffeine.view.Core;
+import com.caffeine.view.ViewUtils;
 
 import java.io.*;
 import java.util.Scanner;
@@ -95,6 +96,9 @@ public class FileManager {
 			Core.statusLabel.setText("Unable to load from file. - Invalid FEN String.");
 			return;
 		}
+	    ViewUtils.refreshBoard();
+	    ViewUtils.refreshTakenPanel();
+	    ViewUtils.refreshHistoryPanel();
 		Chess.game = new Game();
 		Chess.game.startGame();
 		Chess.game.setSide(userSide);
