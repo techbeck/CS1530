@@ -18,11 +18,11 @@ public class ViewUtils {
 		    }
 		}
 	}
-	public static void refreshTakenPanel() {
+	public static void clearTakenPanel() {
 		Core.takenPanel.setCaptByBlack("");
 		Core.takenPanel.setCaptByWhite("");
 	}
-	public static void refreshHistoryPanel() {
+	public static void clearHistoryPanel() {
 		Core.historyPanel.updateMoveHistory(new ArrayList<String>());
 	}
 }

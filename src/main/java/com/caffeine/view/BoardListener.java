@@ -47,6 +47,11 @@ public class BoardListener implements ActionListener {
                 return;
             }
         } else {
+            if (squareButton == selected) {
+                selected.unselectSquare();
+                selected = null;
+                return;
+            }
         	// else move the previously selected chess piece to the clicked square 
             int oldRank = Integer.parseInt(selected.getName().split(":")[1].split(",")[1]) - 1;
             int oldFile = ((int) selected.getName().split(":")[1].split(",")[0].toCharArray()[0]) - 65;

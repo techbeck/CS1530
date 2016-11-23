@@ -24,6 +24,8 @@ public class Game {
 	protected String captByBlack;
 	protected String captByWhite;
 
+	// used for en passant checking and undoing moves
+	protected String prevFEN = null;
 	protected String lastFEN = null;
 	protected String currFEN = startFEN;
 
@@ -185,17 +187,22 @@ public class Game {
 
 		if (Chess.engine.move(oldLoc+newLoc)) {
 			boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
+			prevFEN = lastFEN;
 			lastFEN = currFEN;
 			currFEN = Chess.engine.getFEN();
 			pgnTags.put("FEN", currFEN);
 
 			boolean kingside = false;
 			boolean queenside = false;
+			// available castling has changed
 			if (!currFEN.split(" ")[2].equals(lastFEN.split(" ")[2])) {
+				// if a king is what moved
 				if (oldLoc.equals("e1") || oldLoc.equals("e8")) {
+					// if kingside castling occurred
 					if (newLoc.equals("g1") || newLoc.equals("g8")) {
 						kingside = true;
 					}
+					// if queenside castling occurred
 					if (newLoc.equals("c1") || newLoc.equals("c8")) {
 						queenside = true;
 					}
@@ -234,6 +241,7 @@ public class Game {
 		int newRank = (int) moveData[3] - '1';
 		int newFile = (int) moveData[2] - 'a';
 		boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
+		prevFEN = lastFEN;
 		lastFEN = currFEN;
 		currFEN = Chess.engine.getFEN();
 		pgnTags.put("FEN", currFEN);
@@ -400,6 +408,7 @@ public class Game {
 		ViewUtils.refreshBoard();
 		enPassantLoc = fen.split(" ")[3];
 		Chess.engine.setFEN(fen);
+		currFEN = fen;
 		// Parse taken from fen
 		ArrayList<Character> possTaken = new ArrayList<Character>();
 		possTaken.add(Character.valueOf('K'));
@@ -433,6 +442,45 @@ public class Game {
 			Piece p = new Piece(typeToUnicode(c), typeToSide(c),-1,-1);
 			takePiece(p);
 		}
+	}
 
+	public void undoMove() {
+		if (lastFEN == null) {
+
+			return;
+		}
+		if (!userWhite) {
+			// player black - undo just their move
+			String move = moveHistory.remove(moveHistory.size()-1);
+			if (move.contains("x")) {
+				captByBlack = captByBlack.substring(0,captByBlack.lastIndexOf(' '));
+				Core.takenPanel.setCaptByBlack(captByBlack);
+			}
+			rollbackFEN();
+		} else {
+			// player white - undo both their move and responding cpu move
+			String move = moveHistory.remove(moveHistory.size()-1);
+			if (move.contains("x")) {
+				captByBlack = captByBlack.substring(0,captByBlack.lastIndexOf(' '));
+				Core.takenPanel.setCaptByBlack(captByBlack);
+			}
+			rollbackFEN();
+			move = moveHistory.remove(moveHistory.size()-1);
+			if (move.contains("x")) {
+				captByWhite = captByWhite.substring(0,captByWhite.lastIndexOf(' '));
+				Core.takenPanel.setCaptByWhite(captByWhite);
+			}
+			rollbackFEN();
+		}
+		Core.historyPanel.updateMoveHistory(moveHistory);
+	}
+
+	private void rollbackFEN() {
+		currFEN = lastFEN;
+		lastFEN = prevFEN;
+		prevFEN = null;
+		Chess.engine.setFEN(currFEN);
+		setPiecesFromFEN(currFEN);
+		ViewUtils.refreshBoard();
 	}
 }

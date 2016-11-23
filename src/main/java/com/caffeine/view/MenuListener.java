@@ -52,17 +52,14 @@ public class MenuListener implements ActionListener {
                     return;
             }
 
-        } else if (menuItem.getText().equals("Set move timer")) {
-
-            statusLabel.setText("[Upcoming Feature] - Set move timer");
-
         } else if (menuItem.getText().equals("Undo last move")) {
+            
+            statusLabel.setText("Undo last move");
+            Chess.game.undoMove();
 
-            statusLabel.setText("[Upcoming Feature] - Undo last move");
-
-        } else if (menuItem.getText().equals("Show possible moves")) {
-
-            statusLabel.setText("[Upcoming Feature] - Show possible moves");
+        } else if (menuItem.getText().equals("Set move timer")) {
+            
+            statusLabel.setText("[Upcoming Feature] - Set move timer");
 
         }
     }

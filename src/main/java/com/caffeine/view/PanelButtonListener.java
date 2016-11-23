@@ -128,8 +128,8 @@ public class PanelButtonListener implements ActionListener {
                     return;
             }
             ViewUtils.refreshBoard();
-            ViewUtils.refreshTakenPanel();
-            ViewUtils.refreshHistoryPanel();
+            ViewUtils.clearTakenPanel();
+            ViewUtils.clearHistoryPanel();
 
         } else if (button.getText().equals("Tutorial")) {
 

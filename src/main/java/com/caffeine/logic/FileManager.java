@@ -97,8 +97,8 @@ public class FileManager {
 			return;
 		}
 	    ViewUtils.refreshBoard();
-	    ViewUtils.refreshTakenPanel();
-	    ViewUtils.refreshHistoryPanel();
+	    ViewUtils.clearTakenPanel();
+	    ViewUtils.clearHistoryPanel();
 		Chess.game = new Game();
 		Chess.game.startGame();
 		Chess.game.setSide(userSide);
