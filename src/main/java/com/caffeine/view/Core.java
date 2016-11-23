@@ -235,7 +235,7 @@ public class Core {
         buttonPanel.add(saveButton);
 
         JButton chooseSideButton = new JButton("New Game");
-        chooseSideButton.setName("newGame;Button");
+        chooseSideButton.setName("newGameButton");
         chooseSideButton.addActionListener(buttonListener);
         buttonPanel.add(chooseSideButton);
 

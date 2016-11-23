@@ -91,6 +91,10 @@ public class FileManager {
 			if (fileLine.contains("FEN")) break;
 		}
 		String fen = fileLine.split("\"")[1];
+		if (!Utils.isValidFEN(fen)) {
+			Core.statusLabel.setText("Unable to load from file. - Invalid FEN String.");
+			return;
+		}
 		Chess.game = new Game();
 		Chess.game.startGame();
 		Chess.game.setSide(userSide);

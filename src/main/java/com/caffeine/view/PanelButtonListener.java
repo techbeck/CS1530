@@ -117,7 +117,6 @@ public class PanelButtonListener implements ActionListener {
                     statusLabel.setText("Game Started - Now playing as Black");
                     // CPU moves immediately
                     String cpuMove = Chess.game.cpuMove();
-                    ViewUtils.refreshBoard();
                     break;
                 case 1:
                     Chess.game = new Game();
@@ -128,6 +127,9 @@ public class PanelButtonListener implements ActionListener {
                 case 2:
                     return;
             }
+            ViewUtils.refreshBoard();
+            ViewUtils.refreshTakenPanel();
+            ViewUtils.refreshHistoryPanel();
 
         } else if (button.getText().equals("Tutorial")) {
 
