@@ -98,9 +98,9 @@ public class Core {
         JMenuItem changeMode = new JMenuItem("Change CPU Mode");
         changeMode.setName("menuChangeMode");
         JMenuItem undo = new JMenuItem("Undo last move");
-        undo.setName("menuUndo")
+        undo.setName("menuUndo");
         JMenuItem setMoveTimer = new JMenuItem("Set move timer");
-        setMoveTimer.setName("menuSetMoveTimer");;
+        setMoveTimer.setName("menuSetMoveTimer");
         menu.add(changeMode);
         menu.add(undo);
         menu.add(setMoveTimer);
