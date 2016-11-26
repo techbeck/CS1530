@@ -183,4 +183,36 @@ public class Utils {
         return (move1 && move2);
     }
 
+    // Translates Board position to Integer pair, e.g. "A3" to {2,0}.
+    //   NOTE THAT RANK & FILE ARE REVERSED BETWEEN POSITION AND INT ARRAY.
+    //
+    // Board Position: String of length 2 marking File, then Rank. e.g. "e2".
+    // Integer Pair: An Integer array of length 2 marking Rank, then File.
+    //
+    // Returns null if invalid position.
+    public static Integer[] translate(String position){
+        if (!isValidBoardPosition(position)){ return null; }
+        return new Integer[]{
+            Integer.parseInt(position.substring(1,2)) - 1,
+            (int) Character.toLowerCase(position.charAt(0)) - 97
+        };
+    }
+
+    // Translates Integer pair to Board position, e.g. {3,6} to "F4".
+    //   NOTE THAT RANK & FILE ARE REVERSED BETWEEN POSITION AND INT ARRAY.
+    //
+    // Board Position: String of length 2 marking File, then Rank. e.g. "e2".
+    // Integer Pair: An Integer array of length 2 marking Rank, then File.
+    //
+    // Returns null if it would translate to invalid board position.
+    public static String translate(Integer[] index){
+        if (index.length != 2){ return null; }
+        if (index[0] < 1 || index[0] > 8){ return null; }
+        if (index[1] < 1 || index[1] > 8){ return null; }
+        return new String(
+            (index[1] + 1).toString() +
+            new String(Character.toString((char)(index[0] + 97)))
+        );
+    }
+
 }
