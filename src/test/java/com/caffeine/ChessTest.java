@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.awt.Component;
 import java.awt.Color;
 import java.awt.event.*;
+import java.io.File;
 
 // Third-Party Imports
 import org.junit.Test;
@@ -17,11 +18,13 @@ import org.assertj.swing.fixture.*;
 import org.assertj.swing.exception.*;
 import org.assertj.swing.core.matcher.*;
 import org.assertj.swing.core.matcher.JButtonMatcher.*;
+import org.assertj.swing.exception.WaitTimedOutError;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.swing.launcher.ApplicationLauncher.application;
 import static org.assertj.swing.finder.WindowFinder.findFrame;
 import static org.assertj.swing.finder.JOptionPaneFinder.findOptionPane;
+import static org.assertj.swing.finder.JFileChooserFinder.findFileChooser;
 import static org.assertj.swing.fixture.Containers.showInFrame;
 
 // Local Imports
@@ -72,37 +75,70 @@ public class ChessTest {
     @Test
     public void testLoadButtonCreatesOptionPane(){
         frame.button("loadButton").click();
-        JOptionPaneFixture optionPane = findOptionPane().using(robot);
-        optionPane.requireTitle("Load Game");
-        optionPane.cancelButton().click();
+        try {
+            // in case unsaved current game
+            JOptionPaneFixture optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("No").click();
+        } catch (WaitTimedOutError ex) {}
+        JFileChooserFixture fileChooser = findFileChooser().using(robot);
+        fileChooser.requireVisible();
+        fileChooser.cancel();
     }
 
     @Test
-    public void testLoadButtonEnterText(){
+    public void testLoadSetsStatusBar(){
+        ComponentFinder newFinder = robot.finder();
         frame.button("loadButton").click();
-        JOptionPaneFixture optionPane = findOptionPane().using(robot);
-        optionPane.textBox().enterText("newgame");
-        optionPane.okButton().click();
+        try {
+            // in case unsaved current game
+            JOptionPaneFixture optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("No").click();
+        } catch (WaitTimedOutError ex) {}
+        JFileChooser chooser = (JFileChooser) newFinder.findByType(JFileChooser.class);
+        chooser.setSelectedFile(new File("samplegame.pgn"));
+        JButtonMatcher matcher = JButtonMatcher.withText("Open").andShowing();
+        JButton openButton = (JButton) newFinder.find(matcher);
+        openButton.setEnabled(true);
+        JButtonFixture openButtonFix = new JButtonFixture(robot,openButton);
+        openButtonFix.click();
         String actualLabel = frame.label("statusLabel").text();
-        assertThat(actualLabel).contains("Loading game from file: newgame.pgn");
+        assertThat(actualLabel).contains("Loading game from file: samplegame.pgn");
     }
 
     @Test
     public void testSaveButtonCreatesOptionPane(){
-        frame.button("saveButton").click();
+        frame.button("newGameButton").click();
         JOptionPaneFixture optionPane = findOptionPane().using(robot);
-        optionPane.requireTitle("Save Game");
-        optionPane.cancelButton().click();
+        try {
+            // in case unsaved current game
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
+        } catch (Exception ex) {}
+        optionPane.buttonWithText("White").click();
+
+        frame.button("saveButton").click();
+        JFileChooserFixture fileChooser = findFileChooser().using(robot);
+        fileChooser.requireVisible();
+        fileChooser.cancel();
     }
 
     @Test
-    public void testSaveButtonEnterText(){
-        frame.button("saveButton").click();
+    public void testSaveSetsStatusBar(){
+        frame.button("newGameButton").click();
         JOptionPaneFixture optionPane = findOptionPane().using(robot);
-        optionPane.textBox().enterText("oldgame");
-        optionPane.okButton().click();
+        try {
+            // in case unsaved current game
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
+        } catch (Exception ex) {}
+        optionPane.buttonWithText("White").click();
+
+        frame.button("saveButton").click();
+        JFileChooserFixture fileChooser = findFileChooser().using(robot);
+        fileChooser.fileNameTextBox().enterText("newgame");
+        fileChooser.approveButton().click();
         String actualLabel = frame.label("statusLabel").text();
-        assertThat(actualLabel).contains("Saving game to file: oldgame.pgn");
+        assertThat(actualLabel).contains("Saving game to file: newgame.pgn");
     }
 
     @Test
@@ -113,9 +149,18 @@ public class ChessTest {
         optionPane.okButton().click();
     }
 
-    /*@Test
+    @Test
     public void testChessPieceMove(){
         ComponentFinder newFinder = robot.finder();
+        frame.button("newGameButton").click();
+        JOptionPaneFixture optionPane = findOptionPane().using(robot);
+        try {
+            // in case unsaved current game
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
+        } catch (Exception ex) {}
+        optionPane.buttonWithText("White").click();
+        
         JButton firstSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,2", BoardSquare.class);
         JButton secondSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,4", BoardSquare.class);
         JButtonFixture firstSquareFix = new JButtonFixture(robot, firstSquare);
@@ -125,11 +170,20 @@ public class ChessTest {
         secondSquareFix.click();
         firstSquareFix.requireText(" ");
         secondSquareFix.requireText(expectedText);
-    }*/
+    }
 
     @Test
     public void testCastling(){
         ComponentFinder newFinder = robot.finder();
+        frame.button("newGameButton").click();
+        JOptionPaneFixture optionPane = findOptionPane().using(robot);
+        try {
+            // in case unsaved current game
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
+        } catch (Exception ex) {}
+        optionPane.buttonWithText("White").click();
+
         JButton c5 = (JButton) newFinder.findByName(frame.target(), "BoardSquare:C,5", BoardSquare.class);
         JButton c7 = (JButton) newFinder.findByName(frame.target(), "BoardSquare:C,7", BoardSquare.class);
         JButton e1 = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,1", BoardSquare.class);
@@ -143,32 +197,20 @@ public class ChessTest {
         JButton f7 = (JButton) newFinder.findByName(frame.target(), "BoardSquare:F,7", BoardSquare.class);
         JButton g1 = (JButton) newFinder.findByName(frame.target(), "BoardSquare:G,1", BoardSquare.class);
         JButton h1 = (JButton) newFinder.findByName(frame.target(), "BoardSquare:H,1", BoardSquare.class);
-        JButtonFixture c5Fix = new JButtonFixture(robot, c5);
-        JButtonFixture c7Fix = new JButtonFixture(robot, c7);
         JButtonFixture e1Fix = new JButtonFixture(robot, e1);
         JButtonFixture e2Fix = new JButtonFixture(robot, e2);
         JButtonFixture e4Fix = new JButtonFixture(robot, e4);
-        JButtonFixture e5Fix = new JButtonFixture(robot, e5);
-        JButtonFixture e7Fix = new JButtonFixture(robot, e7);
         JButtonFixture f1Fix = new JButtonFixture(robot, f1);
         JButtonFixture f3Fix = new JButtonFixture(robot, f3);
-        JButtonFixture f5Fix = new JButtonFixture(robot, f5);
-        JButtonFixture f7Fix = new JButtonFixture(robot, f7);
         JButtonFixture g1Fix = new JButtonFixture(robot, g1);
         JButtonFixture h1Fix = new JButtonFixture(robot, h1);
         String expectedText = h1Fix.text();
         e2Fix.click();
         e4Fix.click();
-        c7Fix.click();
-        c5Fix.click();
         f1Fix.click();
         e2Fix.click();
-        e7Fix.click();
-        e5Fix.click();
         g1Fix.click();
         f3Fix.click();
-        f7Fix.click();
-        f5Fix.click();
         e1Fix.click();
         g1Fix.click();
         f1Fix.requireText(expectedText);
@@ -221,6 +263,15 @@ public class ChessTest {
     @Test
     public void testFlip(){
         ComponentFinder newFinder = robot.finder();
+        frame.button("newGameButton").click();
+        JOptionPaneFixture optionPane = findOptionPane().using(robot);
+        try {
+            // in case unsaved current game
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
+        } catch (Exception ex) {}
+        optionPane.buttonWithText("White").click();
+
         JButton h1Button = (JButton) newFinder.findByName(frame.target(), "BoardSquare:A,1", BoardSquare.class);
         Container board = h1Button.getParent();
         Component[] components = board.getComponents();
@@ -235,4 +286,5 @@ public class ChessTest {
         squareFix = new JButtonFixture(robot, square);
         squareFix.foreground().requireEqualTo(Color.WHITE);
     }
+
 }

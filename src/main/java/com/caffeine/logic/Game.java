@@ -2,24 +2,31 @@ package com.caffeine.logic;
 
 import com.caffeine.Chess;
 import com.caffeine.view.Core;
+import com.caffeine.view.ViewUtils;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Game {
     public Piece[] pieces = new Piece[32];
-
     public ArrayList<String> moveHistory = new ArrayList<String>();
+    public boolean gameStarted = false;
+    public int gameResult = 0; // 0 = ongoing, 1 = white won, 2 = black won, 3 = draw
 
 	private int mode = 0; // 0 = easy, 1 = medium, 2 = hard
-	private static final int[] timeoutsForModes = {5, 100, 200};
+	private static final int[] timeoutsForModes = {1, 5, 10};
 
-	private static final String startFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+	private static final String startFEN = "rnbqkbnr/pppppppp/8/8/8/8/" + 
+												"PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     
+	protected HashMap<String,String> pgnTags;
+
 	protected boolean whiteActive;
 	protected boolean userWhite;
 	protected String captByBlack;
 	protected String captByWhite;
 
+	// used for en passant checking and undoing moves
+	protected String prevFEN = null;
 	protected String lastFEN = null;
 	protected String currFEN = startFEN;
 
@@ -39,7 +46,36 @@ public class Game {
 		userWhite = true;
 		captByBlack = "";
 		captByWhite = "";
+		initializePGN();
+		Chess.engine.setFEN(startFEN);
+	}
+
+	/**
+	 * Initialize PGN tags
+	 */
+	public void initializePGN() {
+		pgnTags = new HashMap<String,String>();
+		pgnTags.put("Event", "CS1530");
+		pgnTags.put("Site", "Pittsburgh, PA, USA");
+		pgnTags.put("Date", "Fall 2016");
+		pgnTags.put("Round", "420");
+		pgnTags.put("FEN", currFEN);
+	}
+
+	/**
+	 * Starts the game.
+	 */
+	public void startGame() {
+		gameStarted = true;
 		initializesPieces();
+		ViewUtils.refreshBoard();
+	}
+
+	/**
+	 * 	Populates the pieces array with the standard 32 chess pieces
+	 */
+	public void initializesPieces() {
+		setPiecesFromFEN(startFEN);
 	}
 
 	/**
@@ -48,22 +84,26 @@ public class Game {
 	 *  @param side The color the user will play as
 	 */
 	public void setSide(String side) {
-		if (side.equals("white"))
+		if (side.equals("white") || side.equals("White")) {
 			userWhite = true;
-		else
+			pgnTags.put("White", "User");
+			pgnTags.put("Black", "CPU");
+		}
+		else {
 			userWhite = false;
+			pgnTags.put("White", "CPU");
+			pgnTags.put("Black", "User");
+		}
 	}
 
 	/**
 	 * Sets the mode based on the string passed in.
-	 * Default is easy.
+	 * Default is easy if this method is not called.
 	 *
-	 * @param mode  The string to determine which mode to set.
+	 * @param mode  The mode to determine difficulty of the CPU opponent.
 	 */
-	public void setMode(String mode) {
-		if (mode.equals("hard")) this.mode = 2;
-		else if (mode.equals("medium")) this.mode = 1;
-		else this.mode = 0;
+	public void setMode(int mode) {
+		this.mode = mode;
 	}
 
 	/**
@@ -148,16 +188,22 @@ public class Game {
 
 		if (Chess.engine.move(oldLoc+newLoc)) {
 			boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
+			prevFEN = lastFEN;
 			lastFEN = currFEN;
 			currFEN = Chess.engine.getFEN();
+			pgnTags.put("FEN", currFEN);
 
 			boolean kingside = false;
 			boolean queenside = false;
+			// available castling has changed
 			if (!currFEN.split(" ")[2].equals(lastFEN.split(" ")[2])) {
+				// if a king is what moved
 				if (oldLoc.equals("e1") || oldLoc.equals("e8")) {
+					// if kingside castling occurred
 					if (newLoc.equals("g1") || newLoc.equals("g8")) {
 						kingside = true;
 					}
+					// if queenside castling occurred
 					if (newLoc.equals("c1") || newLoc.equals("c8")) {
 						queenside = true;
 					}
@@ -184,7 +230,7 @@ public class Game {
 	/**
 	 * 	Move a piece as decided by the engine and return the move made.
 	 *
-	 *  @return The move made if successful. null otherwise.
+	 *  @return A string representation of the move made if successful. null otherwise.
 	 */
 	public String cpuMove() {
 		int timeout = timeoutsForModes[mode];
@@ -196,11 +242,14 @@ public class Game {
 		int newRank = (int) moveData[3] - '1';
 		int newFile = (int) moveData[2] - 'a';
 		boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
+		prevFEN = lastFEN;
 		lastFEN = currFEN;
 		currFEN = Chess.engine.getFEN();
+		pgnTags.put("FEN", currFEN);
 
 		if (pieceTaken) {
-			String moveString = moveData[0] + "" + moveData[1] + "x" + moveData[2] + "" + moveData[3];
+			String moveString = moveData[0] + "" + moveData[1] + "x" + 
+									moveData[2] + "" + moveData[3];
 			addToMoveHistory(moveString);
 		} else {
 			addToMoveHistory(move);
@@ -209,7 +258,8 @@ public class Game {
 	}
 
 	/**
-	 * Do the move functionality: taking pieces, en passant checking, setting pieces array
+	 * Do the move functionality:
+	 * taking pieces, en passant checking, setting pieces array
 	 *  @param  oldRank The current horizontal coordinate
 	 *  @param  oldFile The current vertical coordinate
 	 *  @param  newRank The new horizontal coordinate to move to
@@ -266,24 +316,6 @@ public class Game {
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * 	Resets the game to the default settings
-	 */
-	public void reset() {
-		whiteActive = true;
-		userWhite = true;
-		captByBlack = "";
-		captByWhite = "";
-		initializesPieces();
-	}
-
-	/**
-	 * 	Populates the pieces array with the standard 32 chess pieces
-	 */
-	public void initializesPieces() {
-		setPiecesFromFEN(startFEN);
 	}
 
 	/**
@@ -367,5 +399,100 @@ public class Game {
 	public String typeToSide(char type) {
 		if (((int) type) < 90) return "white";
 		else return "black";
+	}
+
+	/**
+	 * Loads the game state from the passed in FEN string.
+	 * Used for loading from a file.
+	 *
+	 * @param fen  The fen string to load.
+	 */
+	public void loadFEN(String fen) {
+		setPiecesFromFEN(fen);
+		ViewUtils.refreshBoard();
+		enPassantLoc = fen.split(" ")[3];
+		Chess.engine.setFEN(fen);
+		currFEN = fen;
+		// Parse taken from fen
+		ArrayList<Character> possTaken = new ArrayList<Character>();
+		possTaken.add(Character.valueOf('K'));
+		possTaken.add(Character.valueOf('k'));
+		possTaken.add(Character.valueOf('Q'));
+		possTaken.add(Character.valueOf('q'));
+		possTaken.add(Character.valueOf('R'));
+		possTaken.add(Character.valueOf('R'));
+		possTaken.add(Character.valueOf('r'));
+		possTaken.add(Character.valueOf('r'));
+		possTaken.add(Character.valueOf('B'));
+		possTaken.add(Character.valueOf('B'));
+		possTaken.add(Character.valueOf('b'));
+		possTaken.add(Character.valueOf('b'));
+		possTaken.add(Character.valueOf('N'));
+		possTaken.add(Character.valueOf('N'));
+		possTaken.add(Character.valueOf('n'));
+		possTaken.add(Character.valueOf('n'));
+		for (int i = 0; i < 8; i++) {
+			// Add repetitions of pawn pieces
+			possTaken.add(Character.valueOf('p'));
+			possTaken.add(Character.valueOf('P'));
+		}
+		char[] fenArray = fen.split(" ")[0].toCharArray();
+		for (int i = 0; i < fenArray.length; i++) {
+			if (fenArray[i] > '9') {
+				possTaken.remove(Character.valueOf(fenArray[i]));
+			}
+		}
+		for (Character c : possTaken) {
+			Piece p = new Piece(typeToUnicode(c), typeToSide(c),-1,-1);
+			takePiece(p);
+		}
+	}
+
+	/**
+	 * Undoes up to the last player move.
+	 * If computer moved since last player move, that is undone as well.
+	 */
+	public void undoMove() {
+		if (lastFEN == null) {
+
+			return;
+		}
+		if (!userWhite) {
+			// player black - undo just their move
+			String move = moveHistory.remove(moveHistory.size()-1);
+			if (move.contains("x")) {
+				captByBlack = captByBlack.substring(0,captByBlack.lastIndexOf(' '));
+				Core.takenPanel.setCaptByBlack(captByBlack);
+			}
+			rollbackFEN();
+		} else {
+			// player white - undo both their move and responding CPU move
+			String move = moveHistory.remove(moveHistory.size()-1);
+			if (move.contains("x")) {
+				captByBlack = captByBlack.substring(0,captByBlack.lastIndexOf(' '));
+				Core.takenPanel.setCaptByBlack(captByBlack);
+			}
+			rollbackFEN();
+			move = moveHistory.remove(moveHistory.size()-1);
+			if (move.contains("x")) {
+				captByWhite = captByWhite.substring(0,captByWhite.lastIndexOf(' '));
+				Core.takenPanel.setCaptByWhite(captByWhite);
+			}
+			rollbackFEN();
+		}
+		Core.historyPanel.updateMoveHistory(moveHistory);
+	}
+
+	/**
+	 * Rolls back the stored FEN strings by one, sets the pieces array accordingly,
+	 * and refreshes the board to visualize the change.
+	 */
+	private void rollbackFEN() {
+		currFEN = lastFEN;
+		lastFEN = prevFEN;
+		prevFEN = null;
+		Chess.engine.setFEN(currFEN);
+		setPiecesFromFEN(currFEN);
+		ViewUtils.refreshBoard();
 	}
 }
