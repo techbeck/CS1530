@@ -215,4 +215,20 @@ public class Utils {
         );
     }
 
+    // Translates Two integers (Rank and then File to a Board position.
+    //
+    // Board Position: String of length 2 marking File, then Rank. e.g. "e2".
+    // Rank: An int within [0-7] (incl) marking a ROW on a Chess board.
+    // File: An int within [0-7] (incl) marking a COL on a Chess board.
+    //
+    // Returns null if it would translate to invalid board position.
+    public static String translate(Integer rank, Integer file){
+        if (rank < 0 || rank > 7){ return null; }
+        if (file < 0 || file > 7){ return null; }
+        return new String(
+            new String(Character.toString((char)(file + 97))) +
+            Integer.toString(rank + 1)
+        );
+    }
+
 }

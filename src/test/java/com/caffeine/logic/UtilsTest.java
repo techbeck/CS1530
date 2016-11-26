@@ -157,7 +157,6 @@ public class UtilsTest {
 
     @Test
     public void testTranslateIndicesToBoardPosition(){
-        System.out.println("##### "+Utils.translate(new Integer[]{7,0}));
         if (!Utils.translate(new Integer[]{ 0,0 }).equals("a1")){ fail(); }
         if (!Utils.translate(new Integer[]{ 1,1 }).equals("b2")){ fail(); }
         if (!Utils.translate(new Integer[]{ 2,2 }).equals("c3")){ fail(); }
@@ -170,6 +169,22 @@ public class UtilsTest {
         if (!Utils.translate(new Integer[]{ 3,1 }).equals("b4")){ fail(); }
         if (!Utils.translate(new Integer[]{ 1,2 }).equals("c2")){ fail(); }
         if (!Utils.translate(new Integer[]{ 0,3 }).equals("d1")){ fail(); }
+    }
+
+    @Test
+    public void testTranslateIntegersToBoardPosition(){
+        if (!Utils.translate(0, 0).equals("a1")){ fail(); }
+        if (!Utils.translate(1, 1).equals("b2")){ fail(); }
+        if (!Utils.translate(2, 2).equals("c3")){ fail(); }
+        if (!Utils.translate(3, 3).equals("d4")){ fail(); }
+        if (!Utils.translate(4, 4).equals("e5")){ fail(); }
+        if (!Utils.translate(5, 5).equals("f6")){ fail(); }
+        if (!Utils.translate(6, 6).equals("g7")){ fail(); }
+        if (!Utils.translate(7, 7).equals("h8")){ fail(); }
+        if (!Utils.translate(7, 0).equals("a8")){ fail(); }
+        if (!Utils.translate(3, 1).equals("b4")){ fail(); }
+        if (!Utils.translate(1, 2).equals("c2")){ fail(); }
+        if (!Utils.translate(0, 3).equals("d1")){ fail(); }
     }
 
 }
