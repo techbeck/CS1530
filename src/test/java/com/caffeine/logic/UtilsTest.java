@@ -1,4 +1,5 @@
 // First-Party Imports
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -136,6 +137,39 @@ public class UtilsTest {
         if ( Utils.isValidMove("a5q0")){ fail(); }
         if ( Utils.isValidMove("g9r3")){ fail(); }
         if ( Utils.isValidMove("d0a3")){ fail(); }
+    }
+
+    @Test
+    public void testTranslateBoardPositionToIndices(){
+        if (!Arrays.equals(Utils.translate("a1"), new Integer[]{ 0,0 })){ fail(); }
+        if (!Arrays.equals(Utils.translate("b2"), new Integer[]{ 1,1 })){ fail(); }
+        if (!Arrays.equals(Utils.translate("C3"), new Integer[]{ 2,2 })){ fail(); }
+        if (!Arrays.equals(Utils.translate("D4"), new Integer[]{ 3,3 })){ fail(); }
+        if (!Arrays.equals(Utils.translate("e5"), new Integer[]{ 4,4 })){ fail(); }
+        if (!Arrays.equals(Utils.translate("f6"), new Integer[]{ 5,5 })){ fail(); }
+        if (!Arrays.equals(Utils.translate("G7"), new Integer[]{ 6,6 })){ fail(); }
+        if (!Arrays.equals(Utils.translate("H8"), new Integer[]{ 7,7 })){ fail(); }
+        if (!Arrays.equals(Utils.translate("a8"), new Integer[]{ 7,0 })){ fail(); }
+        if (!Arrays.equals(Utils.translate("b4"), new Integer[]{ 3,1 })){ fail(); }
+        if (!Arrays.equals(Utils.translate("c2"), new Integer[]{ 1,2 })){ fail(); }
+        if (!Arrays.equals(Utils.translate("d1"), new Integer[]{ 0,3 })){ fail(); }
+    }
+
+    @Test
+    public void testTranslateIndicesToBoardPosition(){
+        System.out.println("##### "+Utils.translate(new Integer[]{7,0}));
+        if (!Utils.translate(new Integer[]{ 0,0 }).equals("a1")){ fail(); }
+        if (!Utils.translate(new Integer[]{ 1,1 }).equals("b2")){ fail(); }
+        if (!Utils.translate(new Integer[]{ 2,2 }).equals("c3")){ fail(); }
+        if (!Utils.translate(new Integer[]{ 3,3 }).equals("d4")){ fail(); }
+        if (!Utils.translate(new Integer[]{ 4,4 }).equals("e5")){ fail(); }
+        if (!Utils.translate(new Integer[]{ 5,5 }).equals("f6")){ fail(); }
+        if (!Utils.translate(new Integer[]{ 6,6 }).equals("g7")){ fail(); }
+        if (!Utils.translate(new Integer[]{ 7,7 }).equals("h8")){ fail(); }
+        if (!Utils.translate(new Integer[]{ 7,0 }).equals("a8")){ fail(); }
+        if (!Utils.translate(new Integer[]{ 3,1 }).equals("b4")){ fail(); }
+        if (!Utils.translate(new Integer[]{ 1,2 }).equals("c2")){ fail(); }
+        if (!Utils.translate(new Integer[]{ 0,3 }).equals("d1")){ fail(); }
     }
 
 }

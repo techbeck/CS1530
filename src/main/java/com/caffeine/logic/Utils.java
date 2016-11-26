@@ -207,11 +207,11 @@ public class Utils {
     // Returns null if it would translate to invalid board position.
     public static String translate(Integer[] index){
         if (index.length != 2){ return null; }
-        if (index[0] < 1 || index[0] > 8){ return null; }
-        if (index[1] < 1 || index[1] > 8){ return null; }
+        if (index[0] < 0 || index[0] > 7){ return null; }
+        if (index[1] < 0 || index[1] > 7){ return null; }
         return new String(
-            (index[1] + 1).toString() +
-            new String(Character.toString((char)(index[0] + 97)))
+            new String(Character.toString((char)(index[1] + 97))) +
+            Integer.toString(index[0] + 1)
         );
     }
 
