@@ -29,7 +29,7 @@ public class Core {
     public static Color blackColor = Color.BLACK;
 
     // Constants for color theme hex Values
-    public static final String[][] themes = 
+    public static final String[][] themes =
              {  {"0xFFFFFF", "0xE0E0E0", "0xC0C0C0", "0x808080"}, // Grayscale
                 {"0xFFAFC2", "0xFFDFE6", "0xFE73A6", "0xFE3C74"}, // Peppermint
                 {"0xaeffd4", "0x8CD0A1", "0x7dfa92", "0x34a762"}, // Shamrock
@@ -67,6 +67,7 @@ public class Core {
     protected static JPanel timerPanel;
     protected static JPanel buttonPanel;
     protected static BoardPanel boardPanel;
+    protected static Kibitzer KibitzerPane;
 
     public Core() {
         window.setName("frame");
@@ -81,6 +82,13 @@ public class Core {
         // 	so this forces the chess window to be focused
         window.setAlwaysOnTop(true);
         window.setAlwaysOnTop(false);
+
+        Thread kibitzer = new Thread(() -> {
+            KibitzerPane = new Kibitzer(window);
+        });
+        kibitzer.start();
+
+
     }
 
     /**
