@@ -61,10 +61,10 @@ public class Core {
     public static BoardSquare[][] squares = new BoardSquare[8][8];
     public static TakenPanel takenPanel;
     public static HistoryPanel historyPanel;
+    public static TimerPanel timerPanel;
 
     protected static JPanel statusPanel;
     protected static JPanel centerPanel;
-    public static TimerPanel timerPanel;
     protected static JPanel buttonPanel;
     protected static BoardPanel boardPanel;
     protected static Kibitzer KibitzerPane;
