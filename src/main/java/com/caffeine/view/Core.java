@@ -83,13 +83,6 @@ public class Core {
         window.setAlwaysOnTop(true);
         window.setAlwaysOnTop(false);
 
-        // Thread t = new Thread(new Runnable(){
-        //     public void run(){
-        //         JOptionPane.showMessageDialog(null, "Hello");
-        //     }
-        // });
-        // t.start();
-
         Thread kibitzer = new Thread(() -> {
             KibitzerPane = new Kibitzer(window);
         });
