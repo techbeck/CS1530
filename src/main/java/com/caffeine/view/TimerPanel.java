@@ -19,7 +19,9 @@ public class TimerPanel extends JPanel {
     private static final int HALF_HOUR = 180000;
     private int countDown = 0;
     private Timer timer;
+
     private Boolean timeOut = false;
+    private Boolean paused = false;
 
     private JLabel timerLabel = new JLabel("Timer",
     SwingConstants.CENTER);
@@ -45,8 +47,8 @@ public class TimerPanel extends JPanel {
     }
 
     /**
-     * Every 1/100th of a second this ActionListener decrements
-     * the timer.
+     * Every 1/100th of a second (centisecond) this ActionListener
+     * decrements the timer.
      */
     private class TimerListener implements ActionListener {
         @Override
@@ -54,6 +56,9 @@ public class TimerPanel extends JPanel {
 
             if(!Chess.game.gameStarted){
                 // do nothing
+            } else if (paused){
+                //  do nothing
+            }
             } else if(countDown != 0){
                 countDown--;
                 timerLabel.setText(formatTime(countDown));
@@ -103,6 +108,20 @@ public class TimerPanel extends JPanel {
      */
     public void setTimer(int minutes) {
         countDown = minutes * 6000;
+    }
+
+    /**
+     * Pauses the timer.
+     */
+    public void pauseTimer() {
+        paused = true;
+    }
+
+    /**
+     * Resumes the timer.
+     */
+    public void resumeTimer() {
+        paused = false;
     }
 
 }
