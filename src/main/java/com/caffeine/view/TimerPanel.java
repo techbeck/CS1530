@@ -18,6 +18,7 @@ public class TimerPanel extends JPanel {
     private static final int ONE_CENTISECOND = 10;
     private static final int HALF_HOUR = 180000;
     private int countDown = 0;
+    private int intialCountDown = 0;
     private Timer timer;
 
     private Boolean timeOut = false;
@@ -39,10 +40,12 @@ public class TimerPanel extends JPanel {
         add(timerLabel);
 
         //  default to 30 minutes to count down
+        intialCountDown = HALF_HOUR;
         countDown = HALF_HOUR;
         timer = new Timer(ONE_CENTISECOND, new TimerListener());
         timer.start();
-        timerLabel.setText("Timer");
+        timerLabel.setText("Timer set to " +
+            String.format("%02d", countDown / 6000) + " minutes");
 
     }
 
@@ -58,12 +61,13 @@ public class TimerPanel extends JPanel {
                 // do nothing
             } else if (paused) {
                 //  do nothing
-            } else if(countDown != 0) {
+            } else if(countDown > 0) {
                 countDown--;
-                timerLabel.setText(formatTime(countDown));
+                timerLabel.setText("Time remaining: " + formatTime(countDown));
             } else {
                 timer.stop();
                 timeOut = true;
+                timerLabel.setText("Time's Out!");
             }
 
         }
@@ -88,6 +92,7 @@ public class TimerPanel extends JPanel {
     public void restartTimer() {
         timeOut = false;
         timer.restart();
+        countDown = intialCountDown;
     }
 
     /**
@@ -106,7 +111,10 @@ public class TimerPanel extends JPanel {
      * @param minutes How many minutes the timer should last.
      */
     public void setTimer(int minutes) {
-        countDown = minutes * 6000;
+        intialCountDown = minutes * 6000;
+        countDown = intialCountDown;
+        timerLabel.setText("Timer set to " +
+            String.format("%02d", countDown / 6000) + " minutes");
     }
 
     /**
@@ -121,6 +129,23 @@ public class TimerPanel extends JPanel {
      */
     public void resumeTimer() {
         paused = false;
+    }
+
+    /**
+     * Get the current amount of time left,
+     * in centiseconds.
+     * @return The number of centiseconds left in the game
+     */
+    public int getTimeLeft() {
+        return countDown;
+    }
+
+    /**
+     * Set the timer to the specified number of centiseconds.
+     * @param  centiseconds How long the timer should last
+     */
+    public void setTimeLeft(String centiseconds) {
+        countDown = Integer.parseInt(centiseconds);
     }
 
 }

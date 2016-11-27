@@ -64,7 +64,7 @@ public class Core {
 
     protected static JPanel statusPanel;
     protected static JPanel centerPanel;
-    protected static JPanel timerPanel;
+    public static TimerPanel timerPanel;
     protected static JPanel buttonPanel;
     protected static BoardPanel boardPanel;
     protected static Kibitzer KibitzerPane;
