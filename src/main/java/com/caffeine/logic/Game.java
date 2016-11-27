@@ -10,294 +10,294 @@ public class Game {
 
     public ArrayList<String> moveHistory = new ArrayList<String>();
 
-	private int mode = 0; // 0 = easy, 1 = medium, 2 = hard
-	private static final int[] timeoutsForModes = {5, 100, 200};
+    private int mode = 0; // 0 = easy, 1 = medium, 2 = hard
+    private static final int[] timeoutsForModes = {5, 100, 200};
 
-	private static final String startFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-    
-	protected boolean whiteActive;
-	protected boolean userWhite;
-	protected String captByBlack;
-	protected String captByWhite;
+    private static final String startFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
-	protected String lastFEN = null;
-	protected String currFEN = startFEN;
+    protected boolean whiteActive;
+    protected boolean userWhite;
+    protected String captByBlack;
+    protected String captByWhite;
 
-	protected String enPassantLoc = "-";
-	protected Piece enPassantPiece = null;
+    protected String lastFEN = null;
+    protected String currFEN = startFEN;
 
-	// 	Unicode chess pieces
-	protected static final String king = "\u265A";
-	protected static final String queen = "\u265B";
-	protected static final String rook = "\u265C";
-	protected static final String bishop = "\u265D";
-	protected static final String knight = "\u265E";
-	protected static final String pawn = "\u265F";
+    protected String enPassantLoc = "-";
+    protected Piece enPassantPiece = null;
 
-	public Game() {
-		whiteActive = true;
-		userWhite = true;
-		captByBlack = "";
-		captByWhite = "";
-		initializesPieces();
-	}
+    //  Unicode chess pieces
+    protected static final String king = "\u265A";
+    protected static final String queen = "\u265B";
+    protected static final String rook = "\u265C";
+    protected static final String bishop = "\u265D";
+    protected static final String knight = "\u265E";
+    protected static final String pawn = "\u265F";
 
-	/**
-	 * 	Sets the user as either white or black
-	 * 	
-	 *  @param side The color the user will play as
-	 */
-	public void setSide(String side) {
-		if (side.equals("white"))
-			userWhite = true;
-		else
-			userWhite = false;
-	}
+    public Game() {
+        whiteActive = true;
+        userWhite = true;
+        captByBlack = "";
+        captByWhite = "";
+        initializesPieces();
+    }
 
-	/**
-	 * Sets the mode based on the string passed in.
-	 * Default is easy.
-	 *
-	 * @param mode  The string to determine which mode to set.
-	 */
-	public void setMode(String mode) {
-		if (mode.equals("hard")) this.mode = 2;
-		else if (mode.equals("medium")) this.mode = 1;
-		else this.mode = 0;
-	}
+    /**
+     *  Sets the user as either white or black
+     *
+     *  @param side The color the user will play as
+     */
+    public void setSide(String side) {
+        if (side.equals("white"))
+            userWhite = true;
+        else
+            userWhite = false;
+    }
 
-	/**
-	 * 	Getter for whether the user is playing as white or black
-	 * 	
-	 *  @return true if the user is playing as white, false if black
-	 */
-	public boolean userWhite() {
-		return userWhite;
-	}
+    /**
+     * Sets the mode based on the string passed in.
+     * Default is easy.
+     *
+     * @param mode  The string to determine which mode to set.
+     */
+    public void setMode(String mode) {
+        if (mode.equals("hard")) this.mode = 2;
+        else if (mode.equals("medium")) this.mode = 1;
+        else this.mode = 0;
+    }
 
-	/** 
-	 * Add the piece passed in to one of the captured strings.
-	 * 
-	 * @param taken  The piece taken.
-	 */
-	public void takePiece(Piece taken) {
-		taken.moveTo(-1,-1); // indicates piece has been taken
-		if (taken.isWhite())
-			captureWhitePiece(taken.getType());
-		else
-			captureBlackPiece(taken.getType());
-	}
+    /**
+     *  Getter for whether the user is playing as white or black
+     *
+     *  @return true if the user is playing as white, false if black
+     */
+    public boolean userWhite() {
+        return userWhite;
+    }
 
-	/**
-	 * 	Adds a piece to the list of black pieces taken
-	 * 	
-	 *	@param piece The newly taken black piece
-	 */
-	public void captureBlackPiece(String piece) {
-		captByWhite = captByWhite.concat(" " + piece);
-		Core.takenPanel.setCaptByWhite(captByWhite);
-	}
+    /**
+     * Add the piece passed in to one of the captured strings.
+     *
+     * @param taken  The piece taken.
+     */
+    public void takePiece(Piece taken) {
+        taken.moveTo(-1,-1); // indicates piece has been taken
+        if (taken.isWhite())
+            captureWhitePiece(taken.getType());
+        else
+            captureBlackPiece(taken.getType());
+    }
 
-	/**
-	 * 	Adds a piece to the list of white pieces taken
-	 * 
-	 * 	@param piece The newly taken white piece
-	 */
-	public void captureWhitePiece(String piece) {
-		captByBlack = captByBlack.concat(" " + piece);
-		Core.takenPanel.setCaptByBlack(captByBlack);
-	}
+    /**
+     *  Adds a piece to the list of black pieces taken
+     *
+     *  @param piece The newly taken black piece
+     */
+    public void captureBlackPiece(String piece) {
+        captByWhite = captByWhite.concat(" " + piece);
+        Core.takenPanel.setCaptByWhite(captByWhite);
+    }
 
-	/**
-	 * 	Getter for the current list of pieces taken by black
-	 * @return list of captured white pieces as a String
-	 */
-	public String getCaptByBlack() {
-		return captByBlack;
-	}
+    /**
+     *  Adds a piece to the list of white pieces taken
+     *
+     *  @param piece The newly taken white piece
+     */
+    public void captureWhitePiece(String piece) {
+        captByBlack = captByBlack.concat(" " + piece);
+        Core.takenPanel.setCaptByBlack(captByBlack);
+    }
 
-	/**
-	 * 	Getter for the current list of pieces taken by white
-	 * @return list of captured black pieces as a String
-	 */
-	public String getCaptByWhite() {
-		return captByWhite;
-	}
+    /**
+     *  Getter for the current list of pieces taken by black
+     * @return list of captured white pieces as a String
+     */
+    public String getCaptByBlack() {
+        return captByBlack;
+    }
 
-	/**
-	 * 	Adds a move to the move history panel
-	 * 
-	 * 	@param currMove  The newly made move
-	 */
-	public void addToMoveHistory(String currMove) {
-		moveHistory.add(currMove);
-		Core.historyPanel.updateMoveHistory(moveHistory);
-	}
+    /**
+     *  Getter for the current list of pieces taken by white
+     * @return list of captured black pieces as a String
+     */
+    public String getCaptByWhite() {
+        return captByWhite;
+    }
 
-	/**
-	 * 	Move a piece from one set of coordinates to another
-	 *  @param  oldRank The current horizontal coordinate
-	 *  @param  oldFile The current vertical coordinate
-	 *  @param  newRank The new horizontal coordinate to move to
-	 *  @param  newFile The new vertical coordinate to move to
-	 *  @return true if move is successful, false otherwise
-	 */
-	public boolean move(int oldRank, int oldFile, int newRank, int newFile) {
-		String oldLoc = (char)(oldFile+97) + "" + (oldRank+1);
-		String newLoc = (char)(newFile+97) + "" + (newRank+1);
+    /**
+     *  Adds a move to the move history panel
+     *
+     *  @param currMove  The newly made move
+     */
+    public void addToMoveHistory(String currMove) {
+        moveHistory.add(currMove);
+        Core.historyPanel.updateMoveHistory(moveHistory);
+    }
 
-		if (Chess.engine.move(oldLoc+newLoc)) {
-			boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
-			lastFEN = currFEN;
-			currFEN = Chess.engine.getFEN();
+    /**
+     *  Move a piece from one set of coordinates to another
+     *  @param  oldRank The current horizontal coordinate
+     *  @param  oldFile The current vertical coordinate
+     *  @param  newRank The new horizontal coordinate to move to
+     *  @param  newFile The new vertical coordinate to move to
+     *  @return true if move is successful, false otherwise
+     */
+    public boolean move(int oldRank, int oldFile, int newRank, int newFile) {
+        String oldLoc = (char)(oldFile+97) + "" + (oldRank+1);
+        String newLoc = (char)(newFile+97) + "" + (newRank+1);
 
-			boolean kingside = false;
-			boolean queenside = false;
-			if (!currFEN.split(" ")[2].equals(lastFEN.split(" ")[2])) {
-				if (oldLoc.equals("e1") || oldLoc.equals("e8")) {
-					if (newLoc.equals("g1") || newLoc.equals("g8")) {
-						kingside = true;
-					}
-					if (newLoc.equals("c1") || newLoc.equals("c8")) {
-						queenside = true;
-					}
-				}				
-			}
+        if (Chess.engine.move(oldLoc+newLoc)) {
+            boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
+            lastFEN = currFEN;
+            currFEN = Chess.engine.getFEN();
 
-			if (kingside) {
-				addToMoveHistory("O-O");
-			} else if (queenside) {
-				addToMoveHistory("O-O-O");
-			} else {
-				if (pieceTaken) {
-					addToMoveHistory(oldLoc + "x" + newLoc);
-				} else {
-					addToMoveHistory(oldLoc+newLoc);
-				}
-			}
+            boolean kingside = false;
+            boolean queenside = false;
+            if (!currFEN.split(" ")[2].equals(lastFEN.split(" ")[2])) {
+                if (oldLoc.equals("e1") || oldLoc.equals("e8")) {
+                    if (newLoc.equals("g1") || newLoc.equals("g8")) {
+                        kingside = true;
+                    }
+                    if (newLoc.equals("c1") || newLoc.equals("c8")) {
+                        queenside = true;
+                    }
+                }
+            }
 
-			return true;
-		}
-		return false;
-	}
+            if (kingside) {
+                addToMoveHistory("O-O");
+            } else if (queenside) {
+                addToMoveHistory("O-O-O");
+            } else {
+                if (pieceTaken) {
+                    addToMoveHistory(oldLoc + "x" + newLoc);
+                } else {
+                    addToMoveHistory(oldLoc+newLoc);
+                }
+            }
 
-	/**
-	 * 	Move a piece as decided by the engine and return the move made.
-	 *
-	 *  @return The move made if successful. null otherwise.
-	 */
-	public String cpuMove() {
-		int timeout = timeoutsForModes[mode];
-		String move = Chess.engine.cpuMove(timeout);
-		if (move.equals("(none)")) return null;
-		char[] moveData = move.toCharArray();
-		int oldRank = (int) moveData[1] - '1';
-		int oldFile = (int) moveData[0] - 'a';
-		int newRank = (int) moveData[3] - '1';
-		int newFile = (int) moveData[2] - 'a';
-		boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
-		lastFEN = currFEN;
-		currFEN = Chess.engine.getFEN();
+            return true;
+        }
+        return false;
+    }
 
-		if (pieceTaken) {
-			String moveString = moveData[0] + "" + moveData[1] + "x" + moveData[2] + "" + moveData[3];
-			addToMoveHistory(moveString);
-		} else {
-			addToMoveHistory(move);
-		}
-		return move;
-	}
+    /**
+     *  Move a piece as decided by the engine and return the move made.
+     *
+     *  @return The move made if successful. null otherwise.
+     */
+    public String cpuMove() {
+        int timeout = timeoutsForModes[mode];
+        String move = Chess.engine.cpuMove(timeout);
+        if (move.equals("(none)")) return null;
+        char[] moveData = move.toCharArray();
+        int oldRank = (int) moveData[1] - '1';
+        int oldFile = (int) moveData[0] - 'a';
+        int newRank = (int) moveData[3] - '1';
+        int newFile = (int) moveData[2] - 'a';
+        boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
+        lastFEN = currFEN;
+        currFEN = Chess.engine.getFEN();
 
-	/**
-	 * Do the move functionality: taking pieces, en passant checking, setting pieces array
-	 *  @param  oldRank The current horizontal coordinate
-	 *  @param  oldFile The current vertical coordinate
-	 *  @param  newRank The new horizontal coordinate to move to
-	 *  @param  newFile The new vertical coordinate to move to
-	 *  @return true if move takes a piece, false otherwise
-	 */
-	public boolean doMove(int oldRank, int oldFile, int newRank, int newFile) {
-		boolean pieceTaken = false;
+        if (pieceTaken) {
+            String moveString = moveData[0] + "" + moveData[1] + "x" + moveData[2] + "" + moveData[3];
+            addToMoveHistory(moveString);
+        } else {
+            addToMoveHistory(move);
+        }
+        return move;
+    }
 
-		Piece taken = getPieceMatching(newRank,newFile);
-		Piece moving = getPieceMatching(oldRank, oldFile);
-		
-		if (taken != null) {
-			takePiece(taken);
-			pieceTaken = true;
-		}
+    /**
+     * Do the move functionality: taking pieces, en passant checking, setting pieces array
+     *  @param  oldRank The current horizontal coordinate
+     *  @param  oldFile The current vertical coordinate
+     *  @param  newRank The new horizontal coordinate to move to
+     *  @param  newFile The new vertical coordinate to move to
+     *  @return true if move takes a piece, false otherwise
+     */
+    public boolean doMove(int oldRank, int oldFile, int newRank, int newFile) {
+        boolean pieceTaken = false;
 
-		String fen = Chess.engine.getFEN();
+        Piece taken = getPieceMatching(newRank,newFile);
+        Piece moving = getPieceMatching(oldRank, oldFile);
 
-		// check for en passant and taking of en passant
-		if (!enPassantLoc.equals("-")) {
-			if (moving.getType().equals(pawn)) {
-				int enPassantRank = (int) enPassantLoc.charAt(1) - '1';
-				int enPassantFile = (int) enPassantLoc.charAt(0) - 'a';
-				if (newRank == enPassantRank && newFile == enPassantFile) {
-					pieceTaken = true;
-					if (moving.isWhite()) {
-						takePiece(getPieceMatching(newRank-1,newFile));
-					} else {
-						takePiece(getPieceMatching(newRank+1,newFile));
-					}
-				}
-			}
-		}
-		enPassantLoc = fen.split(" ")[3];
+        if (taken != null) {
+            takePiece(taken);
+            pieceTaken = true;
+        }
 
-		setPiecesFromFEN(fen);
+        String fen = Chess.engine.getFEN();
 
-		return pieceTaken;
-	}
+        // check for en passant and taking of en passant
+        if (!enPassantLoc.equals("-")) {
+            if (moving.getType().equals(pawn)) {
+                int enPassantRank = (int) enPassantLoc.charAt(1) - '1';
+                int enPassantFile = (int) enPassantLoc.charAt(0) - 'a';
+                if (newRank == enPassantRank && newFile == enPassantFile) {
+                    pieceTaken = true;
+                    if (moving.isWhite()) {
+                        takePiece(getPieceMatching(newRank-1,newFile));
+                    } else {
+                        takePiece(getPieceMatching(newRank+1,newFile));
+                    }
+                }
+            }
+        }
+        enPassantLoc = fen.split(" ")[3];
 
-	/**
-	 * 	Gets the piece at a given position
-	 *  @param  rank 	The given x coordinate
-	 *  @param  file 	The given y coordinate
-	 *  @return a Piece if a Piece exists at the given position, null if not
-	 */
-	public Piece getPieceMatching(int rank, int file) {
-		for (Piece p : pieces) {
-			if (p != null && p.getRank() == rank) {
-				if (p.getFile() == file) {
-					return p;
-				}
-			}
-		}
-		return null;
-	}
+        setPiecesFromFEN(fen);
 
-	/**
-	 * 	Resets the game to the default settings
-	 */
-	public void reset() {
-		whiteActive = true;
-		userWhite = true;
-		captByBlack = "";
-		captByWhite = "";
-		initializesPieces();
-	}
+        return pieceTaken;
+    }
 
-	/**
-	 * 	Populates the pieces array with the standard 32 chess pieces
-	 */
-	public void initializesPieces() {
-		setPiecesFromFEN(startFEN);
-	}
+    /**
+     *  Gets the piece at a given position
+     *  @param  rank    The given x coordinate
+     *  @param  file    The given y coordinate
+     *  @return a Piece if a Piece exists at the given position, null if not
+     */
+    public Piece getPieceMatching(int rank, int file) {
+        for (Piece p : pieces) {
+            if (p != null && p.getRank() == rank) {
+                if (p.getFile() == file) {
+                    return p;
+                }
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * Sets pieces array based on data from FEN string passed in
-	 *
-	 * @param fen  The FEN string that determines piece placement
-	 */
-	public void setPiecesFromFEN(String fen) {
+    /**
+     *  Resets the game to the default settings
+     */
+    public void reset() {
+        whiteActive = true;
+        userWhite = true;
+        captByBlack = "";
+        captByWhite = "";
+        initializesPieces();
+    }
 
-		// new array for pieces
-		Piece[] pieces = new Piece[32];
-		// Get board as String[8] where [0] is row 8 and [7] is row 1.
-		String[] board = fen.split(" ", 2)[0].split("/");
-		// The current line examined in the for loop, and its length
+    /**
+     *  Populates the pieces array with the standard 32 chess pieces
+     */
+    public void initializesPieces() {
+        setPiecesFromFEN(startFEN);
+    }
+
+    /**
+     * Sets pieces array based on data from FEN string passed in
+     *
+     * @param fen  The FEN string that determines piece placement
+     */
+    public void setPiecesFromFEN(String fen) {
+
+        // new array for pieces
+        Piece[] pieces = new Piece[32];
+        // Get board as String[8] where [0] is row 8 and [7] is row 1.
+        String[] board = fen.split(" ", 2)[0].split("/");
+        // The current line examined in the for loop, and its length
         String currentLine;
         // The current character in the currentLine String AND its num val.
         char currentChar;
@@ -307,65 +307,65 @@ public class Game {
         // Overall progress through pieces
         int pieceInd = 0;
         for (int i = 0; i < 8; i++) {
-        	currentLine = board[i];
-        	rowCursor = 0;
-        	for (int j = 0; j < currentLine.length(); j++) {
-        		currentChar = currentLine.charAt(j);
-        		charVal = (int) currentChar - '0';
-        		if (charVal > 9) { // piece character
-        			if (rowCursor == 0) {
-        				pieces[pieceInd] = new Piece(typeToUnicode(currentChar),
-        										typeToSide(currentChar),7-i,j);
-        			} else {
-        				pieces[pieceInd] = new Piece(typeToUnicode(currentChar),
-        										typeToSide(currentChar),7-i,rowCursor);
-        			}
-        			pieceInd++;
-        			rowCursor++;
-        		} else { // number of empty squares
-        			rowCursor += charVal;
-        		}
-        	}
+            currentLine = board[i];
+            rowCursor = 0;
+            for (int j = 0; j < currentLine.length(); j++) {
+                currentChar = currentLine.charAt(j);
+                charVal = (int) currentChar - '0';
+                if (charVal > 9) { // piece character
+                    if (rowCursor == 0) {
+                        pieces[pieceInd] = new Piece(typeToUnicode(currentChar),
+                                                typeToSide(currentChar),7-i,j);
+                    } else {
+                        pieces[pieceInd] = new Piece(typeToUnicode(currentChar),
+                                                typeToSide(currentChar),7-i,rowCursor);
+                    }
+                    pieceInd++;
+                    rowCursor++;
+                } else { // number of empty squares
+                    rowCursor += charVal;
+                }
+            }
         }
         for (int i = pieceInd; i < 32; i++) {
-        	// taken pieces no longer in array, these are placeholders
-        	pieces[pieceInd] = new Piece("null","null",-1,-1);
+            // taken pieces no longer in array, these are placeholders
+            pieces[pieceInd] = new Piece("null","null",-1,-1);
         }
 
         this.pieces = pieces;
-	}
+    }
 
-	/** 
-	 * Converts from type KQRBNPkqrbnp to equivalent Unicode characters
-	 *
-	 * @param type  the type to be converted
-	 */
-	public String typeToUnicode(char type) {
+    /**
+     * Converts from type KQRBNPkqrbnp to equivalent Unicode characters
+     *
+     * @param type  the type to be converted
+     */
+    public String typeToUnicode(char type) {
 
-		switch(type) {
-			case 'K':
-			case 'k': return king;
-			case 'Q':
-			case 'q': return queen;
-			case 'R':
-			case 'r': return rook;
-			case 'B':
-			case 'b': return bishop;
-			case 'N':
-			case 'n': return knight;
-			case 'P':
-			case 'p': return pawn;
-			default: return "null";
-		}
-	}
+        switch(type) {
+            case 'K':
+            case 'k': return king;
+            case 'Q':
+            case 'q': return queen;
+            case 'R':
+            case 'r': return rook;
+            case 'B':
+            case 'b': return bishop;
+            case 'N':
+            case 'n': return knight;
+            case 'P':
+            case 'p': return pawn;
+            default: return "null";
+        }
+    }
 
-	/** 
-	 * Converts from type KQRBNPkqrbnp to equivalent side black/white
-	 *
-	 * @param type  the type to be converted
-	 */
-	public String typeToSide(char type) {
-		if (((int) type) < 90) return "white";
-		else return "black";
-	}
+    /**
+     * Converts from type KQRBNPkqrbnp to equivalent side black/white
+     *
+     * @param type  the type to be converted
+     */
+    public String typeToSide(char type) {
+        if (((int) type) < 90) return "white";
+        else return "black";
+    }
 }

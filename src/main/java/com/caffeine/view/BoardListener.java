@@ -11,9 +11,9 @@ import java.awt.event.*;
 import java.awt.*;
 
 /**
- * 	This ActionListener listens for clicks upon the board and first saves
- * 	the chess icon of the square clicked (if there is one), then sets the text
- * 	of the next clicked square to the stored icon, if a valid move.
+ *  This ActionListener listens for clicks upon the board and first saves
+ *  the chess icon of the square clicked (if there is one), then sets the text
+ *  of the next clicked square to the stored icon, if a valid move.
  */
 public class BoardListener implements ActionListener {
 
@@ -25,17 +25,26 @@ public class BoardListener implements ActionListener {
 
         if (selected == null) {
 
-        	// if no previous board square selected, save the one clicked
-            if (squareButton.getPiece() != null) {
+            // if no previous board square selected, save the one clicked
+            Piece selectedPiece = squareButton.getPiece();
+
+            if (selectedPiece != null) {
 
                 // Can't select opponent's pieces
-                if (squareButton.getPiece().isWhite() && !Chess.game.userWhite())
-                    return;
-                if (!squareButton.getPiece().isWhite() && Chess.game.userWhite())
-                    return;
+                if (selectedPiece.isWhite() && !Chess.game.userWhite()){ return; }
+                if (!selectedPiece.isWhite() && Chess.game.userWhite()){ return; }
 
                 selected = squareButton;
                 selected.selectSquare();
+
+                // Get list of positions the Piece on this BoardSquare can
+                // be moved to. Visually indicates with green background.
+                ArrayList<String> possibleMoves = selected.getPossibleMoves();
+                for (String move : possibleMoves){
+                    Integer[] raf = Utils.translate(move); // Rank And File
+                    BoardSquare square = Core.squares[raf[0]][raf[1]];
+                    square.indicateValidDestination();
+                }
 
             } else {
 
@@ -43,7 +52,7 @@ public class BoardListener implements ActionListener {
                 return;
             }
         } else {
-        	// else move the previously selected chess piece to the clicked square 
+            // else move the previously selected chess piece to the clicked square
             int oldRank = Integer.parseInt(selected.getName().split(":")[1].split(",")[1]) - 1;
             int oldFile = ((int) selected.getName().split(":")[1].split(",")[0].toCharArray()[0]) - 65;
             int newRank = Integer.parseInt(squareButton.getName().split(":")[1].split(",")[1]) - 1;

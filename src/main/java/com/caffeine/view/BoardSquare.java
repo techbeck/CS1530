@@ -7,41 +7,41 @@ import javax.swing.border.*;
 import java.awt.*;
 
 /**
- * 	This customized implementation of JButton makes buttons that appear as a game square
+ *  This customized implementation of JButton makes buttons that appear as a game square
  */
 public class BoardSquare extends JButton {
-	Piece piece = null;
-	boolean isLightSquare;
+    Piece piece = null;
+    boolean isLightSquare;
 
-	// formatting-related objects
-	final Border line = new LineBorder(Color.BLACK, 0);
+    // formatting-related objects
+    final Border line = new LineBorder(Color.BLACK, 0);
     final Border margin = new EmptyBorder(5, 15, 5, 15);
     final Border compound = new CompoundBorder(line, margin);
-	final Dimension buttonSize = new Dimension(60,60);
+    final Dimension buttonSize = new Dimension(60,60);
 
-    /* proprietary font that Windows/Mac have, but Linux will default to 
+    /* proprietary font that Windows/Mac have, but Linux will default to
     a font that will still display the chess pieces */
     Font defaultFont = new Font("Arial Unicode MS", Font.PLAIN, 25);
 
-	/**
-	 * 	Initializes board square to the set up that appears the same across platforms.
-	 *  Static dimension forces the button to be square
-	 */ 
-	public BoardSquare() {
+    /**
+     *  Initializes board square to the set up that appears the same across platforms.
+     *  Static dimension forces the button to be square
+     */
+    public BoardSquare() {
         setOpaque(true);
         setFont(defaultFont);
         setBorder(compound);
         setMinimumSize(buttonSize);
         setMaximumSize(buttonSize);
         setPreferredSize(buttonSize);
-	}
-	
-	/**
-	 * 	Colors game square either white or gray
-	 *
-	 * 	@param  squareColor A Boolean to determine whether the button should be colored gray or not
-	 */
-	public void setBackgroundColor(boolean squareColor) {
+    }
+
+    /**
+     *  Colors game square either white or gray
+     *
+     *  @param  squareColor A Boolean to determine whether the button should be colored gray or not
+     */
+    public void setBackgroundColor(boolean squareColor) {
         if (squareColor)
         {
             setBackground(Color.decode(Core.themes[0][2]));
@@ -52,85 +52,129 @@ public class BoardSquare extends JButton {
             setBackground(Color.decode(Core.themes[0][3]));
             isLightSquare = false;
         }
-	}
+    }
 
-	/**
-	 * 	Returns whether or not piece is light
-	 *
-	 * 	@return  true if light square, otherwise false
-	 */
-	public boolean isLightSquare() {
-		return isLightSquare;
-	}
+    /**
+     *  Returns whether or not piece is light
+     *
+     *  @return  true if light square, otherwise false
+     */
+    public boolean isLightSquare() {
+        return isLightSquare;
+    }
 
-	/**
-	 * 	Returns piece on square, or null if no piece found
-	 * 
-	 * 	@return  The Piece on the square
-	 */
-	public Piece getPiece() {
-		return piece;
-	}
+    /**
+     *  Returns piece on square, or null if no piece found
+     *
+     *  @return  The Piece on the square
+     */
+    public Piece getPiece() {
+        return piece;
+    }
 
-	/**
-	 * 	Determines if the square has a piece on it
-	 *
-	 * 	@return True if piece found, false if not
-	 */
-	public boolean hasPiece() {
-		if (piece == null) return false;
-		else return true;
-	}
+    /**
+     *  Determines if the square has a piece on it
+     *
+     *  @return True if piece found, false if not
+     */
+    public boolean hasPiece() {
+        if (piece == null) return false;
+        else return true;
+    }
 
-	/**
-	 * 	Changes the text of the square to a chess piece's unicode character
-	 *
-	 * 	@param piece The chess piece 
-	 */
-	public void setPiece(Piece piece) {
-		if (piece == null) return;
-		this.piece = piece;
-		setText(piece.getType());
-		if (piece.isWhite()) {
-			setForeground(Core.whiteColor);
-		} else {
-			setForeground(Core.blackColor);
-		}
-	}
+    /**
+     *  Changes the text of the square to a chess piece's unicode character
+     *
+     *  @param piece The chess piece
+     */
+    public void setPiece(Piece piece) {
+        if (piece == null) return;
+        this.piece = piece;
+        setText(piece.getType());
+        if (piece.isWhite()) {
+            setForeground(Core.whiteColor);
+        } else {
+            setForeground(Core.blackColor);
+        }
+    }
 
-	/**
-	 * 	Resets the square to empty
-	 */
-	public void removePiece() {
-		setText(" ");
-		piece = null;
-	}
+    /**
+     *  Resets the square to empty
+     */
+    public void removePiece() {
+        setText(" ");
+        piece = null;
+    }
 
-	/**
-	 * 	Selects a square by setting the foreground (text) to yellow
-	 */
-	public void selectSquare() {
-        setForeground(Color.YELLOW);
-	}
+    /**
+     *  Changes the text color of a square to the indicated color.
+     */
+    public void highlightSquareText(Color newColor){
+        setForeground(newColor);
+    }
 
-	/**
-	 * 	Returns a square to the regular foreground (text) color of the piece
-	 */
-	public void unselectSquare() {
+    /**
+     *  Changes the background color of a square to the indicated color.
+     */
+    public void highlightSquareBackground(Color newColor){
+        setBackground(newColor);
+    }
+
+    /**
+     *  Selects a square by setting the foreground (text) to yellow
+     */
+    public void selectSquare() {
+        highlightSquareText(Color.YELLOW);
+    }
+
+    /**
+     *  Visually indicates that a square is a valid destination for a Piece.
+     */
+    public void indicateValidDestination(){
+        highlightSquareBackground(Color.GREEN);
+    }
+
+    /**
+     *  Returns a square to the regular foreground (text) color of the piece
+     */
+    public void unselectSquare() {
         if (piece == null) return;
         if (piece.isWhite()) {
-			setForeground(Core.whiteColor);
-		} else {
-			setForeground(Core.blackColor);
-		}
-	}
+            setForeground(Core.whiteColor);
+        } else {
+            setForeground(Core.blackColor);
+        }
+    }
 
-	/**
-	 * 	Changes the color of the piece 
-	 * 
-	 * 	@param color The color to set the piece
-	 */
-	public void setPieceColor(Color color) {
-		setForeground(color);
-	}
+    /**
+     *  Changes the color of the piece
+     *
+     *  @param color The color to set the piece
+     */
+    public void setPieceColor(Color color) {
+        setForeground(color);
+    }
+
+    /**
+     *  Determines (based on the Piece at this square) which other squares on
+     *      the board are eligible destinations.
+     *
+     *  @return ArrayList of Strings denoting positions this square's Piece
+     *      can move to. List will be empty if
+     */
+    public ArrayList<String> getPossibleMoves(){
+        ArrayList<String> result = new ArrayList<String>();
+
+        if (!hasPiece()){ return result; }
+        Piece piece = getPiece();
+        if (piece.isWhite()){
+            // Get possible moves unique to a white pawn.
+
+        } else {
+            // Get possible moves unique to a black pawn.
+        }
+        switch ()
+
+        return result;
+    }
 }

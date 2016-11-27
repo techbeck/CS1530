@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class BoardPanel extends JPanel {
     private boolean blackOnTop;
-    
+
     public BoardPanel() {
         setName("boardPanel");
         setBackground(Color.decode(Core.themes[0][0]));
@@ -26,7 +26,7 @@ public class BoardPanel extends JPanel {
     /**
      * 	Reinitialize the board panel and check if black
      * 	is currently on top
-     * 	
+     *
      *  @param  top The current player on top (black or white)
      */
     public BoardPanel(String top) {
@@ -42,7 +42,7 @@ public class BoardPanel extends JPanel {
 
     /**
      * Returns whether or not black in at the top of the board or the bottom
-     * 
+     *
      * @return  true if black on top, false if black on bottom
      */
     public boolean blackOnTop() {
@@ -62,7 +62,7 @@ public class BoardPanel extends JPanel {
         c.weightx = Core.AVERAGE_WEIGHT;
         c.weighty = Core.AVERAGE_WEIGHT;
         c.fill = GridBagConstraints.BOTH;
-        
+
         BoardListener boardListener = new BoardListener();
         boolean isWhiteSquare = true;  //  top right is white square
 
@@ -80,7 +80,7 @@ public class BoardPanel extends JPanel {
 
                 //row of buttons
                 for (byte j = 0; j < 8; j++) {
-                    
+
                     Core.squares[i][j] = new BoardSquare();
                     Core.squares[i][j].setBackgroundColor(isWhiteSquare);
                     Core.squares[i][j].setName("BoardSquare:" + (char)(j+65) + "," + (8-i));
@@ -117,7 +117,7 @@ public class BoardPanel extends JPanel {
 
                 //row of buttons
                 for (byte j = 7; j >= 0; j--) {
-                    
+
                     Core.squares[i][j] = new BoardSquare();
                     Core.squares[i][j].setBackgroundColor(isWhiteSquare);
                     Core.squares[i][j].setName("BoardSquare:" + (char)(j+65) + "," + (8-i));
@@ -143,7 +143,7 @@ public class BoardPanel extends JPanel {
         }
     }
 
-    /** 
+    /**
      * Initializes board layout with black pieces on top
      */
     private void initializePiecePlacement() {
