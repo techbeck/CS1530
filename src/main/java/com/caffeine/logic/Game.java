@@ -2,13 +2,15 @@ package com.caffeine.logic;
 
 import com.caffeine.Chess;
 import com.caffeine.view.Core;
+import com.caffeine.view.ViewUtils;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Game {
     public Piece[] pieces = new Piece[32];
-
     public ArrayList<String> moveHistory = new ArrayList<String>();
+    public boolean gameStarted = false;
+    public int gameResult = 0; // 0 = ongoing, 1 = white won, 2 = black won, 3 = draw
 
     private int mode = 0; // 0 = easy, 1 = medium, 2 = hard
     private static final int[] timeoutsForModes = {5, 100, 200};
@@ -286,18 +288,18 @@ public class Game {
         setPiecesFromFEN(startFEN);
     }
 
-    /**
-     * Sets pieces array based on data from FEN string passed in
-     *
-     * @param fen  The FEN string that determines piece placement
-     */
-    public void setPiecesFromFEN(String fen) {
+	/**
+	 * Sets pieces array based on data from FEN string passed in
+	 *
+	 * @param fen  The FEN string that determines piece placement
+	 */
+	public void setPiecesFromFEN(String fen) {
 
-        // new array for pieces
-        Piece[] pieces = new Piece[32];
-        // Get board as String[8] where [0] is row 8 and [7] is row 1.
-        String[] board = fen.split(" ", 2)[0].split("/");
-        // The current line examined in the for loop, and its length
+		// new array for pieces
+		Piece[] pieces = new Piece[32];
+		// Get board as String[8] where [0] is row 8 and [7] is row 1.
+		String[] board = fen.split(" ", 2)[0].split("/");
+		// The current line examined in the for loop, and its length
         String currentLine;
         // The current character in the currentLine String AND its num val.
         char currentChar;
@@ -331,41 +333,141 @@ public class Game {
             // taken pieces no longer in array, these are placeholders
             pieces[pieceInd] = new Piece("null","null",-1,-1);
         }
-
         this.pieces = pieces;
     }
 
-    /**
-     * Converts from type KQRBNPkqrbnp to equivalent Unicode characters
-     *
-     * @param type  the type to be converted
-     */
-    public String typeToUnicode(char type) {
+	/**
+	 * Converts from type KQRBNPkqrbnp to equivalent Unicode characters
+	 *
+	 * @param type  the type to be converted
+	 */
+	public String typeToUnicode(char type) {
+		switch(type) {
+		case 'K':
+		case 'k':
+            return king;
+		case 'Q':
+		case 'q':
+            return queen;
+		case 'R':
+		case 'r':
+            return rook;
+		case 'B':
+		case 'b':
+            return bishop;
+		case 'N':
+		case 'n':
+            return knight;
+		case 'P':
+		case 'p':
+            return pawn;
+		default:
+            return "null";
+		}
+	}
 
-        switch(type) {
-            case 'K':
-            case 'k': return king;
-            case 'Q':
-            case 'q': return queen;
-            case 'R':
-            case 'r': return rook;
-            case 'B':
-            case 'b': return bishop;
-            case 'N':
-            case 'n': return knight;
-            case 'P':
-            case 'p': return pawn;
-            default: return "null";
-        }
-    }
+	/**
+	 * Converts from type KQRBNPkqrbnp to equivalent side black/white
+	 *
+	 * @param type  the type to be converted
+	 */
+	public String typeToSide(char type) {
+		if (((int) type) < 90) return "white";
+		else return "black";
+	}
 
-    /**
-     * Converts from type KQRBNPkqrbnp to equivalent side black/white
-     *
-     * @param type  the type to be converted
-     */
-    public String typeToSide(char type) {
-        if (((int) type) < 90) return "white";
-        else return "black";
-    }
+	/**
+	 * Loads the game state from the passed in FEN string.
+	 * Used for loading from a file.
+	 *
+	 * @param fen  The fen string to load.
+	 */
+	public void loadFEN(String fen) {
+		setPiecesFromFEN(fen);
+		ViewUtils.refreshBoard();
+		enPassantLoc = fen.split(" ")[3];
+		Chess.engine.setFEN(fen);
+		currFEN = fen;
+		// Parse taken from fen
+		ArrayList<Character> possTaken = new ArrayList<Character>();
+		possTaken.add(Character.valueOf('K'));
+		possTaken.add(Character.valueOf('k'));
+		possTaken.add(Character.valueOf('Q'));
+		possTaken.add(Character.valueOf('q'));
+		possTaken.add(Character.valueOf('R'));
+		possTaken.add(Character.valueOf('R'));
+		possTaken.add(Character.valueOf('r'));
+		possTaken.add(Character.valueOf('r'));
+		possTaken.add(Character.valueOf('B'));
+		possTaken.add(Character.valueOf('B'));
+		possTaken.add(Character.valueOf('b'));
+		possTaken.add(Character.valueOf('b'));
+		possTaken.add(Character.valueOf('N'));
+		possTaken.add(Character.valueOf('N'));
+		possTaken.add(Character.valueOf('n'));
+		possTaken.add(Character.valueOf('n'));
+		for (int i = 0; i < 8; i++) {
+			// Add repetitions of pawn pieces
+			possTaken.add(Character.valueOf('p'));
+			possTaken.add(Character.valueOf('P'));
+		}
+		char[] fenArray = fen.split(" ")[0].toCharArray();
+		for (int i = 0; i < fenArray.length; i++) {
+			if (fenArray[i] > '9') {
+				possTaken.remove(Character.valueOf(fenArray[i]));
+			}
+		}
+		for (Character c : possTaken) {
+			Piece p = new Piece(typeToUnicode(c), typeToSide(c),-1,-1);
+			takePiece(p);
+		}
+	}
+
+	/**
+	 * Undoes up to the last player move.
+	 * If computer moved since last player move, that is undone as well.
+	 */
+	public void undoMove() {
+		if (lastFEN == null) {
+
+			return;
+		}
+		if (!userWhite) {
+			// player black - undo just their move
+			String move = moveHistory.remove(moveHistory.size()-1);
+			if (move.contains("x")) {
+				captByBlack = captByBlack.substring(0,captByBlack.lastIndexOf(' '));
+				Core.takenPanel.setCaptByBlack(captByBlack);
+			}
+			rollbackFEN();
+		} else {
+			// player white - undo both their move and responding CPU move
+			String move = moveHistory.remove(moveHistory.size()-1);
+			if (move.contains("x")) {
+				captByBlack = captByBlack.substring(0,captByBlack.lastIndexOf(' '));
+				Core.takenPanel.setCaptByBlack(captByBlack);
+			}
+			rollbackFEN();
+			move = moveHistory.remove(moveHistory.size()-1);
+			if (move.contains("x")) {
+				captByWhite = captByWhite.substring(0,captByWhite.lastIndexOf(' '));
+				Core.takenPanel.setCaptByWhite(captByWhite);
+			}
+			rollbackFEN();
+		}
+		Core.historyPanel.updateMoveHistory(moveHistory);
+	}
+
+	/**
+	 * Rolls back the stored FEN strings by one, sets the pieces array accordingly,
+	 * and refreshes the board to visualize the change.
+	 */
+	private void rollbackFEN() {
+		currFEN = lastFEN;
+		lastFEN = prevFEN;
+		prevFEN = null;
+		Chess.engine.setFEN(currFEN);
+		setPiecesFromFEN(currFEN);
+		ViewUtils.refreshBoard();
+	}
 }

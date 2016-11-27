@@ -17,11 +17,7 @@ public class BoardPanel extends JPanel {
         setBackground(Color.decode(Core.themes[0][0]));
         blackOnTop = true;
         initializeBoard();
-        initializePiecePlacement();
     }
-
-    /*	reinitialize the board panel and check if black
-    	is on top*/
 
     /**
      * 	Reinitialize the board panel and check if black

@@ -12,8 +12,7 @@ import java.awt.*;
  * 	This custom JPanel displays the move history.
  */
 public class HistoryPanel extends JPanel {
-	private JLabel historylabel;
-	private JLabel moveHistoryLabel = new JLabel();
+	private JLabel historyLabel;
 
 	public HistoryPanel() {
         setName("historyPanel");
@@ -21,12 +20,11 @@ public class HistoryPanel extends JPanel {
         setMinimumSize(Core.sidePanelDimension);
         setMaximumSize(Core.sidePanelDimension);
         setPreferredSize(Core.sidePanelDimension);
-        historylabel = new JLabel("Move History", SwingConstants.CENTER);
-        historylabel.setName("historyLabel");
-        add(historylabel);
-        moveHistoryLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        moveHistoryLabel.setVerticalAlignment(SwingConstants.TOP);
-        add(moveHistoryLabel);
+        historyLabel = new JLabel("Move History");
+        historyLabel.setName("historyLabel");
+        historyLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        historyLabel.setVerticalAlignment(SwingConstants.TOP);
+        add(historyLabel);
 	}
 
 	/**
@@ -39,17 +37,21 @@ public class HistoryPanel extends JPanel {
 		int currMoveNum = 1;
 		String currHalfMove = null;
 
-		moveHistoryLabel.setText("<html>");
+		historyLabel.setText("<html>Move History<br>");
 		for (String halfMove : moveHistory) {
 			if (currHalfMove == null) {
 				currHalfMove = halfMove;
 			} else {
 				String fullMove = currMoveNum + ". " + currHalfMove + " " + halfMove;
-				moveHistoryLabel.setText(moveHistoryLabel.getText() + fullMove + "<br>");
+				historyLabel.setText(historyLabel.getText() + fullMove + "<br>");
 				currMoveNum++;
 				currHalfMove = null;
 			}
 		}
-		moveHistoryLabel.setText(moveHistoryLabel.getText() + "</html>");
+		if (currHalfMove != null) {
+			String extra = currMoveNum + ". " + currHalfMove;
+			historyLabel.setText(historyLabel.getText() + extra + "<br>");
+		}
+		historyLabel.setText(historyLabel.getText() + "</html>");
 	}
 }

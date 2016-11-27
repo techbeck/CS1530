@@ -186,5 +186,4 @@ public class UtilsTest {
         if (!Utils.translate(1, 2).equals("c2")){ fail(); }
         if (!Utils.translate(0, 3).equals("d1")){ fail(); }
     }
-
 }

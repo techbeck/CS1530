@@ -27,7 +27,7 @@ import com.caffeine.logic.*;
                             View Layer Tests
 ============================================================================ */
 public class ViewTest {
-/*
+
     @Test // Sanity Check -- Can AssertJ be used?
     public void testAssertJIntegrated(){
         Object o = new Object();
@@ -60,7 +60,7 @@ public class ViewTest {
 	@Test
 	public void testGetPiece(){
 		BoardSquare testSquare = new BoardSquare();
-		Piece testPiece = new Piece("test", 0, "test", 0, 0);
+		Piece testPiece = new Piece("test", "test", 0, 0);
 		testSquare.setPiece(testPiece);
 		assertEquals(testPiece, testSquare.getPiece());
 	}
@@ -68,21 +68,10 @@ public class ViewTest {
 	@Test
 	public void testRemovePiece(){
 		BoardSquare testSquare = new BoardSquare();
-		Piece testPiece = new Piece("test", 0, "test", 0, 0);
+		Piece testPiece = new Piece("test", "test", 0, 0);
 		testSquare.setPiece(testPiece);
 		testSquare.removePiece();
 		assertNull(testSquare.getPiece());
 	}
-	
-	@Test
-	public void testTakePiece(){
-		BoardSquare testSquare = new BoardSquare();
-		Piece testPiece1 = new Piece("test", 0, "test", 0, 0);
-		testSquare.setPiece(testPiece1);
-		Piece testPiece2 = new Piece("test", 0, "test", 0, 0);
-		Piece returnPiece = testSquare.takePiece(testPiece2);
-		assertEquals(returnPiece, testPiece1);
-		assertEquals(testPiece2, testSquare.getPiece());
-	}
-	*/
+
 }
