@@ -19,6 +19,8 @@ public class Kibitzer {
     JPanel optionPane;
     JDialog dialog;
 
+    Font font = new Font("Arial Unicode MS", Font.PLAIN, 15);
+
     public Kibitzer(JFrame window) {
 
         //  populate a String array with all comments in the kibitzer.txt file
@@ -38,6 +40,7 @@ public class Kibitzer {
         optionPane = new JPanel(new GridBagLayout());
         optionPane.setBorder(new EmptyBorder(8, 8, 8, 8));
         JLabel label = new JLabel(formatComment("Why hello there!"));
+        label.setFont(font);
         optionPane.add(label);
 
         //  JDialog needed since more flexable than JOptionPane
