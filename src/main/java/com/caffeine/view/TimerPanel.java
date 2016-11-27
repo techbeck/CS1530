@@ -54,12 +54,11 @@ public class TimerPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            if(!Chess.game.gameStarted){
+            if(!Chess.game.gameStarted) {
                 // do nothing
-            } else if (paused){
+            } else if (paused) {
                 //  do nothing
-            }
-            } else if(countDown != 0){
+            } else if(countDown != 0) {
                 countDown--;
                 timerLabel.setText(formatTime(countDown));
             } else {
