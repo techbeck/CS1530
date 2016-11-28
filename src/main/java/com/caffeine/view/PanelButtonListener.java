@@ -19,8 +19,21 @@ import java.awt.*;
  * 	upon the panel buttons and displays the appropriate dialog window
  */
 public class PanelButtonListener implements ActionListener {
+
     JFileChooser fc = new JFileChooser("SavedGames/");
+
     public void actionPerformed(ActionEvent e) {
+
+        Core.timerPanel.pauseTimer();
+
+        react(e);
+
+        Core.timerPanel.resumeTimer();
+
+    }
+
+    private void react(ActionEvent e) {
+
         JLabel statusLabel = Core.statusLabel;
         JFrame window = Core.window;
         BoardSquare[][] squares = Core.squares;
@@ -127,6 +140,7 @@ public class PanelButtonListener implements ActionListener {
                 case 2:
                     return;
             }
+            Core.timerPanel.restartTimer();
             ViewUtils.refreshBoard();
             ViewUtils.clearTakenPanel();
             ViewUtils.clearHistoryPanel();

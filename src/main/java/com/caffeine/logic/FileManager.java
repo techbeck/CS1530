@@ -45,6 +45,7 @@ public class FileManager {
 				break;
 		}
 		output.println("\"]");
+		output.println("[Time \"" + Core.timerPanel.getTimeLeft() + "\"]");
 		output.println("[FEN \"" + Chess.game.pgnTags.get("FEN") + "\"]");
 		output.println();
 		int currMoveNum = 1;
@@ -97,10 +98,23 @@ public class FileManager {
 		}
 		String fileLine = "";
 		String userSide = "white";
+		String timeLeft = "";
 		while (input.hasNext()) {
 			fileLine = input.nextLine();
-			if (fileLine.contains("User")) userSide = fileLine.split(" ")[0].substring(1);
-			if (fileLine.contains("FEN")) break;
+			if (fileLine.contains("User"))
+				userSide = fileLine.split(" ")[0].substring(1);
+			if (fileLine.contains("Result")) {
+				if (!fileLine.contains("*")) {
+					Core.statusLabel.setText("Unable to load from file. - Not in progress.");
+					return;
+				}
+			}
+			if (fileLine.contains("Time")) {
+				timeLeft = fileLine.split(" ")[1];
+				timeLeft = timeLeft.substring(1,timeLeft.length()-2);
+			}
+			if (fileLine.contains("FEN"))
+				break;
 		}
 		String fen = fileLine.split("\"")[1];
 		if (!Utils.isValidFEN(fen)) {
@@ -122,6 +136,13 @@ public class FileManager {
 				Chess.game.addToMoveHistory(move);
 			}
 		}
+		if (!timeLeft.equals("")) {
+			Core.timerPanel.setTimeLeft(timeLeft);
+		} else {
+			// default to half hour left
+			Core.timerPanel.setTimeLeft("180000");
+		}
+		Core.timerPanel.resumeTimer();
 		input.close();
 	}
 }

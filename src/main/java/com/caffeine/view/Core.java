@@ -61,10 +61,10 @@ public class Core {
     public static BoardSquare[][] squares = new BoardSquare[8][8];
     public static TakenPanel takenPanel;
     public static HistoryPanel historyPanel;
+    public static TimerPanel timerPanel;
 
     protected static JPanel statusPanel;
     protected static JPanel centerPanel;
-    protected static JPanel timerPanel;
     protected static JPanel buttonPanel;
     protected static BoardPanel boardPanel;
     protected static Kibitzer KibitzerPane;
@@ -194,17 +194,7 @@ public class Core {
 
         centerPanel.setLayout(new FlowLayout());
 
-        timerPanel = new JPanel();
-        timerPanel.setName("timerPanel");
-        timerPanel.setBackground(Color.decode(themes[0][1]));
-        Dimension timerPanelSize = new Dimension(200,40);
-        timerPanel.setMinimumSize(timerPanelSize);
-        timerPanel.setMaximumSize(timerPanelSize);
-        timerPanel.setPreferredSize(timerPanelSize);
-        JLabel timerLabel = new JLabel("[Upcoming Feature] - Timer", SwingConstants.CENTER);
-        timerLabel.setName("timerLabel");
-        timerPanel.add(timerLabel);
-        // eventually, formatTimerPanel(timerPanel);
+        timerPanel = new TimerPanel();
         centerPanel.add(timerPanel);
 
         boardPanel = new BoardPanel();
