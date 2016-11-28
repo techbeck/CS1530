@@ -68,6 +68,7 @@ public class TimerPanel extends JPanel {
                 timer.stop();
                 timeOut = true;
                 timerLabel.setText("Time's Out!");
+                Chess.game.endGame();
             }
 
         }

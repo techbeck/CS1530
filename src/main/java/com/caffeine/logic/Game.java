@@ -175,6 +175,22 @@ public class Game {
 	}
 
 	/**
+	 * Ends the game.
+	 */
+	public void endGame() {
+		boolean timerEnded = Core.timerPanel.isTimeOut();
+		if (timerEnded) {
+			if (userWhite) {
+				gameResult = 2;
+			} else {
+				gameResult = 1;
+			}
+		}
+		gameStarted = false;
+		// TO DO: end game in view
+	}
+
+	/**
 	 * 	Move a piece from one set of coordinates to another
 	 *  @param  oldRank The current horizontal coordinate
 	 *  @param  oldFile The current vertical coordinate
