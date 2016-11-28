@@ -28,12 +28,15 @@ public class Core {
     public static Color whiteColor = Color.WHITE;
     public static Color blackColor = Color.BLACK;
 
-    // Constants for color theme hex Values      background, panels,     light,      dark
-    public static final String[][] themes = {   {"0xFFFFFF", "0xE0E0E0", "0xC0C0C0", "0x808080"}, // Grayscale
-                                                {"0xFFAFC2", "0xFFDFE6", "0xFE73A6", "0xFE3C74"}, // Peppermint
-                                                {"0xaeffd4", "0x8CD0A1", "0x7dfa92", "0x34a762"}, // Shamrock
-                                                {"0xB07147", "0xf4d095", "0xfea645", "0x8F4120"}, // Pumpkin Spice
-                                                {"0xC4B5AF", "0xeeeeff", "0xE5F1FF", "0x9A7C60"}}; // Iced Vanilla
+    // Constants for color theme hex Values
+    public static final String[][] themes = {
+        {"0xFFFFFF", "0xE0E0E0", "0xC0C0C0", "0x808080"}, // Grayscale
+        {"0xFFAFC2", "0xFFDFE6", "0xFE73A6", "0xFE3C74"}, // Peppermint
+        {"0xaeffd4", "0x8CD0A1", "0x7dfa92", "0x34a762"}, // Shamrock
+        {"0xB07147", "0xf4d095", "0xfea645", "0x8F4120"}, // Pumpkin Spice
+        {"0xC4B5AF", "0xeeeeff", "0xE5F1FF", "0x9A7C60"}  // Iced Vanilla
+    //   background, panels,     light,      dark
+    };
     public static int currentTheme = 0; // match indices above
 
     //	GUI Layout Values
@@ -59,12 +62,13 @@ public class Core {
     public static BoardSquare[][] squares = new BoardSquare[8][8];
     public static TakenPanel takenPanel;
     public static HistoryPanel historyPanel;
+    public static TimerPanel timerPanel;
 
     protected static JPanel statusPanel;
     protected static JPanel centerPanel;
-    protected static JPanel timerPanel;
     protected static JPanel buttonPanel;
     protected static BoardPanel boardPanel;
+    protected static Kibitzer KibitzerPane;
 
     public Core() {
         window.setName("frame");
@@ -79,6 +83,13 @@ public class Core {
         // 	so this forces the chess window to be focused
         window.setAlwaysOnTop(true);
         window.setAlwaysOnTop(false);
+
+        Thread kibitzer = new Thread(() -> {
+            KibitzerPane = new Kibitzer(window);
+        });
+        kibitzer.start();
+
+
     }
 
     /**
@@ -93,22 +104,18 @@ public class Core {
         window.setJMenuBar(menuBar);
         JMenu menu = new JMenu("Menu");
         menuBar.add(menu);
-        JMenuItem setGameTimer = new JMenuItem("Set game timer");
-        setGameTimer.setName("menuSetGameTimer");
-        JMenuItem setMoveTimer = new JMenuItem("Set move timer");
-        setMoveTimer.setName("menuSetMoveTimer");
+        JMenuItem changeMode = new JMenuItem("Change CPU Mode");
+        changeMode.setName("menuChangeMode");
         JMenuItem undo = new JMenuItem("Undo last move");
         undo.setName("menuUndo");
-        JMenuItem showPossMoves = new JMenuItem("Show possible moves");
-        showPossMoves.setName("menuShowPossMoves");
-        menu.add(setGameTimer);
-        menu.add(setMoveTimer);
+        JMenuItem setMoveTimer = new JMenuItem("Set move timer");
+        setMoveTimer.setName("menuSetMoveTimer");
+        menu.add(changeMode);
         menu.add(undo);
-        menu.add(showPossMoves);
-        setGameTimer.addActionListener(new MenuListener());
-        setMoveTimer.addActionListener(new MenuListener());
+        menu.add(setMoveTimer);
+        changeMode.addActionListener(new MenuListener());
         undo.addActionListener(new MenuListener());
-        showPossMoves.addActionListener(new MenuListener());
+        setMoveTimer.addActionListener(new MenuListener());
     }
 
     /**
@@ -188,17 +195,7 @@ public class Core {
 
         centerPanel.setLayout(new FlowLayout());
 
-        timerPanel = new JPanel();
-        timerPanel.setName("timerPanel");
-        timerPanel.setBackground(Color.decode(themes[0][1]));
-        Dimension timerPanelSize = new Dimension(200,40);
-        timerPanel.setMinimumSize(timerPanelSize);
-        timerPanel.setMaximumSize(timerPanelSize);
-        timerPanel.setPreferredSize(timerPanelSize);
-        JLabel timerLabel = new JLabel("[Upcoming Feature] - Timer", SwingConstants.CENTER);
-        timerLabel.setName("timerLabel");
-        timerPanel.add(timerLabel);
-        // eventually, formatTimerPanel(timerPanel);
+        timerPanel = new TimerPanel();
         centerPanel.add(timerPanel);
 
         boardPanel = new BoardPanel();
@@ -235,7 +232,7 @@ public class Core {
         buttonPanel.add(saveButton);
 
         JButton chooseSideButton = new JButton("New Game");
-        chooseSideButton.setName("newGame;Button");
+        chooseSideButton.setName("newGameButton");
         chooseSideButton.addActionListener(buttonListener);
         buttonPanel.add(chooseSideButton);
 

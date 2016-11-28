@@ -1,0 +1,30 @@
+Did You Know? The word "checkmate" comes from the Farsi phrase "Shah Mat", meaning "the king is dead".
+Did You Know? In chess, the interrobang variant '?!' is used to annotate a dubious move, and '!?' is used to annotate an interesting move.
+Did You Know? Though Deep Blue beat Garry Kasparov at chess, it later lost to Katie Ledecky in the 250-meter freestyle.
+Did You Know? The 'rook' got its name from a tower in Brunswick in the UK, which became a rookery after the end of a twelve year siege in the 12th century CE.
+Did You Know? The Chesapeake Bay was originally called the Chessapeake Bay, until the state was sued by the US Chess Federation.
+Did You Know? En Passant was only added in the 15th Century. Before that, pawns that passed each other by on the fifth or fourth ranks could only exchange tear-marked postcards.
+Did You Know? You can't castle through check. You can't castle out of check. You can't castle into check. But you can castle through Czechoslovakia.
+Did You Know? Life isn't about the number of pawns you take, it's about the number of pawns that take your breath away.
+Have You Considered! If your king is in check, look for a way to get him out of it.
+Have You Considered! Since Black starts on the seventh and eighth rank, the classic opener of e2e4 is impossible to pull off when playing as black. Try e7e5!
+Have You Considered! Don't be afraid to use your queen. People often want to protect their most powerful piece, but it's better to have loved and lost than to never have loved at all.
+Have You Considered! One of the benefits of computer chess is that the computer will never threaten to stab you, and, in fact, cannot speak.
+Have You Considered! Chess is a lot like IKEA furniture. It packs flat, it has a lot of pieces, and it has a faint scent of swedish meatballs.
+Have You Considered! Is it better to be a big fish in a small pawn, or a small fish in a big pawn?
+Have You Considered! By limiting ourselves to dichotomies like Black and White, Good and Evil, we deny the complex realities of the world around us.
+Have You Considered! If you can dodge a wrench, you can castle kingside.
+Have You Considered! When you are a chess neonate, chop wood, castle queenside. When you are a chess grandmaster, chop wood, castle queenside.
+Have You Considered! The difference between Chess and Checkers is that Checkers are usually flat.
+Check it Out! On our website, you can find other great Team Caffeine games, like Checkers, Backgammon, and Global Thermonuclear War.
+Check it Out! You can change the color of the pieces on the board. If the computer can't see your pieces, how is it gonna win?
+Check It Out! Sometimes, FEN strings that aren't null terminated will turn into garbage near the endyhyUH@Hfbh2i•∆w8fo29&&*@HUn
+Check It Out! If nothing is happening, try asking the computer whose turn it is! Sometimes, it gets distracted and forgets to make a move.
+Check It Out! A neat feature of this chess game is that you can play it! Try it out!
+Check It Out! The team behind this program believes in open source development. Check out our source code at https://github.com/TeamCaffeine/cs1530
+Check it out! Taking En Passant is a cheap trick for making weak chess players stronger.
+Joke Time! Why did the king cross the road? To get out of check!
+Joke Time! Why did the squire never go to parties? He had knight classes!
+Joke Time! Knock Knock? Who's there! Bobby! Bobby who? Bobby Fischer with an axe! Run for your life!
+Joke Time! What is the opening move of the French Defense? Surrendering.
+Hey! Hey! Listen! Hey! Listen! Hey! Listen! Listen! Listen! Hey!
