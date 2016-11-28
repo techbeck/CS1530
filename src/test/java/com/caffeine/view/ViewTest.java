@@ -54,7 +54,7 @@ public class ViewTest {
 	public void testHasPiece(){
 		BoardSquare testSquare = new BoardSquare();
 		testSquare.setPiece(null);
-		assertNull(testSquare.hasPiece());
+		assertFalse(testSquare.hasPiece());
 	}
 	
 	@Test

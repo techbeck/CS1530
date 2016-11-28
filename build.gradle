@@ -8,12 +8,28 @@ repositories {
 	mavenCentral()
 }
 
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integration-test/java')
+        }
+        resources.srcDir file('src/integration-test/resources')
+    }
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
     compile 'org.assertj:assertj-swing:3.4.0'
     compile 'org.apache.commons:commons-lang3:3.4'
     compile fileTree(dir:'libs', include: '*.jar')
-    testCompile 'org.assertj:assertj-core:3.5.2'
+    integrationTestCompile 'org.assertj:assertj-core:3.5.2'
     testCompile 'junit:junit:4.12'
 }
 
@@ -31,4 +47,10 @@ task testJavadoc(type: Javadoc) {
 	options.memberLevel = JavadocMemberLevel.PRIVATE
 	classpath = sourceSets.test.compileClasspath
   	destinationDir = file("${buildDir}/docs/testjavadoc")
+}
+
+// task for integration tests
+task integrationTest(type: Test) {
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
 }
