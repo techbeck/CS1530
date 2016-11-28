@@ -20,7 +20,7 @@ public class MenuListener implements ActionListener {
 
         JLabel statusLabel = com.caffeine.view.Core.statusLabel;
         JMenuItem menuItem = (JMenuItem) e.getSource();
-        
+
         if (menuItem.getText().equals("Change CPU Mode")) {
 
             if (Chess.game.gameStarted) {
@@ -53,12 +53,12 @@ public class MenuListener implements ActionListener {
             }
 
         } else if (menuItem.getText().equals("Undo last move")) {
-            
+
             statusLabel.setText("Undo last move");
             Chess.game.undoMove();
 
         } else if (menuItem.getText().equals("Set move timer")) {
-            
+
             statusLabel.setText("[Upcoming Feature] - Set move timer");
 
         }

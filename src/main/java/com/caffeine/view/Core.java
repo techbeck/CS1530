@@ -29,13 +29,14 @@ public class Core {
     public static Color blackColor = Color.BLACK;
 
     // Constants for color theme hex Values
-    public static final String[][] themes =
-             {  {"0xFFFFFF", "0xE0E0E0", "0xC0C0C0", "0x808080"}, // Grayscale
-                {"0xFFAFC2", "0xFFDFE6", "0xFE73A6", "0xFE3C74"}, // Peppermint
-                {"0xaeffd4", "0x8CD0A1", "0x7dfa92", "0x34a762"}, // Shamrock
-                {"0xB07147", "0xf4d095", "0xfea645", "0x8F4120"}, // Pumpkin Spice
-                {"0xC4B5AF", "0xeeeeff", "0xE5F1FF", "0x9A7C60"}  }; // Iced Vanilla
-                //background, panels,     light,      dark
+    public static final String[][] themes = {
+        {"0xFFFFFF", "0xE0E0E0", "0xC0C0C0", "0x808080"}, // Grayscale
+        {"0xFFAFC2", "0xFFDFE6", "0xFE73A6", "0xFE3C74"}, // Peppermint
+        {"0xaeffd4", "0x8CD0A1", "0x7dfa92", "0x34a762"}, // Shamrock
+        {"0xB07147", "0xf4d095", "0xfea645", "0x8F4120"}, // Pumpkin Spice
+        {"0xC4B5AF", "0xeeeeff", "0xE5F1FF", "0x9A7C60"}  // Iced Vanilla
+    //   background, panels,     light,      dark
+    };
     public static int currentTheme = 0; // match indices above
 
     //	GUI Layout Values

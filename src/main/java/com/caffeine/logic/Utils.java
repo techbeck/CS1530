@@ -156,7 +156,7 @@ public class Utils {
      *  @param  position The given coordinate as a String
      *  @return true if the given coordinate exists on a board, false otherwise
      */
-    private static boolean isValidBoardPosition(String position){
+    public static boolean isValidBoardPosition(String position){
 
         String sanitizedPosition = position.toLowerCase().trim();
         String validRanks = "12345678";
@@ -174,7 +174,7 @@ public class Utils {
      *  @param  move A piece's move as a String
      *  @return true if the given move starts and ends on valid positions, false otherwise
      */
-    private static boolean isValidMove(String move){
+    public static boolean isValidMove(String move){
 
         boolean move1, move2;
         if (move.length() != 4){ return false; }

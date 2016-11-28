@@ -1,6 +1,11 @@
 package com.caffeine.view;
 
+import java.util.ArrayList;
+
+import com.caffeine.Chess;
+import com.caffeine.view.Core;
 import com.caffeine.logic.Piece;
+import com.caffeine.logic.Utils;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -131,7 +136,22 @@ public class BoardSquare extends JButton {
      *  Visually indicates that a square is a valid destination for a Piece.
      */
     public void indicateValidDestination(){
-        highlightSquareBackground(Color.GREEN);
+        if (isLightSquare()){
+            highlightSquareBackground(Color.GREEN);
+        } else {
+            highlightSquareBackground(Color.GREEN.darker());
+        }
+    }
+
+    /**
+     *  Removes new colors from a square, returning it to its default (background) color.
+     */
+    public void resetSquare(){
+        if (isLightSquare()){
+            setBackground(Color.decode(Core.themes[0][2]));
+        } else {
+            setBackground(Color.decode(Core.themes[0][3]));
+        }
     }
 
     /**
@@ -163,17 +183,108 @@ public class BoardSquare extends JButton {
      *      can move to. List will be empty if
      */
     public ArrayList<String> getPossibleMoves(){
-        ArrayList<String> result = new ArrayList<String>();
+        ArrayList<String> result, tmpDest;
+        String castling, src;
+        int rank, file;
+        Piece piece;
+
+        result = new ArrayList<String>();
 
         if (!hasPiece()){ return result; }
-        Piece piece = getPiece();
-        if (piece.isWhite()){
-            // Get possible moves unique to a white pawn.
 
-        } else {
-            // Get possible moves unique to a black pawn.
+        piece = getPiece();
+        rank = piece.getRank();
+        file = piece.getFile();
+
+        tmpDest = new ArrayList<String>();
+        castling = Chess.engine.getFEN().split(" ")[3];
+        switch (piece.getType()){
+        case Core.king:
+            // King can move 1 space in any direction.
+            tmpDest.add(Utils.translate(rank-1, file-1));
+            tmpDest.add(Utils.translate(rank-1, file+1));
+            tmpDest.add(Utils.translate(rank-1, file));
+            tmpDest.add(Utils.translate(rank, file-1));
+            tmpDest.add(Utils.translate(rank, file+1));
+            tmpDest.add(Utils.translate(rank+1, file-1));
+            tmpDest.add(Utils.translate(rank+1, file+1));
+            tmpDest.add(Utils.translate(rank+1, file));
+            // Special Case: Castling
+            if (castling.equals("-")){ break; }
+            else if (piece.isWhite()){
+                if (castling.contains("K")){ tmpDest.add(Utils.translate(rank, file+2)); }
+                if (castling.contains("Q")){ tmpDest.add(Utils.translate(rank, file-2)); }
+            }
+            else if (!piece.isWhite()){
+                if (castling.contains("k")){ tmpDest.add(Utils.translate(rank, file+2)); }
+                if (castling.contains("q")){ tmpDest.add(Utils.translate(rank, file-2)); }
+            }
+            break;
+        case Core.queen:
+            // Queen can move N spaces in any one direction.
+            for (int i = 1; i <= 7; i++){
+                tmpDest.add(Utils.translate(rank-i, file)); // N
+                tmpDest.add(Utils.translate(rank, file+i)); // E
+                tmpDest.add(Utils.translate(rank, file-i)); // W
+                tmpDest.add(Utils.translate(rank+i, file)); // S
+                tmpDest.add(Utils.translate(rank-i, file-i)); // NW
+                tmpDest.add(Utils.translate(rank-i, file+i)); // NE
+                tmpDest.add(Utils.translate(rank+i, file-i)); // SW
+                tmpDest.add(Utils.translate(rank+i, file+i)); // SE
+            }
+            break;
+        case Core.rook:
+            // Rook can move N spaces horizontally or vertically.
+            for (int i = 1; i <= 7; i++){
+                tmpDest.add(Utils.translate(rank-i, file)); // N
+                tmpDest.add(Utils.translate(rank, file+i)); // E
+                tmpDest.add(Utils.translate(rank, file-i)); // W
+                tmpDest.add(Utils.translate(rank+i, file)); // S
+            }
+            break;
+        case Core.bishop:
+            // Bishop can move N spaces diagonally.
+            for (int i = 1; i <= 7; i++){
+                tmpDest.add(Utils.translate(rank-i, file-i)); // NW
+                tmpDest.add(Utils.translate(rank-i, file+i)); // NE
+                tmpDest.add(Utils.translate(rank+i, file-i)); // SW
+                tmpDest.add(Utils.translate(rank+i, file+i)); // SE
+            }
+            break;
+        case Core.knight:
+            // Knight can move:
+            //     3 Horizontally and 1 Vertically, or
+            //     3 Vertically and 1 Horizontally.
+            tmpDest.add(Utils.translate(rank-3, file-1));
+            tmpDest.add(Utils.translate(rank-3, file+1));
+            tmpDest.add(Utils.translate(rank+3, file-1));
+            tmpDest.add(Utils.translate(rank+3, file+1));
+            tmpDest.add(Utils.translate(rank-1, file-3));
+            tmpDest.add(Utils.translate(rank+1, file-3));
+            tmpDest.add(Utils.translate(rank-1, file+3));
+            tmpDest.add(Utils.translate(rank+1, file+3));
+            break;
+        case Core.pawn:
+            // Pawn can move 1 space "forward" or take diagonal pieces.
+            // Note: Accidentally handles EnPassant, so good.
+            if (piece.isWhite()){
+                tmpDest.add(Utils.translate(rank+1, file));
+                tmpDest.add(Utils.translate(rank+1, file-1));
+                tmpDest.add(Utils.translate(rank+1, file+1));
+            } else {
+                tmpDest.add(Utils.translate(rank-1, file));
+                tmpDest.add(Utils.translate(rank-1, file-1));
+                tmpDest.add(Utils.translate(rank-1, file+1));
+            }
+            break;
+        default:
+            break;
         }
-        switch ()
+
+        src = Utils.translate(rank, file);
+        for (String d : tmpDest){
+            if (Chess.game.tryMove(src, d)){ result.add(d); }
+        }
 
         return result;
     }
