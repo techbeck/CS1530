@@ -49,12 +49,12 @@ public class BoardSquare extends JButton {
     public void setBackgroundColor(boolean squareColor) {
         if (squareColor)
         {
-            setBackground(Color.decode(Core.themes[0][2]));
+            setBackground(Color.decode(Core.themes[Core.currentTheme][2]));
             isLightSquare = true;
         }
         else
         {
-            setBackground(Color.decode(Core.themes[0][3]));
+            setBackground(Color.decode(Core.themes[Core.currentTheme][3]));
             isLightSquare = false;
         }
     }
@@ -148,9 +148,9 @@ public class BoardSquare extends JButton {
      */
     public void resetSquare(){
         if (isLightSquare()){
-            setBackground(Color.decode(Core.themes[0][2]));
+            setBackground(Color.decode(Core.themes[Core.currentTheme][2]));
         } else {
-            setBackground(Color.decode(Core.themes[0][3]));
+            setBackground(Color.decode(Core.themes[Core.currentTheme][3]));
         }
     }
 
@@ -271,10 +271,14 @@ public class BoardSquare extends JButton {
                 tmpDest.add(Utils.translate(rank+1, file));
                 tmpDest.add(Utils.translate(rank+1, file-1));
                 tmpDest.add(Utils.translate(rank+1, file+1));
+                // Special Case: In default spot.
+                if (rank == 1){ tmpDest.add(Utils.translate(rank+2, file)); }
             } else {
                 tmpDest.add(Utils.translate(rank-1, file));
                 tmpDest.add(Utils.translate(rank-1, file-1));
                 tmpDest.add(Utils.translate(rank-1, file+1));
+                // Special Case: In default spot.
+                if (rank == 6){ tmpDest.add(Utils.translate(rank+2, file)); }
             }
             break;
         default:
