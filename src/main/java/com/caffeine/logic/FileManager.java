@@ -136,7 +136,12 @@ public class FileManager {
 				Chess.game.addToMoveHistory(move);
 			}
 		}
-		Core.timerPanel.setTimeLeft(timeLeft);
+		if (!timeLeft.equals("")) {
+			Core.timerPanel.setTimeLeft(timeLeft);
+		} else {
+			// default to half hour left
+			Core.timerPanel.setTimeLeft("180000");
+		}
 		Core.timerPanel.resumeTimer();
 		input.close();
 	}
