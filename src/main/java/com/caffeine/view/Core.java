@@ -51,6 +51,11 @@ public class Core {
     //	For layout to perform correctly, components need weight > 0
     public static final double AVERAGE_WEIGHT = 0.5;
 
+    // Keep Track of legal moves and whether or not to show them.
+    public static boolean showLegalMoves = false;
+    public static ArrayList<String> possibleMoves = new ArrayList();
+
+
     /**
      *	grid x/y and grid width/height are component specific for their
      * 	placements within the outer component they are in.
@@ -98,7 +103,6 @@ public class Core {
      *  @param window The JFrame to create a menu for
      */
     private void addMenu(JFrame window) {
-
         JMenuBar menuBar = new JMenuBar();
         menuBar.setName("menuBar");
         window.setJMenuBar(menuBar);
@@ -110,12 +114,16 @@ public class Core {
         undo.setName("menuUndo");
         JMenuItem setMoveTimer = new JMenuItem("Set move timer");
         setMoveTimer.setName("menuSetMoveTimer");
+        JMenuItem toggleShowLegalMoves = new JMenuItem("Show legal moves");
+        toggleShowLegalMoves.setName("menuToggleShowLegalMoves");
         menu.add(changeMode);
         menu.add(undo);
         menu.add(setMoveTimer);
+        menu.add(toggleShowLegalMoves);
         changeMode.addActionListener(new MenuListener());
         undo.addActionListener(new MenuListener());
         setMoveTimer.addActionListener(new MenuListener());
+        toggleShowLegalMoves.addActionListener(new MenuListener());
     }
 
     /**

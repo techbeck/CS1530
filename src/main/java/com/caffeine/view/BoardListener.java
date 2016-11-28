@@ -19,7 +19,6 @@ import java.awt.*;
 public class BoardListener implements ActionListener {
 
     static BoardSquare selected = null;
-    static ArrayList<String> possibleMoves = new ArrayList();
 
     public void actionPerformed(ActionEvent e) {
 
@@ -43,11 +42,13 @@ public class BoardListener implements ActionListener {
 
                 // Get list of positions the Piece on this BoardSquare can
                 // be moved to. Visually indicates with green background.
-                possibleMoves = selected.getPossibleMoves();
-                for (String move : possibleMoves){
-                    Integer[] raf = Utils.translate(move); // Rank And File
-                    BoardSquare square = Core.squares[7-raf[0]][raf[1]];
-                    square.indicateValidDestination();
+                if (Core.showLegalMoves){
+                    Core.possibleMoves = selected.getPossibleMoves();
+                    for (String move : Core.possibleMoves){
+                        Integer[] raf = Utils.translate(move); // Rank And File
+                        BoardSquare square = Core.squares[7-raf[0]][raf[1]];
+                        square.indicateValidDestination();
+                    }
                 }
             } else {
                 // no previously selected button and button clicked is empty
@@ -81,12 +82,14 @@ public class BoardListener implements ActionListener {
 
             // Un-highlight all previously highlighted BoardSquares that were
             // valid positions.
-            for (String move : possibleMoves){
-                Integer[] raf = Utils.translate(move); // Rank And File
-                BoardSquare square = Core.squares[7-raf[0]][raf[1]];
-                square.resetSquare();
+            if (Core.showLegalMoves){
+                for (String move : Core.possibleMoves){
+                    Integer[] raf = Utils.translate(move); // Rank And File
+                    BoardSquare square = Core.squares[7-raf[0]][raf[1]];
+                    square.resetSquare();
+                }
+                Core.possibleMoves.clear();
             }
-            possibleMoves.clear();
 
             selected.unselectSquare();
             selected = null;
