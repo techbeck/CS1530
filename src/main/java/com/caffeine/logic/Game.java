@@ -19,9 +19,12 @@ public class Game {
 	protected boolean userWhite;
 	protected String captByBlack;
 	protected String captByWhite;
+    protected boolean threeMoveDraw = false;
 
 	protected String lastFEN = null;
 	protected String currFEN = startFEN;
+    protected ArrayList<String> fenHistory = new ArrayList<String>();
+    protected ArrayList<String> dupHistory = new ArrayList<String>();
 
 	protected String enPassantLoc = "-";
 	protected Piece enPassantPiece = null;
@@ -228,7 +231,7 @@ public class Game {
 		}
 
 		String fen = Chess.engine.getFEN();
-
+        updateThreeMoveDraw(fen);
 		// check for en passant and taking of en passant
 		if (!enPassantLoc.equals("-")) {
 			if (moving.getType().equals(pawn)) {
@@ -417,17 +420,59 @@ public class Game {
     }
 
     /**
+     * If there are more than 99 halfmoves since the last capture or pawn move
+     * It's a fifty move mate
+     * @return boolean value of whether the game is a fifty move draw
+     */
+    public boolean isFiftyMove(){
+        boolean toReturn = false;
+        String fen = Chess.engine.getFEN();
+        int halfmoves = Integer.parseInt(fen.split(" ")[4]);
+        if(halfmoves > 99){
+            toReturn = true;
+        }
+        return toReturn;
+    }
+
+    /**
      * A check to see if the game has ended.
-     * @return int. 0 means game goes on, 1 means checkmate, 2 means stalemate. 
+     * @return int. 0 means game goes on, 1 means checkmate, 2 means stalemate,
+     * 3 means three move draw, and four means 50 move draw
      */
     public int getGameEndStatus(){
-        int gamesStatus = 0;
+        int gameStatus = 0;
         if(isCheckmate()){
-            gamesStatus = 1;
+            gameStatus = 1;
         }
         else if(isStalemate()){
             gameStatus = 2;
         }
+        else if(threeMoveDraw){
+            gameStatus = 3;
+        }
+        else if(isFiftyMove()){
+            gameStatus = 4;
+        }
         return gameStatus;
+    }
+
+    /**
+	 * Given a move string, updates the arrays and bools that check for a
+     * three move draw/
+	 *
+	 * @param fen  the new position
+	 */
+    public void updateThreeMoveDraw(String fen){
+        if(fenHistory.contains(fen)){
+            if(dupHistory.contains(fen)){
+                threeMoveDraw = true;
+            }
+            else{
+                dupHistory.add(fen);
+            }
+        }
+        else{
+            fenHistory.add(fen);
+        }
     }
 }

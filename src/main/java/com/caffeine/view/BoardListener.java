@@ -72,7 +72,7 @@ public class BoardListener implements ActionListener {
                 // Do CPU Move in response
                 int endGame = Chess.game.getGameEndStatus();
                 String cpuMove = Chess.game.cpuMove();
-                int endGame = Chess.game.getGameEndStatus();
+                endGame = Chess.game.getGameEndStatus();
                 String[] moveData = cpuMove.split("");
                 moveData[0] = moveData[0].toUpperCase();
                 moveData[2] = moveData[2].toUpperCase();
