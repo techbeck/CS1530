@@ -8,6 +8,17 @@ repositories {
 	mavenCentral()
 }
 
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integration-test/java')
+        }
+        resources.srcDir file('src/integration-test/resources')
+    }
+}
+
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
     compile 'org.assertj:assertj-swing:3.4.0'
