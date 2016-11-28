@@ -32,8 +32,9 @@ public class MenuListener implements ActionListener {
 
         JLabel statusLabel = com.caffeine.view.Core.statusLabel;
         JMenuItem menuItem = (JMenuItem) e.getSource();
+        String menuText = menuItem.getText();
 
-        if (menuItem.getText().equals("Change CPU Mode")) {
+        if (menuText.equals("Change CPU Mode")) {
 
             if (Chess.game.gameStarted) {
                 statusLabel.setText("Can't change mode after starting a game.");
@@ -65,12 +66,12 @@ public class MenuListener implements ActionListener {
                     return;
             }
 
-        } else if (menuItem.getText().equals("Undo last move")) {
+        } else if (menuText.equals("Undo last move")) {
 
             statusLabel.setText("Undo last move");
             Chess.game.undoMove();
 
-        } else if (menuItem.getText().equals("Set move timer")) {
+        } else if (menuText.equals("Set move timer")) {
 
             if (Chess.game.gameStarted) {
                 statusLabel.setText("Can't change timer after starting a game.");
@@ -86,6 +87,16 @@ public class MenuListener implements ActionListener {
             if (minutes == null) return;
 
             Core.timerPanel.setTimer(Integer.parseInt(minutes));
+
+        } else if (menuText.contains("Show legal moves")){
+
+            if (menuText.contains("\u2713")){
+                menuItem.setText("Show legal moves");
+                Core.showLegalMoves = false;
+            } else {
+                menuItem.setText("\u2713 Show legal moves");
+                Core.showLegalMoves = true;
+            }
 
         }
 

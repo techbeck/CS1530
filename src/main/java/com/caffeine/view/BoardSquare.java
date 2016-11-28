@@ -253,16 +253,16 @@ public class BoardSquare extends JButton {
             break;
         case Core.knight:
             // Knight can move:
-            //     3 Horizontally and 1 Vertically, or
-            //     3 Vertically and 1 Horizontally.
-            tmpDest.add(Utils.translate(rank-3, file-1));
-            tmpDest.add(Utils.translate(rank-3, file+1));
-            tmpDest.add(Utils.translate(rank+3, file-1));
-            tmpDest.add(Utils.translate(rank+3, file+1));
-            tmpDest.add(Utils.translate(rank-1, file-3));
-            tmpDest.add(Utils.translate(rank+1, file-3));
-            tmpDest.add(Utils.translate(rank-1, file+3));
-            tmpDest.add(Utils.translate(rank+1, file+3));
+            //     2 Horizontally and 1 Vertically, or
+            //     2 Vertically and 1 Horizontally.
+            tmpDest.add(Utils.translate(rank+2, file+1));
+            tmpDest.add(Utils.translate(rank+2, file-1));
+            tmpDest.add(Utils.translate(rank+1, file+2));
+            tmpDest.add(Utils.translate(rank+1, file-2));
+            tmpDest.add(Utils.translate(rank-2, file+1));
+            tmpDest.add(Utils.translate(rank-2, file-1));
+            tmpDest.add(Utils.translate(rank-1, file+2));
+            tmpDest.add(Utils.translate(rank-1, file-2));
             break;
         case Core.pawn:
             // Pawn can move 1 space "forward" or take diagonal pieces.
