@@ -54,7 +54,7 @@ public class BoardListener implements ActionListener {
                 return;
             }
         } else {
-            
+
             if (squareButton != selected){
                 // else move the previously selected chess piece to the clicked square
                 int oldRank = Integer.parseInt(selected.getName().split(":")[1].split(",")[1]) - 1;
@@ -69,6 +69,11 @@ public class BoardListener implements ActionListener {
                     String newLoc = (char)(newFile+65) + "" + (newRank+1);
                     Core.statusLabel.setText("User Move: " + oldLoc + "," + newLoc);
                     ViewUtils.refreshBoard();
+                    //Check that game has not ended
+                    int gameState = Chess.game.getGameEndStatus();
+                    if(gameState != 0){
+                        Chess.game.endGame(gameState);
+                    }
                     // Do CPU Move in response
                     String cpuMove = Chess.game.cpuMove();
                     String[] moveData = cpuMove.split("");
@@ -76,6 +81,10 @@ public class BoardListener implements ActionListener {
                     moveData[2] = moveData[2].toUpperCase();
                     Core.statusLabel.setText("CPU Move: " + moveData[0] + "" + moveData[1] + "," + moveData[2] + "" + moveData[3]);
                     ViewUtils.refreshBoard();
+                    gameState = Chess.game.getGameEndStatus();
+                    if(gameState != 0){
+                        Chess.game.endGame(gameState);
+                    }
                 } else { Core.statusLabel.setText("Invalid move"); }
             }
 

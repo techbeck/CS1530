@@ -288,7 +288,7 @@ public Piece[] pieces = new Piece[32];
         }
 
         String fen = Chess.engine.getFEN();
-
+        updateThreeMoveDraw(fen);
         // check for en passant and taking of en passant
         if (!enPassantLoc.equals("-")) {
             if (moving.getType().equals(pawn)) {
@@ -307,6 +307,8 @@ public Piece[] pieces = new Piece[32];
         enPassantLoc = fen.split(" ")[3];
 
         setPiecesFromFEN(fen);
+
+        whiteActive = !whiteActive;
 
         return pieceTaken;
     }
@@ -578,24 +580,28 @@ public Piece[] pieces = new Piece[32];
 
     /**
      * A check to see if the game has ended.
-     * @return int. 0 means game goes on, 1 means checkmate, 2 means stalemate,
-     * 3 means three move draw, and four means 50 move draw
+     * @return int. 0 means game goes on, 1 means white wins, 2 means black,
+     * 3 means stalemate, four means draw
      */
     public int getGameEndStatus(){
-        int gameStatus = 0;
-        if(isCheckmate()){
-            gameStatus = 1;
+        if(isCheckmate() && !whiteActive){
+            System.out.println("You know white won.");
+            gameResult = 1;
+        }
+        else if(isCheckmate() && whiteActive){
+            System.out.println("Black got this.");
+            gameResult = 2;
         }
         else if(isStalemate()){
-            gameStatus = 2;
+            gameResult = 3;
         }
         else if(threeMoveDraw){
-            gameStatus = 3;
+            gameResult = 4;
         }
         else if(isFiftyMove()){
-            gameStatus = 4;
+            gameResult = 4;
         }
-        return gameStatus;
+        return gameResult;
     }
 
     /**
@@ -605,6 +611,8 @@ public Piece[] pieces = new Piece[32];
 	 * @param fen  the new position
 	 */
     public void updateThreeMoveDraw(String fen){
+        String[] splitFen = fen.split(" ");
+        fen = splitFen[0] +  splitFen[2];
         if(fenHistory.contains(fen)){
             if(dupHistory.contains(fen)){
                 threeMoveDraw = true;
