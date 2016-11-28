@@ -13,24 +13,41 @@ sourceSets {
         java {
             compileClasspath += main.output + test.output
             runtimeClasspath += main.output + test.output
-            srcDir file('src/integration-test/java')
+            srcDir file('src/test/java/com/caffeine/integration')
         }
-        resources.srcDir file('src/integration-test/resources')
+    }
+    unitTest {
+        java {
+            compileClasspath += main.output + test.output
+            compileClasspath += main.output + test.output
+            srcDirs(
+                // Source Files
+                file('src/main/java/com/caffeine/engine'),
+                file('src/main/java/com/caffeine/view'),
+                file('src/main/java/com/caffeine/logic'),
+                // Test Files
+                file('src/test/java/com/caffeine/engine'),
+                file('src/test/java/com/caffeine/view'),
+                file('src/test/java/com/caffeine/logic')
+            )
+        }
     }
 }
 
 configurations {
     integrationTestCompile.extendsFrom testCompile
     integrationTestRuntime.extendsFrom testRuntime
+    unitTestCompile.extendsFrom testCompile
+    unitTestRuntime.extendsFrom testRuntime
 }
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
-    compile 'org.assertj:assertj-swing:3.4.0'
     compile 'org.apache.commons:commons-lang3:3.4'
     compile fileTree(dir:'libs', include: '*.jar')
-    integrationTestCompile 'org.assertj:assertj-core:3.5.2'
-    testCompile 'junit:junit:4.12'
+    compile 'junit:junit:4.12'
+    compile 'org.assertj:assertj-swing:3.4.0'
+    compile 'org.assertj:assertj-core:3.5.2'
 }
 
 // javadoc task for main code
@@ -54,3 +71,19 @@ task integrationTest(type: Test) {
     testClassesDir = sourceSets.integrationTest.output.classesDir
     classpath = sourceSets.integrationTest.runtimeClasspath
 }
+
+// task for unit tests
+task unitTest(type: Test) {
+    testClassesDir = sourceSets.unitTest.output.classesDir
+    classpath = sourceSets.unitTest.runtimeClasspath
+}
+
+// task for all tests
+task test(type: Test, overwrite: true) {
+    integrationTest
+    unitTest
+}
+
+// Aliases
+task iTest(dependsOn: integrationTest){}
+task uTest(dependsOn: unitTest){}
