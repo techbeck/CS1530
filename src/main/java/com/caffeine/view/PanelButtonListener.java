@@ -15,8 +15,8 @@ import java.awt.*;
 
 
 /**
- * 	This customized implementation of ActionListener listens for button clicks
- * 	upon the panel buttons and displays the appropriate dialog window
+ *  This customized implementation of ActionListener listens for button clicks
+ *  upon the panel buttons and displays the appropriate dialog window
  */
 public class PanelButtonListener implements ActionListener {
 
@@ -119,7 +119,7 @@ public class PanelButtonListener implements ActionListener {
             int playerColor = JOptionPane.showOptionDialog(window, "Please choose a side", "Choose Side",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
-            // 	case -1 and 2 are X'ed out of dialog box and Cancel
+            //  case -1 and 2 are X'ed out of dialog box and Cancel
             switch(playerColor){
                 case -1:
                     return;
@@ -160,7 +160,7 @@ public class PanelButtonListener implements ActionListener {
 
             switch(playerColor) {
                 case -1:
-                	break;
+                    break;
                 case 0:  // change black pieces
                     Color newColor = JColorChooser.showDialog(window,
                             "Choose Color", Color.BLACK);
@@ -210,7 +210,7 @@ public class PanelButtonListener implements ActionListener {
                     Core.takenPanel.setCaptByBlackColor();
                     break;
                 case 2:
-                	break;
+                    break;
             }
         } else if (button.getText().equals("Change Color Theme")) {
 

@@ -7,21 +7,21 @@ import java.awt.event.*;
 import java.awt.*;
 
 /**
- * 	This JPanel displays the pieces that were taken
- * 	by each player.
+ *  This JPanel displays the pieces that were taken
+ *  by each player.
  */
 public class TakenPanel extends JPanel {
-	private JLabel takenlabel = new JLabel("Taken Pieces");
-	private JLabel captByBlack = new JLabel();
-	private JLabel captByWhite = new JLabel();
+    private JLabel takenlabel = new JLabel("Taken Pieces");
+    private JLabel captByBlack = new JLabel();
+    private JLabel captByWhite = new JLabel();
 
-	private Dimension labelDimen = new Dimension(150,260);
+    private Dimension labelDimen = new Dimension(150,260);
 
-	/* proprietary font that Windows/Mac have, but Linux will default to 
+    /* proprietary font that Windows/Mac have, but Linux will default to
     a font that will still display the chess pieces */
     Font takenFont = new Font("Arial Unicode MS", Font.PLAIN, 25);
 
-	public TakenPanel() {
+    public TakenPanel() {
         setName("takenPanel");
         setBackground(Color.decode(Core.themes[0][1]));
         setMinimumSize(Core.sidePanelDimension);
@@ -46,39 +46,39 @@ public class TakenPanel extends JPanel {
         captByWhite.setVerticalAlignment(SwingConstants.TOP);
         captByWhite.setForeground(Core.blackColor);
         add(captByWhite);
-	}
+    }
 
-	/**
-	 *	Displays what pieces were taken by black.
-	 * 
-	 * 	@param str The list of white pieces taken thus far
-	 */
-	public void setCaptByBlack(String str) {
-		captByBlack.setText("<html><p>"+ str +"</p></html>");
-	}
+    /**
+     *  Displays what pieces were taken by black.
+     *
+     *  @param str The list of white pieces taken thus far
+     */
+    public void setCaptByBlack(String str) {
+        captByBlack.setText("<html><p>"+ str +"</p></html>");
+    }
 
-	/**
-	 *	Displays what pieces were taken by white.
-	 * 
-	 * 	@param str The list of black pieces taken thus far
-	 */
-	public void setCaptByWhite(String str) {
-		captByWhite.setText("<html><p>"+ str +"</p></html>");
-	}
+    /**
+     *  Displays what pieces were taken by white.
+     *
+     *  @param str The list of black pieces taken thus far
+     */
+    public void setCaptByWhite(String str) {
+        captByWhite.setText("<html><p>"+ str +"</p></html>");
+    }
 
-	/**
-	 * 	Changes the color of the white pieces to the color
-	 * 	requested by the user.
-	 */
-	public void setCaptByBlackColor() {
-		captByBlack.setForeground(Core.whiteColor);
-	}
+    /**
+     *  Changes the color of the white pieces to the color
+     *  requested by the user.
+     */
+    public void setCaptByBlackColor() {
+        captByBlack.setForeground(Core.whiteColor);
+    }
 
-	/**
-	 * 	Changes the color of the black pieces to the color
-	 * 	requested by the user.
-	 */
-	public void setCaptByWhiteColor() {
-		captByWhite.setForeground(Core.blackColor);
-	}
+    /**
+     *  Changes the color of the black pieces to the color
+     *  requested by the user.
+     */
+    public void setCaptByWhiteColor() {
+        captByWhite.setForeground(Core.blackColor);
+    }
 }

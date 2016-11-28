@@ -35,43 +35,43 @@ public class ViewTest {
             .as("Generic test for AssertJ integration", o)
             .isEqualTo("test");
     }
-	
-	
-	//BoardSquare unit tests
-	
-	@Test
-	public void testSetBackgroundColor(){
-		boolean isLight = true;
-		BoardSquare testSquare = new BoardSquare();
-		testSquare.setBackgroundColor(isLight);
-		assertTrue(testSquare.isLightSquare());
-		isLight = false;
-		testSquare.setBackgroundColor(isLight);
-		assertFalse(testSquare.isLightSquare());	
-	}
 
-	@Test
-	public void testHasPiece(){
-		BoardSquare testSquare = new BoardSquare();
-		testSquare.setPiece(null);
-		assertFalse(testSquare.hasPiece());
-	}
-	
-	@Test
-	public void testGetPiece(){
-		BoardSquare testSquare = new BoardSquare();
-		Piece testPiece = new Piece("test", "test", 0, 0);
-		testSquare.setPiece(testPiece);
-		assertEquals(testPiece, testSquare.getPiece());
-	}
-	
-	@Test
-	public void testRemovePiece(){
-		BoardSquare testSquare = new BoardSquare();
-		Piece testPiece = new Piece("test", "test", 0, 0);
-		testSquare.setPiece(testPiece);
-		testSquare.removePiece();
-		assertNull(testSquare.getPiece());
-	}
+
+    //BoardSquare unit tests
+
+    @Test
+    public void testSetBackgroundColor(){
+        boolean isLight = true;
+        BoardSquare testSquare = new BoardSquare();
+        testSquare.setBackgroundColor(isLight);
+        assertTrue(testSquare.isLightSquare());
+        isLight = false;
+        testSquare.setBackgroundColor(isLight);
+        assertFalse(testSquare.isLightSquare());
+    }
+
+    @Test
+    public void testHasPiece(){
+        BoardSquare testSquare = new BoardSquare();
+        testSquare.setPiece(null);
+        assertFalse(testSquare.hasPiece());
+    }
+
+    @Test
+    public void testGetPiece(){
+        BoardSquare testSquare = new BoardSquare();
+        Piece testPiece = new Piece("test", "test", 0, 0);
+        testSquare.setPiece(testPiece);
+        assertEquals(testPiece, testSquare.getPiece());
+    }
+
+    @Test
+    public void testRemovePiece(){
+        BoardSquare testSquare = new BoardSquare();
+        Piece testPiece = new Piece("test", "test", 0, 0);
+        testSquare.setPiece(testPiece);
+        testSquare.removePiece();
+        assertNull(testSquare.getPiece());
+    }
 
 }

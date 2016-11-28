@@ -11,12 +11,12 @@ import java.awt.event.*;
 import java.awt.*;
 
 /**
- * 	This is the core View processor that initializes the GUI components
- * 	of the chess program.
+ *  This is the core View processor that initializes the GUI components
+ *  of the chess program.
  */
 public class Core {
 
-    // 	Unicode chess pieces
+    //  Unicode chess pieces
     public static final String king = "\u265A";
     public static final String queen = "\u265B";
     public static final String rook = "\u265C";
@@ -24,7 +24,7 @@ public class Core {
     public static final String knight = "\u265E";
     public static final String pawn = "\u265F";
 
-    // 	Track colors of white pieces and black pieces
+    //  Track colors of white pieces and black pieces
     public static Color whiteColor = Color.WHITE;
     public static Color blackColor = Color.BLACK;
 
@@ -39,16 +39,16 @@ public class Core {
     };
     public static int currentTheme = 0; // match indices above
 
-    //	GUI Layout Values
+    //  GUI Layout Values
     public static final Dimension sidePanelDimension = new Dimension(150,550);
     public static final Dimension centerPanelDimension = new Dimension(500,630);
 
-    //	Insets are padding between components
+    //  Insets are padding between components
     public static final Insets sidePadding = new Insets(0,5,0,5);
     public static final Insets noPadding = new Insets(0,0,0,0);
     public static final Insets topBottomPadding = new Insets(5,0,5,0);
 
-    //	For layout to perform correctly, components need weight > 0
+    //  For layout to perform correctly, components need weight > 0
     public static final double AVERAGE_WEIGHT = 0.5;
 
     // Keep Track of legal moves and whether or not to show them.
@@ -57,9 +57,9 @@ public class Core {
 
 
     /**
-     *	grid x/y and grid width/height are component specific for their
-     * 	placements within the outer component they are in.
-	 *  (0,0) is the upper left corner
+     *  grid x/y and grid width/height are component specific for their
+     *  placements within the outer component they are in.
+     *  (0,0) is the upper left corner
      */
 
     public static JFrame window = new JFrame("Laboon Chess");
@@ -84,8 +84,8 @@ public class Core {
         window.setResizable(false);
         window.setVisible(true);
 
-        // 	Windows doesn't permit a VM to initially bring a window to focus,
-        // 	so this forces the chess window to be focused
+        //  Windows doesn't permit a VM to initially bring a window to focus,
+        //  so this forces the chess window to be focused
         window.setAlwaysOnTop(true);
         window.setAlwaysOnTop(false);
 
@@ -98,7 +98,7 @@ public class Core {
     }
 
     /**
-     * 	Initializes a menu for a given JFrame.
+     *  Initializes a menu for a given JFrame.
      *
      *  @param window The JFrame to create a menu for
      */
@@ -127,8 +127,8 @@ public class Core {
     }
 
     /**
-     * 	Initializes panels for a given JFrame to display move history,
-     * 	the game board, chess pieces taken, and a status indicator.
+     *  Initializes panels for a given JFrame to display move history,
+     *  the game board, chess pieces taken, and a status indicator.
      *
      *  @param window The JFrame to create panels for
      */
@@ -190,8 +190,8 @@ public class Core {
     }
 
     /**
-     * 	Initializes sub-panels to display the current game time,
-     * 	the chess board, and commonly used gameplay options.
+     *  Initializes sub-panels to display the current game time,
+     *  the chess board, and commonly used gameplay options.
      */
     private void formatCenterPanel() {
 
@@ -215,8 +215,8 @@ public class Core {
     }
 
     /**
-     * 	Initializes buttons for the user to readily access
-     * 	common gameplay options.
+     *  Initializes buttons for the user to readily access
+     *  common gameplay options.
      */
     private void formatButtonPanel() {
 

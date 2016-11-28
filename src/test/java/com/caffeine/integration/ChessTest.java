@@ -160,7 +160,7 @@ public class ChessTest {
             optionPane = findOptionPane().using(robot);
         } catch (Exception ex) {}
         optionPane.buttonWithText("White").click();
-        
+
         JButton firstSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,2", BoardSquare.class);
         JButton secondSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,4", BoardSquare.class);
         JButtonFixture firstSquareFix = new JButtonFixture(robot, firstSquare);

@@ -172,23 +172,23 @@ public Piece[] pieces = new Piece[32];
         Core.historyPanel.updateMoveHistory(moveHistory);
     }
 
-	/**
-	 * Ends the game
-	 */
-	public void endGame(int result) {
-		boolean timerEnded = Core.timerPanel.isTimeOut();
-		if (timerEnded) {
-			if (userWhite) {
-				gameResult = 2;
-			} else {
-				gameResult = 1;
-			}
-		} else {
-			gameResult = result;
-		}
-		gameStarted = false;
-		ViewUtils.endGame(gameResult);
-	}
+    /**
+     * Ends the game
+     */
+    public void endGame(int result) {
+        boolean timerEnded = Core.timerPanel.isTimeOut();
+        if (timerEnded) {
+            if (userWhite) {
+                gameResult = 2;
+            } else {
+                gameResult = 1;
+            }
+        } else {
+            gameResult = result;
+        }
+        gameStarted = false;
+        ViewUtils.endGame(gameResult);
+    }
 
     /**
      *  Move a piece from one set of coordinates to another
