@@ -103,6 +103,12 @@ public class FileManager {
 			fileLine = input.nextLine();
 			if (fileLine.contains("User"))
 				userSide = fileLine.split(" ")[0].substring(1);
+			if (fileLine.contains("Result")) {
+				if (!fileLine.contains("*")) {
+					Core.statusLabel.setText("Unable to load from file. - Not in progress.");
+					return;
+				}
+			}
 			if (fileLine.contains("Time")) {
 				timeLeft = fileLine.split(" ")[1];
 				timeLeft = timeLeft.substring(1,timeLeft.length()-2);
