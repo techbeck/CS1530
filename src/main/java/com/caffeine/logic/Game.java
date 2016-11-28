@@ -10,7 +10,11 @@ public class Game {
     public Piece[] pieces = new Piece[32];
     public ArrayList<String> moveHistory = new ArrayList<String>();
     public boolean gameStarted = false;
-    public int gameResult = 0; // 0 = ongoing, 1 = white won, 2 = black won, 3 = draw
+    public int gameResult = 0;	// 0 = ongoing
+    							// 1 = white won
+    							// 2 = black won
+    							// 3 = stalemate
+    							// 4 = draw
 
 	private int mode = 0; // 0 = easy, 1 = medium, 2 = hard
 	private static final int[] timeoutsForModes = {1, 5, 10};
@@ -175,9 +179,9 @@ public class Game {
 	}
 
 	/**
-	 * Ends the game.
+	 * Ends the game
 	 */
-	public void endGame() {
+	public void endGame(int result) {
 		boolean timerEnded = Core.timerPanel.isTimeOut();
 		if (timerEnded) {
 			if (userWhite) {
@@ -185,9 +189,11 @@ public class Game {
 			} else {
 				gameResult = 1;
 			}
+		} else {
+			gameResult = result;
 		}
 		gameStarted = false;
-		// TO DO: end game in view
+		ViewUtils.endGame(gameResult);
 	}
 
 	/**

@@ -4,6 +4,7 @@ import com.caffeine.Chess;
 import com.caffeine.logic.Piece;
 
 import java.util.*;
+import javax.swing.JOptionPane;
 
 public class ViewUtils {
 	/**
@@ -35,5 +36,39 @@ public class ViewUtils {
 	 */
 	public static void clearHistoryPanel() {
 		Core.historyPanel.updateMoveHistory(new ArrayList<String>());
+	}
+
+	/**
+	 * End-of-game view functionality
+	 */
+	public static void endGame(int gameResult) {
+		String message = "";
+		if (Core.timerPanel.isTimeOut()) {
+			switch (gameResult) {
+				case 1: // white won
+					message = "Timer Ran Out. \nWhite Won!";
+					break;
+				case 2: // black won
+					message = "Timer Ran Out. \nBlack Won!";
+					break;
+			}
+		} else {
+			switch (gameResult) {
+				case 1: // white won
+					message = "White Won!";
+					break;
+				case 2: // black won
+					message = "Black Won!";
+					break;
+				case 3: // stalemate
+					message = "Stalemate!";
+					break;
+				case 4: // draw
+					message = "Draw!";
+					break;
+			}
+		}
+		JOptionPane.showMessageDialog(Core.window,
+			message, "End of Game", JOptionPane.PLAIN_MESSAGE);
 	}
 }
