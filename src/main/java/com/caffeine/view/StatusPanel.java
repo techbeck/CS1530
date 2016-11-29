@@ -1,5 +1,7 @@
 package com.caffeine.view;
 
+import com.caffeine.Chess;
+
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
@@ -9,6 +11,7 @@ public class StatusPanel extends JPanel {
 
 	String oldStatus = null;
 	String newStatus = "Status Bar";
+	String spacer = "          |           ";
 
 	public StatusPanel() {
         setName("statusPanel");
@@ -24,6 +27,11 @@ public class StatusPanel extends JPanel {
 	public void setText(String text) {
 		oldStatus = newStatus;
 		newStatus = text;
-		statusLabel.setText(oldStatus + "          |           " + newStatus);
+		String turn = "";
+		if (Chess.game.userWhite())
+			turn = "White's turn";
+		else
+			turn = "Black's turn";
+		statusLabel.setText(oldStatus + spacer + newStatus + spacer + turn);
 	}
 }
