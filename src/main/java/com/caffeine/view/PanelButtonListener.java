@@ -257,6 +257,7 @@ public class PanelButtonListener implements ActionListener {
                 }
             }
         } else if (button.getText().equals("Flip the Board")) {
+            if (!Chess.game.gameStarted) return;
             BoardPanel replacement = null;
             if (Core.boardPanel.blackOnTop()) {
                 replacement = new BoardPanel("white");
