@@ -86,7 +86,41 @@ public class BoardListener implements ActionListener {
                     if(gameState != 0){
                         Chess.game.endGame(gameState);
                     }
-                } else { Core.statusLabel.setText("Invalid move"); }
+                } else if (piece.getType().equals(Core.pawn) && newRank == 7) {
+                    // Edge-case: Promotion
+                    Core.statusLabel.setText("Promotion");
+                    String[] options = new String[] {"Queen", "Knight", "Rook", "Bishop"};
+                    String choice = (String) JOptionPane.showInputDialog(Core.window, "Choose Type",
+                            "Choose Type for Promotion", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    char type;
+                    if (Chess.game.userWhite()) {
+                        if (choice.equals("Queen")) type = 'Q';
+                        else if (choice.equals("Knight")) type = 'N';
+                        else if (choice.equals("Rook")) type = 'R';
+                        else type = 'B';
+                    } else {
+                        if (choice.equals("Queen")) type = 'q';
+                        else if (choice.equals("Knight")) type = 'n';
+                        else if (choice.equals("Rook")) type = 'r';
+                        else type = 'b';
+                    }
+                    Chess.game.moveP(oldRank,oldFile,newRank,newFile,type);
+                    ViewUtils.refreshBoard();
+                    
+                    // Do CPU Move in response
+                    String cpuMove = Chess.game.cpuMove();
+                    String[] moveData = cpuMove.split("");
+                    moveData[0] = moveData[0].toUpperCase();
+                    moveData[2] = moveData[2].toUpperCase();
+                    Core.statusLabel.setText("CPU Move: " + moveData[0] + "" + moveData[1] + "," + moveData[2] + "" + moveData[3]);
+                    ViewUtils.refreshBoard();
+                    int gameState = Chess.game.getGameEndStatus();
+                    if(gameState != 0){
+                        Chess.game.endGame(gameState);
+                    }
+                } else {
+                    Core.statusLabel.setText("Invalid move");
+                }
             }
 
             // Un-highlight all previously highlighted BoardSquares that were

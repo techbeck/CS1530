@@ -8,7 +8,7 @@ import com.caffeine.view.ViewUtils;
 import java.util.*;
 
 public class Game {
-public Piece[] pieces = new Piece[32];
+	public Piece[] pieces = new Piece[32];
     public ArrayList<String> moveHistory = new ArrayList<String>();
     protected ArrayList<String> fenHistory = new ArrayList<String>();
     protected ArrayList<String> dupHistory = new ArrayList<String>();
@@ -21,7 +21,7 @@ public Piece[] pieces = new Piece[32];
                                 // 4 = draw
 
 	private int mode = 0; // 0 = easy, 1 = medium, 2 = hard
-	private static final int[] timeoutsForModes = {5, 100, 200};
+	private static final int[] timeoutsForModes = {1, 5, 10};
 
 	private static final String startFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
@@ -230,8 +230,26 @@ public Piece[] pieces = new Piece[32];
         String newLoc = (char)(newFile+97) + "" + (newRank+1);
 
         if (Chess.engine.move(oldLoc+newLoc)) {
-            boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
+            doMove(oldRank, oldFile, newRank, newFile);
+            return true;
+        }
+        return false;
+    }
 
+    /**
+     *  Move a piece from one set of coordinates to another
+     *  @param  oldRank The current horizontal coordinate
+     *  @param  oldFile The current vertical coordinate
+     *  @param  newRank The new horizontal coordinate to move to
+     *  @param  newFile The new vertical coordinate to move to
+     *  @return true if move is successful, false otherwise
+     */
+    public boolean moveP(int oldRank, int oldFile, int newRank, int newFile, char type) {
+        String oldLoc = (char)(oldFile+97) + "" + (oldRank+1);
+        String newLoc = (char)(newFile+97) + "" + (newRank+1);
+
+        if (Chess.engine.move(oldLoc+newLoc+type)) {
+            doMove(oldRank, oldFile, newRank, newFile);
             return true;
         }
         return false;
@@ -251,7 +269,8 @@ public Piece[] pieces = new Piece[32];
         int oldFile = (int) moveData[0] - 'a';
         int newRank = (int) moveData[3] - '1';
         int newFile = (int) moveData[2] - 'a';
-        boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
+        
+        doMove(oldRank, oldFile, newRank, newFile);
 
         return move;
     }
@@ -262,9 +281,8 @@ public Piece[] pieces = new Piece[32];
      *  @param  oldFile The current vertical coordinate
      *  @param  newRank The new horizontal coordinate to move to
      *  @param  newFile The new vertical coordinate to move to
-     *  @return true if move takes a piece, false otherwise
      */
-    public boolean doMove(int oldRank, int oldFile, int newRank, int newFile) {
+    public void doMove(int oldRank, int oldFile, int newRank, int newFile) {
         boolean pieceTaken = false;
 
         Piece taken = getPieceMatching(newRank,newFile);
@@ -281,6 +299,7 @@ public Piece[] pieces = new Piece[32];
         pgnTags.put("FEN", currFEN);
 
         updateThreeMoveDraw(currFEN);
+
         // check for en passant and taking of en passant
         if (!enPassantLoc.equals("-")) {
             if (moving.getType().equals(pawn)) {
@@ -327,8 +346,6 @@ public Piece[] pieces = new Piece[32];
         setPiecesFromFEN(currFEN);
 
         whiteActive = !whiteActive;
-
-        return pieceTaken;
     }
 
 
@@ -427,11 +444,11 @@ public Piece[] pieces = new Piece[32];
                 charVal = (int) currentChar - '0';
                 if (charVal > 9) { // piece character
                     if (rowCursor == 0) {
-                        pieces[pieceInd] = new Piece(typeToUnicode(currentChar),
-                                                typeToSide(currentChar),7-i,j);
+                        pieces[pieceInd] = new Piece(Utils.typeToUnicode(currentChar),
+                                                Utils.typeToSide(currentChar),7-i,j);
                     } else {
-                        pieces[pieceInd] = new Piece(typeToUnicode(currentChar),
-                                                typeToSide(currentChar),7-i,rowCursor);
+                        pieces[pieceInd] = new Piece(Utils.typeToUnicode(currentChar),
+                                                Utils.typeToSide(currentChar),7-i,rowCursor);
                     }
                     pieceInd++;
                     rowCursor++;
@@ -445,46 +462,6 @@ public Piece[] pieces = new Piece[32];
             pieces[pieceInd] = new Piece("null","null",-1,-1);
         }
         this.pieces = pieces;
-    }
-
-    /**
-     * Converts from type KQRBNPkqrbnp to equivalent Unicode characters
-     *
-     * @param type  the type to be converted
-     */
-    public String typeToUnicode(char type) {
-        switch(type) {
-        case 'K':
-        case 'k':
-            return king;
-        case 'Q':
-        case 'q':
-            return queen;
-        case 'R':
-        case 'r':
-            return rook;
-        case 'B':
-        case 'b':
-            return bishop;
-        case 'N':
-        case 'n':
-            return knight;
-        case 'P':
-        case 'p':
-            return pawn;
-        default:
-            return "null";
-        }
-    }
-
-    /**
-     * Converts from type KQRBNPkqrbnp to equivalent side black/white
-     *
-     * @param type  the type to be converted
-     */
-    public String typeToSide(char type) {
-        if (((int) type) < 90) return "white";
-        else return "black";
     }
 
     /**
@@ -530,7 +507,7 @@ public Piece[] pieces = new Piece[32];
             }
         }
         for (Character c : possTaken) {
-            Piece p = new Piece(typeToUnicode(c), typeToSide(c),-1,-1);
+            Piece p = new Piece(Utils.typeToUnicode(c), Utils.typeToSide(c),-1,-1);
             takePiece(p);
         }
     }
