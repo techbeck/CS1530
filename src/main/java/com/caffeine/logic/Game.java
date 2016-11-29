@@ -653,13 +653,15 @@ public Piece[] pieces = new Piece[32];
             fenHistory.add(fen);
         }
     }
+
     /**
      * Undoes up to the last player move.
      * If computer moved since last player move, that is undone as well.
      */
     public void undoMove() {
-        if (lastFEN == null) {
-
+        if (!Chess.game.gameStarted) return;
+        if (lastFEN == null || prevFEN == null) {
+        	Core.statusLabel.setText("Unable to undo move");
             return;
         }
         if (!userWhite) {
@@ -693,6 +695,10 @@ public Piece[] pieces = new Piece[32];
      * and refreshes the board to visualize the change.
      */
     private void rollbackFEN() {
+    	String[] splitFen = currFEN.split(" ");
+        String fen = splitFen[0] +  splitFen[2];
+    	fenHistory.remove(fen);
+    	dupHistory.remove(fen);
         currFEN = lastFEN;
         lastFEN = prevFEN;
         prevFEN = null;
