@@ -231,35 +231,6 @@ public Piece[] pieces = new Piece[32];
 
         if (Chess.engine.move(oldLoc+newLoc)) {
             boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
-            prevFEN = lastFEN;
-            lastFEN = currFEN;
-            currFEN = Chess.engine.getFEN();
-            pgnTags.put("FEN", currFEN);
-
-            boolean kingside = false;
-            boolean queenside = false;
-            if (!currFEN.split(" ")[2].equals(lastFEN.split(" ")[2])) {
-                if (oldLoc.equals("e1") || oldLoc.equals("e8")) {
-                    if (newLoc.equals("g1") || newLoc.equals("g8")) {
-                        kingside = true;
-                    }
-                    if (newLoc.equals("c1") || newLoc.equals("c8")) {
-                        queenside = true;
-                    }
-                }
-            }
-
-            if (kingside) {
-                addToMoveHistory("O-O");
-            } else if (queenside) {
-                addToMoveHistory("O-O-O");
-            } else {
-                if (pieceTaken) {
-                    addToMoveHistory(oldLoc + "x" + newLoc);
-                } else {
-                    addToMoveHistory(oldLoc+newLoc);
-                }
-            }
 
             return true;
         }
@@ -281,17 +252,7 @@ public Piece[] pieces = new Piece[32];
         int newRank = (int) moveData[3] - '1';
         int newFile = (int) moveData[2] - 'a';
         boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
-        prevFEN = lastFEN;
-        lastFEN = currFEN;
-        currFEN = Chess.engine.getFEN();
-        pgnTags.put("FEN", currFEN);
 
-        if (pieceTaken) {
-            String moveString = moveData[0] + "" + moveData[1] + "x" + moveData[2] + "" + moveData[3];
-            addToMoveHistory(moveString);
-        } else {
-            addToMoveHistory(move);
-        }
         return move;
     }
 
@@ -314,8 +275,12 @@ public Piece[] pieces = new Piece[32];
             pieceTaken = true;
         }
 
-        String fen = Chess.engine.getFEN();
-        updateThreeMoveDraw(fen);
+        prevFEN = lastFEN;
+        lastFEN = currFEN;
+        currFEN = Chess.engine.getFEN();
+        pgnTags.put("FEN", currFEN);
+
+        updateThreeMoveDraw(currFEN);
         // check for en passant and taking of en passant
         if (!enPassantLoc.equals("-")) {
             if (moving.getType().equals(pawn)) {
@@ -331,9 +296,35 @@ public Piece[] pieces = new Piece[32];
                 }
             }
         }
-        enPassantLoc = fen.split(" ")[3];
+        enPassantLoc = currFEN.split(" ")[3];
 
-        setPiecesFromFEN(fen);
+        String oldLoc = (char)(oldFile+97) + "" + (oldRank+1);
+        String newLoc = (char)(newFile+97) + "" + (newRank+1);
+        boolean kingside = false;
+        boolean queenside = false;
+        if (lastFEN != null && !currFEN.split(" ")[2].equals(lastFEN.split(" ")[2])) {
+            if (oldLoc.equals("e1") || oldLoc.equals("e8")) {
+                if (newLoc.equals("g1") || newLoc.equals("g8")) {
+                    kingside = true;
+                }
+                if (newLoc.equals("c1") || newLoc.equals("c8")) {
+                    queenside = true;
+                }
+            }
+        }
+        if (kingside) {
+            addToMoveHistory("O-O");
+        } else if (queenside) {
+            addToMoveHistory("O-O-O");
+        } else {
+            if (pieceTaken) {
+                addToMoveHistory(oldLoc + "x" + newLoc);
+            } else {
+                addToMoveHistory(oldLoc+newLoc);
+            }
+        }
+
+        setPiecesFromFEN(currFEN);
 
         whiteActive = !whiteActive;
 
