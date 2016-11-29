@@ -2,10 +2,10 @@
 [Site "Pittsburgh, PA, USA"]
 [Date "Fall 2016"]
 [Round "420"]
-[White "User"]
-[Black "CPU"]
+[White "CPU"]
+[Black "User"]
 [Result "*"]
-[Time "179932"]
+[Time "178450"]
 [Mode "Easy"]
 [FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"]
 
