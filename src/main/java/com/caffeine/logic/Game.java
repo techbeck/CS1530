@@ -86,7 +86,7 @@ public Piece[] pieces = new Piece[32];
 	 *  @param side The color the user will play as
 	 */
 	public void setSide(String side) {
-		if (side.equals("white")) {
+		if (side.equals("white") || side.equals("White")) {
 			userWhite = true;
 			pgnTags.put("White", "User");
 			pgnTags.put("Black", "CPU");
@@ -231,8 +231,10 @@ public Piece[] pieces = new Piece[32];
 
         if (Chess.engine.move(oldLoc+newLoc)) {
             boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
+            prevFEN = lastFEN;
             lastFEN = currFEN;
             currFEN = Chess.engine.getFEN();
+            pgnTags.put("FEN", currFEN);
 
             boolean kingside = false;
             boolean queenside = false;
@@ -279,8 +281,10 @@ public Piece[] pieces = new Piece[32];
         int newRank = (int) moveData[3] - '1';
         int newFile = (int) moveData[2] - 'a';
         boolean pieceTaken = doMove(oldRank, oldFile, newRank, newFile);
+        prevFEN = lastFEN;
         lastFEN = currFEN;
         currFEN = Chess.engine.getFEN();
+        pgnTags.put("FEN", currFEN);
 
         if (pieceTaken) {
             String moveString = moveData[0] + "" + moveData[1] + "x" + moveData[2] + "" + moveData[3];
@@ -504,6 +508,7 @@ public Piece[] pieces = new Piece[32];
         enPassantLoc = fen.split(" ")[3];
         Chess.engine.setFEN(fen);
         currFEN = fen;
+        pgnTags.put("FEN", fen);
         // Parse taken from fen
         ArrayList<Character> possTaken = new ArrayList<Character>();
         possTaken.add(Character.valueOf('K'));
