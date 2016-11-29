@@ -63,6 +63,7 @@ public class BoardListener implements ActionListener {
                 int newRank = Integer.parseInt(squareButton.getName().split(":")[1].split(",")[1]) - 1;
                 int newFile = ((int) squareButton.getName().split(":")[1].split(",")[0].toCharArray()[0]) - 65;
                 Piece piece = selected.getPiece();
+                
                 if (Chess.game.move(oldRank,oldFile,newRank,newFile)) {
                     selected.removePiece();
                     squareButton.setPiece(piece);
@@ -74,49 +75,63 @@ public class BoardListener implements ActionListener {
                     int gameState = Chess.game.getGameEndStatus();
                     if(gameState != 0){
                         Chess.game.endGame(gameState);
-                    }
-                    // Do CPU Move in response
-                    String cpuMove = Chess.game.cpuMove();
-                    String[] moveData = cpuMove.split("");
-                    moveData[0] = moveData[0].toUpperCase();
-                    moveData[2] = moveData[2].toUpperCase();
-                    Core.statusLabel.setText("CPU Move: " + moveData[0] + "" + moveData[1] + "," + moveData[2] + "" + moveData[3]);
-                    ViewUtils.refreshBoard();
-                    gameState = Chess.game.getGameEndStatus();
-                    if(gameState != 0){
-                        Chess.game.endGame(gameState);
-                    }
-                } else if (piece.getType().equals(Core.pawn) && newRank == 7) {
-                    // Edge-case: Promotion
-                    Core.statusLabel.setText("Promotion");
-                    String[] options = new String[] {"Queen", "Knight", "Rook", "Bishop"};
-                    String choice = (String) JOptionPane.showInputDialog(Core.window, "Choose Type",
-                            "Choose Type for Promotion", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                    char type;
-                    if (Chess.game.userWhite()) {
-                        if (choice.equals("Queen")) type = 'Q';
-                        else if (choice.equals("Knight")) type = 'N';
-                        else if (choice.equals("Rook")) type = 'R';
-                        else type = 'B';
                     } else {
-                        if (choice.equals("Queen")) type = 'q';
-                        else if (choice.equals("Knight")) type = 'n';
-                        else if (choice.equals("Rook")) type = 'r';
-                        else type = 'b';
+                        // Do CPU Move in response
+                        String cpuMove = Chess.game.cpuMove();
+                        String[] moveData = cpuMove.split("");
+                        moveData[0] = moveData[0].toUpperCase();
+                        moveData[2] = moveData[2].toUpperCase();
+                        Core.statusLabel.setText("CPU Move: " + moveData[0] + "" + moveData[1] + "," +
+                                                        moveData[2] + "" + moveData[3]);
+                        ViewUtils.refreshBoard();
+                        //Check that game has not ended
+                        gameState = Chess.game.getGameEndStatus();
+                        if(gameState != 0){
+                            Chess.game.endGame(gameState);
+                        }
                     }
-                    Chess.game.moveP(oldRank,oldFile,newRank,newFile,type);
-                    ViewUtils.refreshBoard();
                     
-                    // Do CPU Move in response
-                    String cpuMove = Chess.game.cpuMove();
-                    String[] moveData = cpuMove.split("");
-                    moveData[0] = moveData[0].toUpperCase();
-                    moveData[2] = moveData[2].toUpperCase();
-                    Core.statusLabel.setText("CPU Move: " + moveData[0] + "" + moveData[1] + "," + moveData[2] + "" + moveData[3]);
-                    ViewUtils.refreshBoard();
-                    int gameState = Chess.game.getGameEndStatus();
-                    if(gameState != 0){
-                        Chess.game.endGame(gameState);
+                } else if (piece.getType().equals(Core.pawn)) {
+                    if (Chess.game.userWhite() && newRank == 7 || !Chess.game.userWhite() && newRank == 0) {
+                        // Edge-case: Promotion
+                        String[] options = new String[] {"Queen", "Knight", "Rook", "Bishop"};
+                        String choice = (String) JOptionPane.showInputDialog(Core.window, "Choose Type",
+                                "Choose Type for Promotion", JOptionPane.QUESTION_MESSAGE,
+                                null, options, options[0]);
+                        char type;
+                        if (Chess.game.userWhite()) {
+                            if (choice.equals("Queen")) type = 'Q';
+                            else if (choice.equals("Knight")) type = 'N';
+                            else if (choice.equals("Rook")) type = 'R';
+                            else type = 'B';
+                        } else {
+                            if (choice.equals("Queen")) type = 'q';
+                            else if (choice.equals("Knight")) type = 'n';
+                            else if (choice.equals("Rook")) type = 'r';
+                            else type = 'b';
+                        }
+                        Core.statusLabel.setText("Promotion to " + choice);
+                        Chess.game.moveP(oldRank,oldFile,newRank,newFile,type);
+                        ViewUtils.refreshBoard();
+                        //Check that game has not ended
+                        int gameState = Chess.game.getGameEndStatus();
+                        if(gameState != 0){
+                            Chess.game.endGame(gameState);
+                        } else {
+                            // Do CPU Move in response
+                            String cpuMove = Chess.game.cpuMove();
+                            String[] moveData = cpuMove.split("");
+                            moveData[0] = moveData[0].toUpperCase();
+                            moveData[2] = moveData[2].toUpperCase();
+                            Core.statusLabel.setText("CPU Move: " + moveData[0] + "" +
+                                            moveData[1] + "," + moveData[2] + "" + moveData[3]);
+                            ViewUtils.refreshBoard();
+                            //Check that game has not ended
+                            gameState = Chess.game.getGameEndStatus();
+                            if(gameState != 0){
+                                Chess.game.endGame(gameState);
+                            }
+                        }
                     }
                 } else {
                     Core.statusLabel.setText("Invalid move");

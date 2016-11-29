@@ -88,13 +88,17 @@ public class MenuListener implements ActionListener {
 
             Core.timerPanel.setTimer(Integer.parseInt(minutes));
 
+            statusLabel.setText("Set timer to " + minutes + " minutes.");
+
         } else if (menuText.contains("Show legal moves")){
 
             if (menuText.contains("\u2713")){
                 menuItem.setText("Show legal moves");
+                statusLabel.setText("Hiding legal moves.");
                 Core.showLegalMoves = false;
             } else {
                 menuItem.setText("\u2713 Show legal moves");
+                statusLabel.setText("Showing legal moves.");
                 Core.showLegalMoves = true;
             }
 
