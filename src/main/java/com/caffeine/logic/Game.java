@@ -382,6 +382,22 @@ public class Game {
     }
 
     /**
+     * Tells whether or not a promotion is possible.
+     */
+    public boolean tryPromotion(int oldRank, int oldFile, int newRank, int newFile, char type) {
+    	String oldPos = Utils.translate(oldRank, oldFile);
+        String newPos = Utils.translate(newRank, newFile);
+        if (!Utils.isValidMove(oldPos+newPos))
+        	return false;
+        String oldFEN, newFEN;
+        oldFEN = Chess.engine.getFEN();
+        Chess.engine.move(oldPos+newPos+type);
+        newFEN = Chess.engine.getFEN();
+        Chess.engine.setFEN(oldFEN);
+        return (!oldFEN.equals(newFEN));
+    }
+
+    /**
      *  Gets the piece at a given position
      *  @param  rank    The given x coordinate
      *  @param  file    The given y coordinate
