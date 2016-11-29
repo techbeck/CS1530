@@ -10,6 +10,9 @@ import java.util.*;
 public class Game {
 public Piece[] pieces = new Piece[32];
     public ArrayList<String> moveHistory = new ArrayList<String>();
+    protected ArrayList<String> fenHistory = new ArrayList<String>();
+    protected ArrayList<String> dupHistory = new ArrayList<String>();
+
     public boolean gameStarted = false;
     public int gameResult = 0;  // 0 = ongoing
                                 // 1 = white won
@@ -17,33 +20,34 @@ public Piece[] pieces = new Piece[32];
                                 // 3 = stalemate
                                 // 4 = draw
 
-    private int mode = 0; // 0 = easy, 1 = medium, 2 = hard
-    private static final int[] timeoutsForModes = {1, 5, 10};
+	private int mode = 0; // 0 = easy, 1 = medium, 2 = hard
+	private static final int[] timeoutsForModes = {5, 100, 200};
 
-    private static final String startFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+	private static final String startFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
     protected HashMap<String,String> pgnTags;
 
-    protected boolean whiteActive;
-    protected boolean userWhite;
-    protected String captByBlack;
-    protected String captByWhite;
+	protected boolean whiteActive;
+	protected boolean userWhite;
+	protected String captByBlack;
+	protected String captByWhite;
+    protected boolean threeMoveDraw = false;
 
     // used for en passant checking and undoing moves
     protected String prevFEN = null;
-    protected String lastFEN = null;
-    protected String currFEN = startFEN;
+	protected String lastFEN = null;
+	protected String currFEN = startFEN;
 
-    protected String enPassantLoc = "-";
-    protected Piece enPassantPiece = null;
+	protected String enPassantLoc = "-";
+	protected Piece enPassantPiece = null;
 
-    //  Unicode chess pieces
-    protected static final String king = "\u265A";
-    protected static final String queen = "\u265B";
-    protected static final String rook = "\u265C";
-    protected static final String bishop = "\u265D";
-    protected static final String knight = "\u265E";
-    protected static final String pawn = "\u265F";
+	// 	Unicode chess pieces
+	protected static final String king = "\u265A";
+	protected static final String queen = "\u265B";
+	protected static final String rook = "\u265C";
+	protected static final String bishop = "\u265D";
+	protected static final String knight = "\u265E";
+	protected static final String pawn = "\u265F";
 
     public Game() {
         whiteActive = true;
@@ -75,102 +79,102 @@ public Piece[] pieces = new Piece[32];
         ViewUtils.refreshBoard();
     }
 
-    /**
-     *  Sets the user as either white or black
-     *
-     *  @param side The color the user will play as
-     */
-    public void setSide(String side) {
-        if (side.equals("white"))
-            userWhite = true;
-        else
-            userWhite = false;
-    }
 
-    /**
-     * Sets the mode based on the string passed in.
-     * Default is easy.
-     *
-     * @param mode  The string to determine which mode to set.
-     */
-    public void setMode(int mode){
-        if (mode >= 0 || mode <= 2){ this.mode = mode; }
-    }
+	/**
+	 * 	Sets the user as either white or black
+	 *
+	 *  @param side The color the user will play as
+	 */
+	public void setSide(String side) {
+		if (side.equals("white"))
+			userWhite = true;
+		else
+			userWhite = false;
+	}
 
-    public void setMode(String mode) {
-        if (mode.equals("hard")) setMode(2);
-        else if (mode.equals("medium")) setMode(1);
-        else if (mode.equals("easy")) setMode(0);
-    }
+	/**
+	 * Sets the mode based on the string passed in.
+	 * Default is easy.
+	 *
+	 * @param mode  The string to determine which mode to set.
+	 */
+     public void setMode(int mode){
+         if (mode >= 0 || mode <= 2){ this.mode = mode; }
+     }
 
+     public void setMode(String mode) {
+         if (mode.equals("hard")) setMode(2);
+         else if (mode.equals("medium")) setMode(1);
+         else if (mode.equals("easy")) setMode(0);
+     }
 
-    /**
-     *  Getter for whether the user is playing as white or black
-     *
-     *  @return true if the user is playing as white, false if black
-     */
-    public boolean userWhite() {
-        return userWhite;
-    }
+	/**
+	 * 	Getter for whether the user is playing as white or black
+	 *
+	 *  @return true if the user is playing as white, false if black
+	 */
+	public boolean userWhite() {
+		return userWhite;
+	}
 
-    /**
-     * Add the piece passed in to one of the captured strings.
-     *
-     * @param taken  The piece taken.
-     */
-    public void takePiece(Piece taken) {
-        taken.moveTo(-1,-1); // indicates piece has been taken
-        if (taken.isWhite())
-            captureWhitePiece(taken.getType());
-        else
-            captureBlackPiece(taken.getType());
-    }
+	/**
+	 * Add the piece passed in to one of the captured strings.
+	 *
+	 * @param taken  The piece taken.
+	 */
+	public void takePiece(Piece taken) {
+		taken.moveTo(-1,-1); // indicates piece has been taken
+		if (taken.isWhite())
+			captureWhitePiece(taken.getType());
+		else
+			captureBlackPiece(taken.getType());
+	}
 
-    /**
-     *  Adds a piece to the list of black pieces taken
-     *
-     *  @param piece The newly taken black piece
-     */
-    public void captureBlackPiece(String piece) {
-        captByWhite = captByWhite.concat(" " + piece);
-        Core.takenPanel.setCaptByWhite(captByWhite);
-    }
+	/**
+	 * 	Adds a piece to the list of black pieces taken
+	 *
+	 *	@param piece The newly taken black piece
+	 */
+	public void captureBlackPiece(String piece) {
+		captByWhite = captByWhite.concat(" " + piece);
+		Core.takenPanel.setCaptByWhite(captByWhite);
+	}
 
-    /**
-     *  Adds a piece to the list of white pieces taken
-     *
-     *  @param piece The newly taken white piece
-     */
-    public void captureWhitePiece(String piece) {
-        captByBlack = captByBlack.concat(" " + piece);
-        Core.takenPanel.setCaptByBlack(captByBlack);
-    }
+	/**
+	 * 	Adds a piece to the list of white pieces taken
+	 *
+	 * 	@param piece The newly taken white piece
+	 */
+	public void captureWhitePiece(String piece) {
+		captByBlack = captByBlack.concat(" " + piece);
+		Core.takenPanel.setCaptByBlack(captByBlack);
+	}
 
-    /**
-     *  Getter for the current list of pieces taken by black
-     * @return list of captured white pieces as a String
-     */
-    public String getCaptByBlack() {
-        return captByBlack;
-    }
+	/**
+	 * 	Getter for the current list of pieces taken by black
+	 * @return list of captured white pieces as a String
+	 */
+	public String getCaptByBlack() {
+		return captByBlack;
+	}
 
-    /**
-     *  Getter for the current list of pieces taken by white
-     * @return list of captured black pieces as a String
-     */
-    public String getCaptByWhite() {
-        return captByWhite;
-    }
+	/**
+	 * 	Getter for the current list of pieces taken by white
+	 * @return list of captured black pieces as a String
+	 */
+	public String getCaptByWhite() {
+		return captByWhite;
+	}
 
-    /**
-     *  Adds a move to the move history panel
-     *
-     *  @param currMove  The newly made move
-     */
-    public void addToMoveHistory(String currMove) {
-        moveHistory.add(currMove);
-        Core.historyPanel.updateMoveHistory(moveHistory);
-    }
+	/**
+	 * 	Adds a move to the move history panel
+	 *
+	 * 	@param currMove  The newly made move
+	 */
+	public void addToMoveHistory(String currMove) {
+		moveHistory.add(currMove);
+		Core.historyPanel.updateMoveHistory(moveHistory);
+	}
 
     /**
      * Ends the game
@@ -284,7 +288,7 @@ public Piece[] pieces = new Piece[32];
         }
 
         String fen = Chess.engine.getFEN();
-
+        updateThreeMoveDraw(fen);
         // check for en passant and taking of en passant
         if (!enPassantLoc.equals("-")) {
             if (moving.getType().equals(pawn)) {
@@ -304,8 +308,12 @@ public Piece[] pieces = new Piece[32];
 
         setPiecesFromFEN(fen);
 
+        whiteActive = !whiteActive;
+
         return pieceTaken;
     }
+
+
 
     /**
      *  Tells whether or not a move is possible.
@@ -508,6 +516,115 @@ public Piece[] pieces = new Piece[32];
         }
     }
 
+    /**
+     * 	Checks to see if Jockfish thinks we have a next best move.
+     * Stockfish returns ""(none)" if there are no best moves, which indicates
+     * obliquely that it is checkmate, stalemate, or a draw
+     * @return boolean value of whether there are best moves remaining
+     */
+    public boolean hasBestMove(){
+        String nextMove = Chess.engine.getBestMove(1);
+        return !nextMove.contains("none");
+    }
+
+    /**
+     * Checks to see if the list of checkers from stockfish's debug mode is empty
+     * @return boolean value of whether there are pieces checking the king
+     */
+    public boolean hasCheckers(){
+        String checkersList = Chess.engine.getCheckers();
+        return !checkersList.equals("Checkers:");
+    }
+
+    /**
+     * If the king is in check, (there are checkers) and there is no best move
+     * that indicates that the game is in checkmate
+     * @return boolean value of whether the game is in checkmate
+     */
+    public boolean isCheckmate(){
+        boolean toReturn = false;
+        if(hasCheckers() && !hasBestMove()){
+            toReturn = true;
+
+        }
+        return toReturn;
+    }
+
+    /**
+     * If the king is not in check, (there are no checkers) and there is no best move
+     * that indicates that the game is in stalemate
+     * @return boolean value of whether the game is in stalemate
+     */
+    public boolean isStalemate(){
+        boolean toReturn = false;
+        if(!hasCheckers() && !hasBestMove()){
+            toReturn = true;
+        }
+        return toReturn;
+    }
+
+    /**
+     * If there are more than 99 halfmoves since the last capture or pawn move
+     * It's a fifty move mate
+     * @return boolean value of whether the game is a fifty move draw
+     */
+    public boolean isFiftyMove(){
+        boolean toReturn = false;
+        String fen = Chess.engine.getFEN();
+        int halfmoves = Integer.parseInt(fen.split(" ")[4]);
+        if(halfmoves > 99){
+            toReturn = true;
+        }
+        return toReturn;
+    }
+
+    /**
+     * A check to see if the game has ended.
+     * @return int. 0 means game goes on, 1 means white wins, 2 means black,
+     * 3 means stalemate, four means draw
+     */
+    public int getGameEndStatus(){
+        if(isCheckmate() && !whiteActive){
+            System.out.println("You know white won.");
+            gameResult = 1;
+        }
+        else if(isCheckmate() && whiteActive){
+            System.out.println("Black got this.");
+            gameResult = 2;
+        }
+        else if(isStalemate()){
+            gameResult = 3;
+        }
+        else if(threeMoveDraw){
+            gameResult = 4;
+        }
+        else if(isFiftyMove()){
+            gameResult = 4;
+        }
+        return gameResult;
+    }
+
+    /**
+	 * Given a move string, updates the arrays and bools that check for a
+     * three move draw/
+	 *
+	 * @param fen  the new position
+	 */
+    public void updateThreeMoveDraw(String fen){
+        String[] splitFen = fen.split(" ");
+        fen = splitFen[0] +  splitFen[2];
+        if(fenHistory.contains(fen)){
+            if(dupHistory.contains(fen)){
+                threeMoveDraw = true;
+            }
+            else{
+                dupHistory.add(fen);
+            }
+        }
+        else{
+            fenHistory.add(fen);
+        }
+    }
     /**
      * Undoes up to the last player move.
      * If computer moved since last player move, that is undone as well.
