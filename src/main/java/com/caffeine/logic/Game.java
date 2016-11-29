@@ -86,10 +86,16 @@ public Piece[] pieces = new Piece[32];
 	 *  @param side The color the user will play as
 	 */
 	public void setSide(String side) {
-		if (side.equals("white"))
+		if (side.equals("white")) {
 			userWhite = true;
-		else
+			pgnTags.put("White", "User");
+			pgnTags.put("Black", "CPU");
+		}
+		else {
 			userWhite = false;
+			pgnTags.put("White", "CPU");
+			pgnTags.put("Black", "User");
+		}
 	}
 
 	/**

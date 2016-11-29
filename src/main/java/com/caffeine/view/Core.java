@@ -53,7 +53,7 @@ public class Core {
 
     // Keep Track of legal moves and whether or not to show them.
     public static boolean showLegalMoves = false;
-    public static ArrayList<String> possibleMoves = new ArrayList();
+    public static ArrayList<String> possibleMoves = new ArrayList<String>();
 
 
     /**

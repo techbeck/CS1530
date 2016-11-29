@@ -4,7 +4,9 @@
 [Round "420"]
 [White "null"]
 [Black "null"]
-[Time "178776"]
-[FEN "8/8/8/8/8/8/8/K1k5 w - - 32 69"]
+[Result "*"]
+[Time "178592"]
+[Mode "Easy"]
+[FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"]
 
-1. e2e4 d7d5
+1. e2e4 d7d5 

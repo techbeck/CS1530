@@ -137,6 +137,7 @@ public class FileManager {
         Chess.game.setMode(mode);
         input.nextLine();
         String moveHist = input.nextLine();
+        if (moveHist.length() < 1) return;
         String[] moves = moveHist.split(" ");
         for (String move : moves) {
             if (move.charAt(0) > '9') {
