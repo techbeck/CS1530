@@ -24,6 +24,6 @@ public class StatusPanel extends JPanel {
 	public void setText(String text) {
 		oldStatus = newStatus;
 		newStatus = text;
-		statusLabel.setText(oldStatus + "               " + newStatus);
+		statusLabel.setText(oldStatus + "          |           " + newStatus);
 	}
 }

@@ -130,6 +130,11 @@ public class PanelButtonListener implements ActionListener {
                     statusPanel.setText("Game Started - Now playing as Black");
                     // CPU moves immediately
                     String cpuMove = Chess.game.cpuMove();
+                    String[] moveData = cpuMove.split("");
+                    moveData[0] = moveData[0].toUpperCase();
+                    moveData[2] = moveData[2].toUpperCase();
+                    Core.statusPanel.setText("CPU Move: " + moveData[0] + "" + moveData[1] + "," +
+                                                moveData[2] + "" + moveData[3]);
                     break;
                 case 1:
                     Chess.game = new Game();
