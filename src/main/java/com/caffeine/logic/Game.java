@@ -658,6 +658,7 @@ public Piece[] pieces = new Piece[32];
      * If computer moved since last player move, that is undone as well.
      */
     public void undoMove() {
+        if (!Chess.game.gameStarted) return;
         if (lastFEN == null || prevFEN == null) {
         	Core.statusLabel.setText("Unable to undo move");
             return;
