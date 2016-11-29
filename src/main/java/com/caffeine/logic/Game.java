@@ -629,7 +629,7 @@ public class Game {
     public void undoMove() {
         if (!Chess.game.gameStarted) return;
         if (lastFEN == null || prevFEN == null) {
-        	Core.statusLabel.setText("Unable to undo move");
+        	Core.statusPanel.setText("Unable to undo move");
             return;
         }
         if (!userWhite) {

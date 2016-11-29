@@ -38,7 +38,7 @@ public class BoardListener implements ActionListener {
 
                 selected = squareButton;
                 selected.selectSquare();
-                Core.statusLabel.setText("Selected: " + selected.getName().split(":")[1]);
+                Core.statusPanel.setText("Selected: " + selected.getName().split(":")[1]);
 
                 // Get list of positions the Piece on this BoardSquare can
                 // be moved to. Visually indicates with green background.
@@ -69,7 +69,7 @@ public class BoardListener implements ActionListener {
                     squareButton.setPiece(piece);
                     String oldLoc = (char)(oldFile+65) + "" + (oldRank+1);
                     String newLoc = (char)(newFile+65) + "" + (newRank+1);
-                    Core.statusLabel.setText("User Move: " + oldLoc + "," + newLoc);
+                    Core.statusPanel.setText("User Move: " + oldLoc + "," + newLoc);
                     ViewUtils.refreshBoard();
                     //Check that game has not ended
                     int gameState = Chess.game.getGameEndStatus();
@@ -81,7 +81,7 @@ public class BoardListener implements ActionListener {
                         String[] moveData = cpuMove.split("");
                         moveData[0] = moveData[0].toUpperCase();
                         moveData[2] = moveData[2].toUpperCase();
-                        Core.statusLabel.setText("CPU Move: " + moveData[0] + "" + moveData[1] + "," +
+                        Core.statusPanel.setText("CPU Move: " + moveData[0] + "" + moveData[1] + "," +
                                                         moveData[2] + "" + moveData[3]);
                         ViewUtils.refreshBoard();
                         //Check that game has not ended
@@ -110,7 +110,7 @@ public class BoardListener implements ActionListener {
                             else if (choice.equals("Rook")) type = 'r';
                             else type = 'b';
                         }
-                        Core.statusLabel.setText("Promotion to " + choice);
+                        Core.statusPanel.setText("Promotion to " + choice);
                         Chess.game.moveP(oldRank,oldFile,newRank,newFile,type);
                         ViewUtils.refreshBoard();
                         //Check that game has not ended
@@ -123,8 +123,8 @@ public class BoardListener implements ActionListener {
                             String[] moveData = cpuMove.split("");
                             moveData[0] = moveData[0].toUpperCase();
                             moveData[2] = moveData[2].toUpperCase();
-                            Core.statusLabel.setText("CPU Move: " + moveData[0] + "" +
-                                            moveData[1] + "," + moveData[2] + "" + moveData[3]);
+                            Core.statusPanel.setText("CPU Move: " + moveData[0] + "" + moveData[1] + "," +
+                                                        moveData[2] + "" + moveData[3]);
                             ViewUtils.refreshBoard();
                             //Check that game has not ended
                             gameState = Chess.game.getGameEndStatus();
@@ -134,7 +134,7 @@ public class BoardListener implements ActionListener {
                         }
                     }
                 } else {
-                    Core.statusLabel.setText("Invalid move");
+                    Core.statusPanel.setText("Invalid move");
                 }
             }
 

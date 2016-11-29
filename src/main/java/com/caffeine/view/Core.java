@@ -63,13 +63,12 @@ public class Core {
      */
 
     public static JFrame window = new JFrame("Laboon Chess");
-    public static JLabel statusLabel = new JLabel("Status Bar");
     public static BoardSquare[][] squares = new BoardSquare[8][8];
     public static TakenPanel takenPanel;
     public static HistoryPanel historyPanel;
     public static TimerPanel timerPanel;
+    public static StatusPanel statusPanel;
 
-    protected static JPanel statusPanel;
     protected static JPanel centerPanel;
     protected static JPanel buttonPanel;
     protected static BoardPanel boardPanel;
@@ -165,28 +164,13 @@ public class Core {
         c.insets = sidePadding;
         pane.add(takenPanel, c);
 
-        statusPanel = new JPanel();
-        formatStatusPanel();
+        statusPanel = new StatusPanel();
         c.gridx = 0;
         c.gridy = 12;
         c.gridwidth = 8;
         c.gridheight = 1;
         c.insets = topBottomPadding;
         pane.add(statusPanel, c);
-    }
-
-    /**
-     * Formats the status panel and creates and adds a JLabel to display text.
-     */
-    private void formatStatusPanel() {
-        statusPanel.setName("statusPanel");
-        statusPanel.setBackground(Color.decode(themes[0][1]));
-        Dimension statusPanelSize = new Dimension(800,30);
-        statusPanel.setMinimumSize(statusPanelSize);
-        statusPanel.setMaximumSize(statusPanelSize);
-        statusPanel.setPreferredSize(statusPanelSize);
-        statusLabel.setName("statusLabel");
-        statusPanel.add(statusLabel, SwingConstants.CENTER);
     }
 
     /**

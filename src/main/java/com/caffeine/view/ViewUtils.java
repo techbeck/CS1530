@@ -80,10 +80,10 @@ public class ViewUtils {
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 String fileName = fc.getSelectedFile().getName();
                 if (fileName.toLowerCase().endsWith(".pgn")){
-                    Core.statusLabel.setText("Saving game to file: " + fileName.toLowerCase());
+                    Core.statusPanel.setText("Saving game to file: " + fileName.toLowerCase());
                     FileManager.save(fileName.toLowerCase());
                 } else{
-                    Core.statusLabel.setText("Saving game to file: " + fileName.toLowerCase() + ".pgn");
+                    Core.statusPanel.setText("Saving game to file: " + fileName.toLowerCase() + ".pgn");
                     FileManager.save(fileName.toLowerCase()+".pgn");
                 }
             }
