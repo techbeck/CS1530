@@ -86,27 +86,50 @@ public Piece[] pieces = new Piece[32];
 	 *  @param side The color the user will play as
 	 */
 	public void setSide(String side) {
-		if (side.equals("white"))
+		if (side.equals("white")) {
 			userWhite = true;
-		else
+			pgnTags.put("White", "User");
+			pgnTags.put("Black", "CPU");
+		}
+		else {
 			userWhite = false;
+			pgnTags.put("White", "CPU");
+			pgnTags.put("Black", "User");
+		}
 	}
 
 	/**
-	 * Sets the mode based on the string passed in.
+	 * Sets the mode based on the integer passed in.
 	 * Default is easy.
 	 *
-	 * @param mode  The string to determine which mode to set.
+	 * @param mode  The integer to determine which mode to set.
 	 */
      public void setMode(int mode){
          if (mode >= 0 || mode <= 2){ this.mode = mode; }
      }
 
-     public void setMode(String mode) {
-         if (mode.equals("hard")) setMode(2);
-         else if (mode.equals("medium")) setMode(1);
-         else if (mode.equals("easy")) setMode(0);
-     }
+    /**
+	 * Sets the mode based on the string passed in.
+	 * Default is easy.
+	 *
+	 * @param mode  The string to determine which mode to set.
+	 */
+    public void setMode(String mode) {
+        if (mode.equals("hard") || mode.equals("Hard")) setMode(2);
+        else if (mode.equals("medium") || mode.equals("Medium")) setMode(1);
+        else setMode(0);
+    }
+
+    /**
+     * Returns the mode of the CPU opponent
+     * 
+     * @return  A string representing the mode: easy, medium, or hard
+     */
+    public String getMode() {
+    	if (mode == 2) return "Hard";
+    	else if (mode == 1) return "Medium";
+    	else return "Easy";
+    }
 
 	/**
 	 * 	Getter for whether the user is playing as white or black

@@ -46,6 +46,7 @@ public class FileManager {
         }
         output.println("\"]");
         output.println("[Time \"" + Core.timerPanel.getTimeLeft() + "\"]");
+        output.println("[Mode \"" + Chess.game.getMode() + "\"]");
         output.println("[FEN \"" + Chess.game.pgnTags.get("FEN") + "\"]");
         output.println();
         int currMoveNum = 1;
@@ -99,6 +100,7 @@ public class FileManager {
         String fileLine = "";
         String userSide = "white";
         String timeLeft = "";
+        String mode = "";
         while (input.hasNext()) {
             fileLine = input.nextLine();
             if (fileLine.contains("User"))
@@ -112,6 +114,10 @@ public class FileManager {
             if (fileLine.contains("Time")) {
                 timeLeft = fileLine.split(" ")[1];
                 timeLeft = timeLeft.substring(1,timeLeft.length()-2);
+            }
+            if (fileLine.contains("Mode")) {
+                mode = fileLine.split(" ")[1];
+                mode = mode.substring(1,mode.length()-2);
             }
             if (fileLine.contains("FEN"))
                 break;
@@ -128,8 +134,10 @@ public class FileManager {
         Chess.game.startGame();
         Chess.game.setSide(userSide);
         Chess.game.loadFEN(fen);
+        Chess.game.setMode(mode);
         input.nextLine();
         String moveHist = input.nextLine();
+        if (moveHist.length() < 1) return;
         String[] moves = moveHist.split(" ");
         for (String move : moves) {
             if (move.charAt(0) > '9') {
