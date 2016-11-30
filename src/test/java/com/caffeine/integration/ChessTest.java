@@ -301,7 +301,7 @@ public class ChessTest {
 		frame.button("BoardSquare:D,2").click();
 		JButton testSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:D,3", BoardSquare.class);
 		JButtonFixture squareFix = new JButtonFixture(robot, testSquare);
-        squareFix.foreground().requireEqualTo(Color.decode("0x333333"));
+        squareFix.background().requireEqualTo(Color.decode("0x7dfa92"));
 		frame.button("BoardSquare:D,2").click();
 		JMenu menu = (JMenu) newFinder.findByName(frame.target(), "menu", JMenu.class);
 		menu.doClick();
@@ -310,6 +310,6 @@ public class ChessTest {
 		frame.button("BoardSquare:D,2").click();
 		testSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:D,3", BoardSquare.class);
 		squareFix = new JButtonFixture(robot, testSquare);
-        squareFix.foreground().requireEqualTo(Color.GREEN);
+        squareFix.background().requireEqualTo(Color.GREEN);
 	}
 }
