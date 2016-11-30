@@ -1,6 +1,7 @@
 package com.caffeine.view;
 
 import com.caffeine.Chess;
+import com.caffeine.view.Core;
 
 import java.util.*;
 import java.io.*;
@@ -30,14 +31,14 @@ public class MenuListener implements ActionListener {
 
         JFrame window = Core.window;
 
-        JLabel statusLabel = com.caffeine.view.Core.statusLabel;
+        StatusPanel statusPanel = Core.statusPanel;
         JMenuItem menuItem = (JMenuItem) e.getSource();
         String menuText = menuItem.getText();
 
         if (menuText.equals("Change CPU Mode")) {
 
             if (Chess.game.gameStarted) {
-                statusLabel.setText("Can't change mode after starting a game.");
+                statusPanel.setText("Can't change mode after starting a game.");
                 return;
             }
 
@@ -52,15 +53,15 @@ public class MenuListener implements ActionListener {
                     return;
                 case 0:
                     Chess.game.setMode(mode);
-                    statusLabel.setText("Mode now Easy");
+                    statusPanel.setText("Mode now Easy");
                     break;
                 case 1:
                     Chess.game.setMode(mode);
-                    statusLabel.setText("Mode now Medium");
+                    statusPanel.setText("Mode now Medium");
                     break;
                 case 2:
                     Chess.game.setMode(mode);
-                    statusLabel.setText("Mode now Hard");
+                    statusPanel.setText("Mode now Hard");
                     break;
                 case 3:
                     return;
@@ -68,13 +69,13 @@ public class MenuListener implements ActionListener {
 
         } else if (menuText.equals("Undo last move")) {
 
-            statusLabel.setText("Undo last move");
+            statusPanel.setText("Undo last move");
             Chess.game.undoMove();
 
         } else if (menuText.equals("Set move timer")) {
 
             if (Chess.game.gameStarted) {
-                statusLabel.setText("Can't change timer after starting a game.");
+                statusPanel.setText("Can't change timer after starting a game.");
                 return;
             }
 
@@ -88,13 +89,17 @@ public class MenuListener implements ActionListener {
 
             Core.timerPanel.setTimer(Integer.parseInt(minutes));
 
+            statusPanel.setText("Set timer to " + minutes + " minutes.");
+
         } else if (menuText.contains("Show legal moves")){
 
             if (menuText.contains("\u2713")){
                 menuItem.setText("Show legal moves");
+                statusPanel.setText("Hiding legal moves.");
                 Core.showLegalMoves = false;
             } else {
                 menuItem.setText("\u2713 Show legal moves");
+                statusPanel.setText("Showing legal moves.");
                 Core.showLegalMoves = true;
             }
 

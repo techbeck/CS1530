@@ -3,6 +3,7 @@ package com.caffeine.view;
 import com.caffeine.Chess;
 import com.caffeine.logic.Piece;
 import com.caffeine.logic.FileManager;
+import com.caffeine.logic.Utils;
 
 import java.util.*;
 import javax.swing.JOptionPane;
@@ -23,6 +24,7 @@ public class ViewUtils {
                 }
             }
         }
+        hidePossibilities();
     }
 
     /**
@@ -38,6 +40,22 @@ public class ViewUtils {
      */
     public static void clearHistoryPanel() {
         Core.historyPanel.updateMoveHistory(new ArrayList<String>());
+    }
+
+    /**
+     * Unhighlight possible move squares
+     */
+    public static void hidePossibilities() {
+        // Un-highlight all previously highlighted BoardSquares that were
+        // valid positions.
+        if (Core.showLegalMoves){
+            for (String move : Core.possibleMoves){
+                Integer[] raf = Utils.translate(move); // Rank And File
+                BoardSquare square = Core.squares[7-raf[0]][raf[1]];
+                square.resetSquare();
+            }
+            Core.possibleMoves.clear();
+        }
     }
 
     /**
@@ -75,20 +93,7 @@ public class ViewUtils {
         int dialogResult = JOptionPane.showConfirmDialog(Core.window, "Would you like to save your game?",
                                         "Save?", JOptionPane.YES_NO_CANCEL_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
-            JFileChooser fc = new JFileChooser("SavedGames/");
-            int returnVal = fc.showSaveDialog(Core.window);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                String fileName = fc.getSelectedFile().getName();
-                if (fileName.toLowerCase().endsWith(".pgn")){
-                    Core.statusLabel.setText("Saving game to file: " + fileName.toLowerCase());
-                    FileManager.save(fileName.toLowerCase());
-                } else{
-                    Core.statusLabel.setText("Saving game to file: " + fileName.toLowerCase() + ".pgn");
-                    FileManager.save(fileName.toLowerCase()+".pgn");
-                }
-            }
-        } else if (dialogResult == JOptionPane.CANCEL_OPTION) {
-            return;
+            Core.saveButton.doClick();
         }
     }
 }

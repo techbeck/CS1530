@@ -1,6 +1,7 @@
 package com.caffeine.logic;
 
 //  First-Party Imports
+import com.caffeine.logic.Game;
 
 //  Third-Party Imports
 import org.apache.commons.lang3.CharUtils;
@@ -229,6 +230,46 @@ public class Utils {
             new String(Character.toString((char)(file + 97))) +
             Integer.toString(rank + 1)
         );
+    }
+
+    /**
+     * Converts from type KQRBNPkqrbnp to equivalent Unicode characters
+     *
+     * @param type  the type to be converted
+     */
+    public static String typeToUnicode(char type) {
+        switch(type) {
+        case 'K':
+        case 'k':
+            return Game.king;
+        case 'Q':
+        case 'q':
+            return Game.queen;
+        case 'R':
+        case 'r':
+            return Game.rook;
+        case 'B':
+        case 'b':
+            return Game.bishop;
+        case 'N':
+        case 'n':
+            return Game.knight;
+        case 'P':
+        case 'p':
+            return Game.pawn;
+        default:
+            return "null";
+        }
+    }
+
+    /**
+     * Converts from type KQRBNPkqrbnp to equivalent side black/white
+     *
+     * @param type  the type to be converted
+     */
+    public static String typeToSide(char type) {
+        if (((int) type) < 90) return "white";
+        else return "black";
     }
 
 }
