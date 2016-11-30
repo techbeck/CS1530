@@ -28,6 +28,8 @@ public class StatusPanel extends JPanel {
     public void setText(String text) {
         oldStatus = newStatus;
         newStatus = text;
+        if (Chess.game.whiteActive()) turn = "White's turn";
+        else turn = "Black's turn";
         statusLabel.setText(oldStatus + spacer + newStatus + spacer + turn);
     }
     

@@ -8,7 +8,7 @@ import com.caffeine.view.ViewUtils;
 import java.util.*;
 
 public class Game {
-	public ArrayList<Piece> pieces = new ArrayList<Piece>();
+    public ArrayList<Piece> pieces = new ArrayList<Piece>();
     public ArrayList<String> moveHistory = new ArrayList<String>();
     protected ArrayList<String> fenHistory = new ArrayList<String>();
     protected ArrayList<String> dupHistory = new ArrayList<String>();
@@ -20,34 +20,34 @@ public class Game {
                                 // 3 = stalemate
                                 // 4 = draw
 
-	private int mode = 0; // 0 = easy, 1 = medium, 2 = hard
-	private static final int[] timeoutsForModes = {1, 5, 10};
+    private int mode = 0; // 0 = easy, 1 = medium, 2 = hard
+    private static final int[] timeoutsForModes = {1, 5, 10};
 
-	private static final String startFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    private static final String startFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
     protected HashMap<String,String> pgnTags;
 
-	protected boolean whiteActive;
-	protected boolean userWhite;
-	protected String captByBlack;
-	protected String captByWhite;
+    protected boolean whiteActive;
+    protected boolean userWhite;
+    protected String captByBlack;
+    protected String captByWhite;
     protected boolean threeMoveDraw = false;
 
     // used for en passant checking and undoing moves
     protected String prevFEN = null;
-	protected String lastFEN = null;
-	protected String currFEN = startFEN;
+    protected String lastFEN = null;
+    protected String currFEN = startFEN;
 
-	protected String enPassantLoc = "-";
-	protected Piece enPassantPiece = null;
+    protected String enPassantLoc = "-";
+    protected Piece enPassantPiece = null;
 
-	// 	Unicode chess pieces
-	protected static final String king = "\u265A";
-	protected static final String queen = "\u265B";
-	protected static final String rook = "\u265C";
-	protected static final String bishop = "\u265D";
-	protected static final String knight = "\u265E";
-	protected static final String pawn = "\u265F";
+    //  Unicode chess pieces
+    protected static final String king = "\u265A";
+    protected static final String queen = "\u265B";
+    protected static final String rook = "\u265C";
+    protected static final String bishop = "\u265D";
+    protected static final String knight = "\u265E";
+    protected static final String pawn = "\u265F";
 
     public Game() {
         whiteActive = true;
@@ -80,40 +80,40 @@ public class Game {
     }
 
 
-	/**
-	 * 	Sets the user as either white or black
-	 *
-	 *  @param side The color the user will play as
-	 */
-	public void setSide(String side) {
-		if (side.equals("white") || side.equals("White")) {
-			userWhite = true;
-			pgnTags.put("White", "User");
-			pgnTags.put("Black", "CPU");
-		}
-		else {
-			userWhite = false;
-			pgnTags.put("White", "CPU");
-			pgnTags.put("Black", "User");
-		}
-	}
+    /**
+     *  Sets the user as either white or black
+     *
+     *  @param side The color the user will play as
+     */
+    public void setSide(String side) {
+        if (side.equals("white") || side.equals("White")) {
+            userWhite = true;
+            pgnTags.put("White", "User");
+            pgnTags.put("Black", "CPU");
+        }
+        else {
+            userWhite = false;
+            pgnTags.put("White", "CPU");
+            pgnTags.put("Black", "User");
+        }
+    }
 
-	/**
-	 * Sets the mode based on the integer passed in.
-	 * Default is easy.
-	 *
-	 * @param mode  The integer to determine which mode to set.
-	 */
+    /**
+     * Sets the mode based on the integer passed in.
+     * Default is easy.
+     *
+     * @param mode  The integer to determine which mode to set.
+     */
      public void setMode(int mode){
          if (mode >= 0 || mode <= 2){ this.mode = mode; }
      }
 
     /**
-	 * Sets the mode based on the string passed in.
-	 * Default is easy.
-	 *
-	 * @param mode  The string to determine which mode to set.
-	 */
+     * Sets the mode based on the string passed in.
+     * Default is easy.
+     *
+     * @param mode  The string to determine which mode to set.
+     */
     public void setMode(String mode) {
         if (mode.equals("hard") || mode.equals("Hard")) setMode(2);
         else if (mode.equals("medium") || mode.equals("Medium")) setMode(1);
@@ -126,78 +126,87 @@ public class Game {
      * @return  A string representing the mode: easy, medium, or hard
      */
     public String getMode() {
-    	if (mode == 2) return "Hard";
-    	else if (mode == 1) return "Medium";
-    	else return "Easy";
+        if (mode == 2) return "Hard";
+        else if (mode == 1) return "Medium";
+        else return "Easy";
     }
 
-	/**
-	 * 	Getter for whether the user is playing as white or black
-	 *
-	 *  @return true if the user is playing as white, false if black
-	 */
-	public boolean userWhite() {
-		return userWhite;
-	}
+    /**
+     *  Getter for whether the user is playing as white or black
+     *
+     *  @return true if the user is playing as white, false if black
+     */
+    public boolean userWhite() {
+        return userWhite;
+    }
 
-	/**
-	 * Add the piece passed in to one of the captured strings.
-	 *
-	 * @param taken  The piece taken.
-	 */
-	public void takePiece(Piece taken) {
-		pieces.remove(taken);
-		if (taken.isWhite())
-			captureWhitePiece(taken.getType());
-		else
-			captureBlackPiece(taken.getType());
-	}
+    /**
+     *  Getter for whether the white side is active
+     *
+     *  @return true if the white side is active, false if black
+     */
+    public boolean whiteActive() {
+        return whiteActive;
+    }
 
-	/**
-	 * 	Adds a piece to the list of black pieces taken
-	 *
-	 *	@param piece The newly taken black piece
-	 */
-	public void captureBlackPiece(String piece) {
-		captByWhite = captByWhite.concat(" " + piece);
-		Core.takenPanel.setCaptByWhite(captByWhite);
-	}
+    /**
+     * Add the piece passed in to one of the captured strings.
+     *
+     * @param taken  The piece taken.
+     */
+    public void takePiece(Piece taken) {
+        pieces.remove(taken);
+        if (taken.isWhite())
+            captureWhitePiece(taken.getType());
+        else
+            captureBlackPiece(taken.getType());
+    }
 
-	/**
-	 * 	Adds a piece to the list of white pieces taken
-	 *
-	 * 	@param piece The newly taken white piece
-	 */
-	public void captureWhitePiece(String piece) {
-		captByBlack = captByBlack.concat(" " + piece);
-		Core.takenPanel.setCaptByBlack(captByBlack);
-	}
+    /**
+     *  Adds a piece to the list of black pieces taken
+     *
+     *  @param piece The newly taken black piece
+     */
+    public void captureBlackPiece(String piece) {
+        captByWhite = captByWhite.concat(" " + piece);
+        Core.takenPanel.setCaptByWhite(captByWhite);
+    }
 
-	/**
-	 * 	Getter for the current list of pieces taken by black
-	 * @return list of captured white pieces as a String
-	 */
-	public String getCaptByBlack() {
-		return captByBlack;
-	}
+    /**
+     *  Adds a piece to the list of white pieces taken
+     *
+     *  @param piece The newly taken white piece
+     */
+    public void captureWhitePiece(String piece) {
+        captByBlack = captByBlack.concat(" " + piece);
+        Core.takenPanel.setCaptByBlack(captByBlack);
+    }
 
-	/**
-	 * 	Getter for the current list of pieces taken by white
-	 * @return list of captured black pieces as a String
-	 */
-	public String getCaptByWhite() {
-		return captByWhite;
-	}
+    /**
+     *  Getter for the current list of pieces taken by black
+     * @return list of captured white pieces as a String
+     */
+    public String getCaptByBlack() {
+        return captByBlack;
+    }
 
-	/**
-	 * 	Adds a move to the move history panel
-	 *
-	 * 	@param currMove  The newly made move
-	 */
-	public void addToMoveHistory(String currMove) {
-		moveHistory.add(currMove);
-		Core.historyPanel.updateMoveHistory(moveHistory);
-	}
+    /**
+     *  Getter for the current list of pieces taken by white
+     * @return list of captured black pieces as a String
+     */
+    public String getCaptByWhite() {
+        return captByWhite;
+    }
+
+    /**
+     *  Adds a move to the move history panel
+     *
+     *  @param currMove  The newly made move
+     */
+    public void addToMoveHistory(String currMove) {
+        moveHistory.add(currMove);
+        Core.historyPanel.updateMoveHistory(moveHistory);
+    }
 
     /**
      * Ends the game
@@ -385,10 +394,10 @@ public class Game {
      * Tells whether or not a promotion is possible.
      */
     public boolean tryPromotion(int oldRank, int oldFile, int newRank, int newFile, char type) {
-    	String oldPos = Utils.translate(oldRank, oldFile);
+        String oldPos = Utils.translate(oldRank, oldFile);
         String newPos = Utils.translate(newRank, newFile);
         if (!Utils.isValidMove(oldPos+newPos))
-        	return false;
+            return false;
         String oldFEN, newFEN;
         oldFEN = Chess.engine.getFEN();
         Chess.engine.move(oldPos+newPos+type);
@@ -513,7 +522,7 @@ public class Game {
     }
 
     /**
-     * 	Checks to see if Jockfish thinks we have a next best move.
+     *  Checks to see if Jockfish thinks we have a next best move.
      * Stockfish returns ""(none)" if there are no best moves, which indicates
      * obliquely that it is checkmate, stalemate, or a draw
      * @return boolean value of whether there are best moves remaining
@@ -601,11 +610,11 @@ public class Game {
     }
 
     /**
-	 * Given a move string, updates the arrays and bools that check for a
+     * Given a move string, updates the arrays and bools that check for a
      * three move draw/
-	 *
-	 * @param fen  the new position
-	 */
+     *
+     * @param fen  the new position
+     */
     public void updateThreeMoveDraw(String fen){
         String[] splitFen = fen.split(" ");
         fen = splitFen[0] +  splitFen[2];
@@ -629,7 +638,7 @@ public class Game {
     public void undoMove() {
         if (!Chess.game.gameStarted) return;
         if (lastFEN == null || prevFEN == null) {
-        	Core.statusPanel.setText("Unable to undo move");
+            Core.statusPanel.setText("Unable to undo move");
             return;
         }
         if (!userWhite) {
@@ -663,10 +672,10 @@ public class Game {
      * and refreshes the board to visualize the change.
      */
     private void rollbackFEN() {
-    	String[] splitFen = currFEN.split(" ");
+        String[] splitFen = currFEN.split(" ");
         String fen = splitFen[0] +  splitFen[2];
-    	fenHistory.remove(fen);
-    	dupHistory.remove(fen);
+        fenHistory.remove(fen);
+        dupHistory.remove(fen);
         currFEN = lastFEN;
         lastFEN = prevFEN;
         prevFEN = null;
