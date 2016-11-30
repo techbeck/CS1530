@@ -63,7 +63,6 @@ public class BoardListener implements ActionListener {
                 int newRank = Integer.parseInt(squareButton.getName().split(":")[1].split(",")[1]) - 1;
                 int newFile = ((int) squareButton.getName().split(":")[1].split(",")[0].toCharArray()[0]) - 65;
                 Piece piece = selected.getPiece();
-                System.out.println("about to move");
                 if (Chess.game.move(oldRank,oldFile,newRank,newFile)) {
                     selected.removePiece();
                     squareButton.setPiece(piece);

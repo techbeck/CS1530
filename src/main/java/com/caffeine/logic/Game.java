@@ -237,10 +237,8 @@ public class Game {
     public boolean move(int oldRank, int oldFile, int newRank, int newFile) {
         String oldLoc = (char)(oldFile+97) + "" + (oldRank+1);
         String newLoc = (char)(newFile+97) + "" + (newRank+1);
-        System.out.println("valid check");
 
         if (Chess.engine.move(oldLoc+newLoc)) {
-            System.out.println("valid move");
             doMove(oldRank, oldFile, newRank, newFile);
             return true;
         }
@@ -313,7 +311,6 @@ public class Game {
 
         // check for en passant and taking of en passant
         if (!enPassantLoc.equals("-")) {
-            System.out.println("en passant");
             if (moving.getType().equals(pawn)) {
                 int enPassantRank = (int) enPassantLoc.charAt(1) - '1';
                 int enPassantFile = (int) enPassantLoc.charAt(0) - 'a';
@@ -593,11 +590,9 @@ public class Game {
      */
     public int getGameEndStatus(){
         if(isCheckmate() && !whiteActive){
-            System.out.println("You know white won.");
             gameResult = 1;
         }
         else if(isCheckmate() && whiteActive){
-            System.out.println("Black got this.");
             gameResult = 2;
         }
         else if(isStalemate()){
