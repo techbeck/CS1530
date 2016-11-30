@@ -81,4 +81,18 @@ public class TakenPanel extends JPanel {
     public void setCaptByWhiteColor() {
         captByWhite.setForeground(Core.blackColor);
     }
+	
+	/**
+	 * Returns captByWhite for unit testing purposes.
+	 */
+	 public void getCaptByWhite(){
+		 return captByWhite;
+	 }
+	 
+	 /**
+	 * Returns captByBlack for unit testing purposes.
+	 */
+	 public void getCaptByBlack(){
+		 return captByBlack;
+	 }
 }
