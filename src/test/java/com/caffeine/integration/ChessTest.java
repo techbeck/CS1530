@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Color;
 import java.awt.event.*;
 import java.io.File;
+import java.lang.Thread;
 
 // Third-Party Imports
 import org.junit.Test;
@@ -398,5 +399,41 @@ public class ChessTest {
         String actualLabel = frame.label("statusLabel").text();
         assertThat(actualLabel).contains("Promotion to Queen");
         secondSquareFix.requireText("\u265B");
+    }
+
+    @Test
+    public void testEnPassant(){
+        ComponentFinder newFinder = robot.finder();
+        frame.button("loadButton").click();
+        try {
+            // in case unsaved current game
+            JOptionPaneFixture optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("No").click();
+        } catch (WaitTimedOutError ex) {}
+        JFileChooser chooser = (JFileChooser) newFinder.findByType(JFileChooser.class);
+        chooser.setSelectedFile(new File("enpassant.pgn"));
+        JButtonMatcher matcher = JButtonMatcher.withText("Open").andShowing();
+        JButton openButton = (JButton) newFinder.find(matcher);
+        openButton.setEnabled(true);
+        JButtonFixture openButtonFix = new JButtonFixture(robot,openButton);
+        openButtonFix.click();
+        frame.button("flipButton").click();
+        JButton firstSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,5", BoardSquare.class);
+        JButton secondSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:D,6", BoardSquare.class);
+        JButtonFixture firstSquareFix = new JButtonFixture(robot, firstSquare);
+        JButtonFixture secondSquareFix = new JButtonFixture(robot, secondSquare);
+        firstSquareFix.click();
+        try { Thread.sleep(1000); } catch (Exception ex) {}
+        String actualLabel = frame.label("statusLabel").text();
+        assertThat(actualLabel).contains("E,5");
+        secondSquareFix.click();
+        firstSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,5", BoardSquare.class);
+        firstSquareFix = new JButtonFixture(robot, firstSquare);
+        firstSquareFix.requireText(" ");
+        /*JLabelFixture label = frame.label("captByWhite");
+        String taken = label.text();
+        assertThat(taken).contains("\u265F");*/
     }
 }

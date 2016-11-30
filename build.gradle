@@ -82,6 +82,9 @@ task unitTest(type: Test) {
 task test(type: Test, overwrite: true) {
     integrationTest
     unitTest
+    testLogging {
+            events "PASSED", "STARTED", "FAILED", "SKIPPED"
+        }
 }
 
 // Aliases
