@@ -366,4 +366,37 @@ public class ChessTest {
         String actualLabel = frame.label("timerLabel").text();
         assertThat(actualLabel).contains("Timer set to 15 minutes");
     }
+
+    @Test
+    public void testPromotion(){
+        ComponentFinder newFinder = robot.finder();
+        frame.button("loadButton").click();
+        try {
+            // in case unsaved current game
+            JOptionPaneFixture optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("No").click();
+        } catch (WaitTimedOutError ex) {}
+        JFileChooser chooser = (JFileChooser) newFinder.findByType(JFileChooser.class);
+        chooser.setSelectedFile(new File("promote.pgn"));
+        JButtonMatcher matcher = JButtonMatcher.withText("Open").andShowing();
+        JButton openButton = (JButton) newFinder.find(matcher);
+        openButton.setEnabled(true);
+        JButtonFixture openButtonFix = new JButtonFixture(robot,openButton);
+        openButtonFix.click();
+        JButton firstSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:H,7", BoardSquare.class);
+        JButton secondSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:H,8", BoardSquare.class);
+        JButtonFixture firstSquareFix = new JButtonFixture(robot, firstSquare);
+        JButtonFixture secondSquareFix = new JButtonFixture(robot, secondSquare);
+        firstSquareFix.click();
+        secondSquareFix.click();
+        JOptionPaneFixture optionPane = findOptionPane().using(robot);
+        JComboBoxFixture dropMenu = optionPane.comboBox();
+        dropMenu.selectItem("Queen");
+        optionPane.okButton().click();
+        String actualLabel = frame.label("statusLabel").text();
+        assertThat(actualLabel).contains("Promotion to Queen");
+        secondSquareFix.requireText("\u265B");
+    }
 }
