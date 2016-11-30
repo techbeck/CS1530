@@ -183,6 +183,35 @@ public class ChessTest {
     }
 
     @Test
+    public void testUndo(){
+        ComponentFinder newFinder = robot.finder();
+        frame.button("newGameButton").click();
+        JOptionPaneFixture optionPane = findOptionPane().using(robot);
+        try {
+            // in case unsaved current game
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
+        } catch (Exception ex) {}
+        optionPane.buttonWithText("White").click();
+
+        JButton firstSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,2", BoardSquare.class);
+        JButton secondSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,4", BoardSquare.class);
+        JButtonFixture firstSquareFix = new JButtonFixture(robot, firstSquare);
+        JButtonFixture secondSquareFix = new JButtonFixture(robot, secondSquare);
+        String expectedText = firstSquareFix.text();
+        firstSquareFix.click();
+        secondSquareFix.click();
+        secondSquareFix.requireText(expectedText);
+        JMenu menu = (JMenu) newFinder.findByType(JMenu.class);
+        menu.doClick();
+        JMenuItem menuItem = (JMenuItem) newFinder.findByName(frame.target(), "menuUndo", JMenuItem.class);
+        menuItem.doClick();
+        firstSquareFix.requireText(expectedText);
+    }
+
+    @Test
     public void testCastling(){
         ComponentFinder newFinder = robot.finder();
         frame.button("newGameButton").click();
