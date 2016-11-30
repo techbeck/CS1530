@@ -6,7 +6,6 @@ import java.awt.Component;
 import java.awt.Color;
 import java.awt.event.*;
 import java.io.File;
-import java.lang.Thread;
 
 // Third-Party Imports
 import org.junit.Test;
@@ -369,6 +368,39 @@ public class ChessTest {
     }
 
     @Test
+    public void testSetMode(){
+        ComponentFinder newFinder = robot.finder();
+        frame.button("newGameButton").click();
+        JOptionPaneFixture optionPane = findOptionPane().using(robot);
+        try {
+            // in case unsaved current game
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("Yes").click();
+            optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("Mode").click();
+            optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("Medium").click();
+            optionPane = findOptionPane().using(robot);
+        } catch (Exception ex) {
+            // need to set up unsaved game then do previous
+            optionPane.buttonWithText("White").click();
+            optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("Yes").click();
+            optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("Mode").click();
+            optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("Medium").click();
+            optionPane = findOptionPane().using(robot);
+        }
+        optionPane.buttonWithText("Cancel").click();
+        String actualLabel = frame.label("statusLabel").text();
+        assertThat(actualLabel).contains("Mode now Medium");
+    }
+
+    @Test
     public void testPromotion(){
         ComponentFinder newFinder = robot.finder();
         frame.button("loadButton").click();
@@ -425,15 +457,9 @@ public class ChessTest {
         JButtonFixture firstSquareFix = new JButtonFixture(robot, firstSquare);
         JButtonFixture secondSquareFix = new JButtonFixture(robot, secondSquare);
         firstSquareFix.click();
-        try { Thread.sleep(1000); } catch (Exception ex) {}
-        String actualLabel = frame.label("statusLabel").text();
-        assertThat(actualLabel).contains("E,5");
         secondSquareFix.click();
-        firstSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,5", BoardSquare.class);
-        firstSquareFix = new JButtonFixture(robot, firstSquare);
-        firstSquareFix.requireText(" ");
-        /*JLabelFixture label = frame.label("captByWhite");
-        String taken = label.text();
-        assertThat(taken).contains("\u265F");*/
+        TakenPanel tPanel = (TakenPanel) newFinder.findByType(TakenPanel.class);
+        String taken = tPanel.captByWhite.getText();
+        assertThat(taken).contains("\u265F");
     }
 }
