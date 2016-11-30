@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.awt.Component;
 import java.awt.Color;
 import java.awt.event.*;
+import java.awt.Dialog;
 import java.io.File;
 
 // Third-Party Imports
@@ -23,6 +24,7 @@ import org.assertj.swing.exception.WaitTimedOutError;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.swing.launcher.ApplicationLauncher.application;
 import static org.assertj.swing.finder.WindowFinder.findFrame;
+import static org.assertj.swing.finder.WindowFinder.findDialog;
 import static org.assertj.swing.finder.JOptionPaneFinder.findOptionPane;
 import static org.assertj.swing.finder.JFileChooserFinder.findFileChooser;
 import static org.assertj.swing.fixture.Containers.showInFrame;
@@ -328,6 +330,25 @@ public class ChessTest {
         square = (JButton) components[11];
         squareFix = new JButtonFixture(robot, square);
         squareFix.foreground().requireEqualTo(Color.WHITE);
+    }
+
+    @Test
+    public void testKibitzer(){
+        ComponentFinder newFinder = robot.finder();
+        frame.button("newGameButton").click();
+        JOptionPaneFixture optionPane = findOptionPane().using(robot);
+        try {
+            // in case unsaved current game
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
+        } catch (Exception ex) {}
+        optionPane.buttonWithText("White").click();
+
+        Dialog dialog = newFinder.findByType(Dialog.class);
+        DialogFixture kibitzer = new DialogFixture(robot, dialog);
+        kibitzer.requireVisible();
     }
 
 	@Test
