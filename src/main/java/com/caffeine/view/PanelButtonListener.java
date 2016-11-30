@@ -45,17 +45,7 @@ public class PanelButtonListener implements ActionListener {
             if (Chess.game.gameStarted) {
                 int dialogResult = JOptionPane.showConfirmDialog(window, "Would you like to save your current game first?","Warning", JOptionPane.YES_NO_CANCEL_OPTION);
                 if (dialogResult == JOptionPane.YES_OPTION) {
-                    int returnVal = fc.showSaveDialog(window);
-                    if (returnVal == JFileChooser.APPROVE_OPTION) {
-                        String fileName = fc.getSelectedFile().getName();
-                        if (fileName.toLowerCase().endsWith(".pgn")){
-                            statusPanel.setText("Saving game to file: " + fileName.toLowerCase());
-                            FileManager.save(fileName.toLowerCase());
-                        } else{
-                            statusPanel.setText("Saving game to file: " + fileName.toLowerCase() + ".pgn");
-                            FileManager.save(fileName.toLowerCase()+".pgn");
-                        }
-                    }
+                    Core.saveButton.doClick();
                 } else if (dialogResult == JOptionPane.CANCEL_OPTION) {
                     return;
                 }
@@ -99,19 +89,31 @@ public class PanelButtonListener implements ActionListener {
             if (Chess.game.gameStarted) {
                 int dialogResult = JOptionPane.showConfirmDialog(window, "Would you like to save your current game first?","Warning", JOptionPane.YES_NO_CANCEL_OPTION);
                 if (dialogResult == JOptionPane.YES_OPTION) {
-                    int returnVal = fc.showSaveDialog(window);
-                    if (returnVal == JFileChooser.APPROVE_OPTION) {
-                        String fileName = fc.getSelectedFile().getName();
-                        if (fileName.toLowerCase().endsWith(".pgn")){
-                            statusPanel.setText("Saving game to file: " + fileName.toLowerCase());
-                            FileManager.save(fileName.toLowerCase());
-                        } else{
-                            statusPanel.setText("Saving game to file: " + fileName.toLowerCase() + ".pgn");
-                            FileManager.save(fileName.toLowerCase()+".pgn");
-                        }
-                    }
+                    Core.saveButton.doClick();
                 } else if (dialogResult == JOptionPane.CANCEL_OPTION) {
                     return;
+                }
+
+                int choice = JOptionPane.showConfirmDialog(window, "Would you like to change game options first?","Warning", JOptionPane.YES_NO_CANCEL_OPTION);
+                if (choice == JOptionPane.YES_OPTION) {
+                    Chess.game.gameStarted = false;
+                    String[] options = new String[] {"Timer", "Mode", "Both", "Cancel"};
+                    choice = JOptionPane.showOptionDialog(window, "Choose an option to change", "Choose Option",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+                    switch (choice) {
+                        case -1: return;
+                        case 0:
+                            Core.setMoveTimer.doClick();
+                            break;
+                        case 1:
+                            Core.changeMode.doClick();
+                            break;
+                        case 2:
+                            Core.setMoveTimer.doClick();
+                            Core.changeMode.doClick();
+                            break;
+                        case 3: return;
+                    }
                 }
             }
 

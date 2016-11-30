@@ -100,31 +100,33 @@ public class BoardListener implements ActionListener {
                             String choice = (String) JOptionPane.showInputDialog(Core.window, "Choose Type",
                                     "Choose Type for Promotion", JOptionPane.QUESTION_MESSAGE,
                                     null, options, options[0]);
-                            char type;
-                            if (choice.equals("Queen")) type = 'q';
-                            else if (choice.equals("Knight")) type = 'n';
-                            else if (choice.equals("Rook")) type = 'r';
-                            else type = 'b';
-                            Core.statusPanel.setText("Promotion to " + choice);
-                            Chess.game.moveP(oldRank,oldFile,newRank,newFile,type);
-                            ViewUtils.refreshBoard();
-                            //Check that game has not ended
-                            int gameState = Chess.game.getGameEndStatus();
-                            if(gameState != 0){
-                                Chess.game.endGame(gameState);
-                            } else {
-                                // Do CPU Move in response
-                                String cpuMove = Chess.game.cpuMove();
-                                String[] moveData = cpuMove.split("");
-                                moveData[0] = moveData[0].toUpperCase();
-                                moveData[2] = moveData[2].toUpperCase();
-                                Core.statusPanel.setText("CPU Move: " + moveData[0] + "" + moveData[1] + "," +
-                                                            moveData[2] + "" + moveData[3]);
+                            if (choice != null) {
+                                char type;
+                                if (choice.equals("Queen")) type = 'q';
+                                else if (choice.equals("Knight")) type = 'n';
+                                else if (choice.equals("Rook")) type = 'r';
+                                else type = 'b';
+                                Core.statusPanel.setText("Promotion to " + choice);
+                                Chess.game.moveP(oldRank,oldFile,newRank,newFile,type);
                                 ViewUtils.refreshBoard();
                                 //Check that game has not ended
-                                gameState = Chess.game.getGameEndStatus();
+                                int gameState = Chess.game.getGameEndStatus();
                                 if(gameState != 0){
                                     Chess.game.endGame(gameState);
+                                } else {
+                                    // Do CPU Move in response
+                                    String cpuMove = Chess.game.cpuMove();
+                                    String[] moveData = cpuMove.split("");
+                                    moveData[0] = moveData[0].toUpperCase();
+                                    moveData[2] = moveData[2].toUpperCase();
+                                    Core.statusPanel.setText("CPU Move: " + moveData[0] + "" +
+                                     moveData[1] + "," + moveData[2] + "" + moveData[3]);
+                                    ViewUtils.refreshBoard();
+                                    //Check that game has not ended
+                                    gameState = Chess.game.getGameEndStatus();
+                                    if(gameState != 0){
+                                        Chess.game.endGame(gameState);
+                                    }
                                 }
                             }
                         }
@@ -134,16 +136,7 @@ public class BoardListener implements ActionListener {
                 }
             }
 
-            // Un-highlight all previously highlighted BoardSquares that were
-            // valid positions.
-            if (Core.showLegalMoves){
-                for (String move : Core.possibleMoves){
-                    Integer[] raf = Utils.translate(move); // Rank And File
-                    BoardSquare square = Core.squares[7-raf[0]][raf[1]];
-                    square.resetSquare();
-                }
-                Core.possibleMoves.clear();
-            }
+            ViewUtils.hidePossibilities();
 
             selected.unselectSquare();
             selected = null;

@@ -73,6 +73,9 @@ public class Core {
     protected static JPanel buttonPanel;
     protected static BoardPanel boardPanel;
     protected static Kibitzer KibitzerPane;
+    protected static JMenuItem changeMode;
+    protected static JMenuItem setMoveTimer;
+    protected static JButton saveButton;
 
     public Core() {
         window.setName("frame");
@@ -93,7 +96,6 @@ public class Core {
         });
         kibitzer.start();
 
-
     }
 
     /**
@@ -107,11 +109,11 @@ public class Core {
         window.setJMenuBar(menuBar);
         JMenu menu = new JMenu("Menu");
         menuBar.add(menu);
-        JMenuItem changeMode = new JMenuItem("Change CPU Mode");
+        changeMode = new JMenuItem("Change CPU Mode");
         changeMode.setName("menuChangeMode");
         JMenuItem undo = new JMenuItem("Undo last move");
         undo.setName("menuUndo");
-        JMenuItem setMoveTimer = new JMenuItem("Set move timer");
+        setMoveTimer = new JMenuItem("Set move timer");
         setMoveTimer.setName("menuSetMoveTimer");
         JMenuItem toggleShowLegalMoves = new JMenuItem("Show legal moves");
         toggleShowLegalMoves.setName("menuToggleShowLegalMoves");
@@ -218,7 +220,7 @@ public class Core {
         loadButton.addActionListener(buttonListener);
         buttonPanel.add(loadButton);
 
-        JButton saveButton = new JButton("Save");
+        saveButton = new JButton("Save");
         saveButton.setName("saveButton");
         saveButton.addActionListener(buttonListener);
         buttonPanel.add(saveButton);

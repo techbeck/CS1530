@@ -8,7 +8,7 @@ import com.caffeine.view.ViewUtils;
 import java.util.*;
 
 public class Game {
-	public Piece[] pieces = new Piece[32];
+	public ArrayList<Piece> pieces = new ArrayList<Piece>();
     public ArrayList<String> moveHistory = new ArrayList<String>();
     protected ArrayList<String> fenHistory = new ArrayList<String>();
     protected ArrayList<String> dupHistory = new ArrayList<String>();
@@ -146,7 +146,7 @@ public class Game {
 	 * @param taken  The piece taken.
 	 */
 	public void takePiece(Piece taken) {
-		taken.moveTo(-1,-1); // indicates piece has been taken
+		pieces.remove(taken);
 		if (taken.isWhite())
 			captureWhitePiece(taken.getType());
 		else
@@ -415,17 +415,6 @@ public class Game {
     }
 
     /**
-     *  Resets the game to the default settings
-     */
-    public void reset() {
-        whiteActive = true;
-        userWhite = true;
-        captByBlack = "";
-        captByWhite = "";
-        initializesPieces();
-    }
-
-    /**
      *  Populates the pieces array with the standard 32 chess pieces
      */
     public void initializesPieces() {
@@ -440,7 +429,7 @@ public class Game {
     public void setPiecesFromFEN(String fen) {
 
         // new array for pieces
-        Piece[] pieces = new Piece[32];
+        ArrayList<Piece> pieces = new ArrayList<Piece>();
         // Get board as String[8] where [0] is row 8 and [7] is row 1.
         String[] board = fen.split(" ", 2)[0].split("/");
         // The current line examined in the for loop, and its length
@@ -460,22 +449,17 @@ public class Game {
                 charVal = (int) currentChar - '0';
                 if (charVal > 9) { // piece character
                     if (rowCursor == 0) {
-                        pieces[pieceInd] = new Piece(Utils.typeToUnicode(currentChar),
-                                                Utils.typeToSide(currentChar),7-i,j);
+                        pieces.add(new Piece(Utils.typeToUnicode(currentChar),
+                                            Utils.typeToSide(currentChar),7-i,j));
                     } else {
-                        pieces[pieceInd] = new Piece(Utils.typeToUnicode(currentChar),
-                                                Utils.typeToSide(currentChar),7-i,rowCursor);
+                        pieces.add(new Piece(Utils.typeToUnicode(currentChar),
+                                            Utils.typeToSide(currentChar),7-i,rowCursor));
                     }
-                    pieceInd++;
                     rowCursor++;
                 } else { // number of empty squares
                     rowCursor += charVal;
                 }
             }
-        }
-        for (int i = pieceInd; i < 32; i++) {
-            // taken pieces no longer in array, these are placeholders
-            pieces[pieceInd] = new Piece("null","null",-1,-1);
         }
         this.pieces = pieces;
     }
