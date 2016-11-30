@@ -298,12 +298,13 @@ public class ChessTest {
             optionPane = findOptionPane().using(robot);
         } catch (Exception ex) {}
         optionPane.buttonWithText("White").click();
+        
 		frame.button("BoardSquare:D,2").click();
 		JButton testSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:D,3", BoardSquare.class);
 		JButtonFixture squareFix = new JButtonFixture(robot, testSquare);
         squareFix.background().requireEqualTo(Color.decode("0x7dfa92"));
 		frame.button("BoardSquare:D,2").click();
-		JMenu menu = (JMenu) newFinder.findByName(frame.target(), "menu", JMenu.class);
+		JMenu menu = (JMenu) newFinder.findByType(JMenu.class);
 		menu.doClick();
 		JMenuItem menuItem = (JMenuItem) newFinder.findByName(frame.target(), "menuToggleShowLegalMoves", JMenuItem.class);
 		menuItem.doClick();
