@@ -79,6 +79,8 @@ public class ChessTest {
             // in case unsaved current game
             JOptionPaneFixture optionPane = findOptionPane().using(robot);
             optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("No").click();
         } catch (WaitTimedOutError ex) {}
         JFileChooserFixture fileChooser = findFileChooser().using(robot);
         fileChooser.requireVisible();
@@ -92,6 +94,8 @@ public class ChessTest {
         try {
             // in case unsaved current game
             JOptionPaneFixture optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
             optionPane.buttonWithText("No").click();
         } catch (WaitTimedOutError ex) {}
         JFileChooser chooser = (JFileChooser) newFinder.findByType(JFileChooser.class);
@@ -113,6 +117,8 @@ public class ChessTest {
             // in case unsaved current game
             optionPane.buttonWithText("No").click();
             optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
         } catch (Exception ex) {}
         optionPane.buttonWithText("White").click();
 
@@ -128,6 +134,8 @@ public class ChessTest {
         JOptionPaneFixture optionPane = findOptionPane().using(robot);
         try {
             // in case unsaved current game
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
             optionPane.buttonWithText("No").click();
             optionPane = findOptionPane().using(robot);
         } catch (Exception ex) {}
@@ -158,6 +166,8 @@ public class ChessTest {
             // in case unsaved current game
             optionPane.buttonWithText("No").click();
             optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
         } catch (Exception ex) {}
         optionPane.buttonWithText("White").click();
 
@@ -179,6 +189,8 @@ public class ChessTest {
         JOptionPaneFixture optionPane = findOptionPane().using(robot);
         try {
             // in case unsaved current game
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
             optionPane.buttonWithText("No").click();
             optionPane = findOptionPane().using(robot);
         } catch (Exception ex) {}
@@ -269,6 +281,8 @@ public class ChessTest {
             // in case unsaved current game
             optionPane.buttonWithText("No").click();
             optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
         } catch (Exception ex) {}
         optionPane.buttonWithText("White").click();
 
@@ -296,6 +310,8 @@ public class ChessTest {
             // in case unsaved current game
             optionPane.buttonWithText("No").click();
             optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
         } catch (Exception ex) {}
         optionPane.buttonWithText("White").click();
         
@@ -313,4 +329,41 @@ public class ChessTest {
 		squareFix = new JButtonFixture(robot, testSquare);
         squareFix.background().requireEqualTo(Color.GREEN);
 	}
+
+    @Test
+    public void testSetTimer(){
+        ComponentFinder newFinder = robot.finder();
+        frame.button("newGameButton").click();
+        JOptionPaneFixture optionPane = findOptionPane().using(robot);
+        try {
+            // in case unsaved current game
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("Yes").click();
+            optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("Timer").click();
+            optionPane = findOptionPane().using(robot);
+            JComboBoxFixture dropMenu = optionPane.comboBox();
+            dropMenu.selectItem("15");
+            optionPane.okButton().click();
+            optionPane = findOptionPane().using(robot);
+        } catch (Exception ex) {
+            // need to set up unsaved game then do previous
+            optionPane.buttonWithText("White").click();
+            optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("Yes").click();
+            optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("Timer").click();
+            optionPane = findOptionPane().using(robot);
+            JComboBoxFixture dropMenu = optionPane.comboBox();
+            dropMenu.selectItem("15");
+            optionPane.okButton().click();
+            optionPane = findOptionPane().using(robot);
+        }
+        optionPane.buttonWithText("Cancel").click();
+        String actualLabel = frame.label("timerLabel").text();
+        assertThat(actualLabel).contains("Timer set to 15 minutes");
+    }
 }
