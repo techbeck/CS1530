@@ -85,14 +85,16 @@ public class TakenPanel extends JPanel {
 	/**
 	 * Returns captByWhite for unit testing purposes.
 	 */
-	 public void getCaptByWhite(){
-		 return captByWhite;
-	 }
+	public String getCaptByWhite() {
+		String capt = captByWhite.getText();
+		return capt;
+	}
 	 
 	 /**
 	 * Returns captByBlack for unit testing purposes.
 	 */
-	 public void getCaptByBlack(){
-		 return captByBlack;
-	 }
+	public String getCaptByBlack() {
+		String capt = captByBlack.getText();
+		return capt;
+	}
 }

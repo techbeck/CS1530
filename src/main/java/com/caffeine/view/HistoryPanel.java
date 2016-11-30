@@ -56,7 +56,7 @@ public class HistoryPanel extends JPanel {
     }
 	
 	/**
-	 * Returns historyLabel fo unit testing purposes.
+	 * Returns historyLabel for unit testing purposes.
 	 */
 	 public JLabel getHistoryLabel(){
 		 return historyLabel;
