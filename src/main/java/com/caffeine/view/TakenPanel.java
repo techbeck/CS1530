@@ -12,8 +12,8 @@ import java.awt.*;
  */
 public class TakenPanel extends JPanel {
     private JLabel takenlabel = new JLabel("Taken Pieces");
-    public JLabel captByBlack = new JLabel();
-    public JLabel captByWhite = new JLabel();
+    private JLabel captByBlack = new JLabel();
+    private JLabel captByWhite = new JLabel();
 
     private Dimension labelDimen = new Dimension(150,260);
 

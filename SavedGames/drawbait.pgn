@@ -1,0 +1,12 @@
+[Event "CS1530"]
+[Site "Pittsburgh, PA, USA"]
+[Date "Fall 2016"]
+[Round "420"]
+[White "User"]
+[Black "CPU"]
+[Result "*"]
+[Time "177248"]
+[Mode "Easy"]
+[FEN "rnbqkb1r/pppp1ppp/5n2/4p3/4P3/8/PPPP1PPP/RNBQKBNR w - - 99 71"]
+
+1. e2e4 d7d5 2. e2e3 e7e5 3. e3e4 g8f6 

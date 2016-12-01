@@ -133,6 +133,8 @@ public class FileManager {
         Chess.game = new Game();
         Chess.game.startGame();
         Chess.game.setSide(userSide);
+        if (userSide.equals("White")) Chess.game.whiteActive = true;
+        else Chess.game.whiteActive = false;
         Chess.game.loadFEN(fen);
         Chess.game.setMode(mode);
         input.nextLine();
