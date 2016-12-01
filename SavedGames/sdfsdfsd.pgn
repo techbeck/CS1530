@@ -5,8 +5,7 @@
 [White "User"]
 [Black "CPU"]
 [Result "*"]
-[Time "179978"]
-[Mode "Easy"]
-[FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"]
+[Time "179664"]
+[FEN "rnbqkbnr/ppp1pppp/8/8/4p3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 3"]
 
-
+1. e2e4 d7d5 2. g1f3 d5xe4 

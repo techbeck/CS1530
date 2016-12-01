@@ -60,6 +60,8 @@ public class ViewUtils {
 
     /**
      * End-of-game view functionality
+     *
+     * @param gameResult the result of the game (win/lose, etc.)
      */
     public static void endGame(int gameResult) {
         String message = "";
