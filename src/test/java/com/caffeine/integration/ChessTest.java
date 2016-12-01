@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.event.*;
 import java.awt.Dialog;
 import java.io.File;
+import java.lang.Thread;
 
 // Third-Party Imports
 import org.junit.Test;
@@ -335,6 +336,7 @@ public class ChessTest {
     @Test
     public void testKibitzer(){
         ComponentFinder newFinder = robot.finder();
+        
         frame.button("newGameButton").click();
         JOptionPaneFixture optionPane = findOptionPane().using(robot);
         try {
@@ -347,8 +349,23 @@ public class ChessTest {
         optionPane.buttonWithText("White").click();
 
         Dialog dialog = newFinder.findByType(Dialog.class);
-        DialogFixture kibitzer = new DialogFixture(robot, dialog);
-        kibitzer.requireVisible();
+        assertTrue("Kibitzer should be visible", dialog.isVisible());
+
+        frame.button("newGameButton").click();
+        optionPane = findOptionPane().using(robot);
+        try {
+            // in case unsaved current game
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("Yes").click();
+            optionPane = findOptionPane().using(robot);
+        } catch (Exception ex) {}
+        optionPane.buttonWithText("Cancel").click();
+
+        try { Thread.sleep(5000); } catch (Exception ex) {}
+
+        assertFalse("Kibitzer should not be visible", dialog.isVisible());
+
     }
 
 	@Test
@@ -511,5 +528,36 @@ public class ChessTest {
         TakenPanel tPanel = (TakenPanel) newFinder.findByType(TakenPanel.class);
         String taken = tPanel.captByWhite.getText();
         assertThat(taken).contains("\u265F");
+    }
+
+    @Test
+    public void testCheckmate(){
+        ComponentFinder newFinder = robot.finder();
+        frame.button("loadButton").click();
+        try {
+            // in case unsaved current game
+            JOptionPaneFixture optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("No").click();
+            optionPane = findOptionPane().using(robot);
+            optionPane.buttonWithText("No").click();
+        } catch (WaitTimedOutError ex) {}
+        JFileChooser chooser = (JFileChooser) newFinder.findByType(JFileChooser.class);
+        chooser.setSelectedFile(new File("fools.pgn"));
+        JButtonMatcher matcher = JButtonMatcher.withText("Open").andShowing();
+        JButton openButton = (JButton) newFinder.find(matcher);
+        openButton.setEnabled(true);
+        JButtonFixture openButtonFix = new JButtonFixture(robot,openButton);
+        openButtonFix.click();
+        JButton firstSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:D,5", BoardSquare.class);
+        JButton secondSquare = (JButton) newFinder.findByName(frame.target(), "BoardSquare:E,4", BoardSquare.class);
+        JButtonFixture firstSquareFix = new JButtonFixture(robot, firstSquare);
+        JButtonFixture secondSquareFix = new JButtonFixture(robot, secondSquare);
+        firstSquareFix.click();
+        secondSquareFix.click();
+        JOptionPaneFixture optionPane = findOptionPane().using(robot);
+        optionPane.requireMessage("Black Won!");
+        optionPane.okButton().click();
+        optionPane = findOptionPane().using(robot);
+        optionPane.buttonWithText("No").click();
     }
 }
