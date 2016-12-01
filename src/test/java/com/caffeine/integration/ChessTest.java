@@ -526,7 +526,7 @@ public class ChessTest {
         firstSquareFix.click();
         secondSquareFix.click();
         TakenPanel tPanel = (TakenPanel) newFinder.findByType(TakenPanel.class);
-        String taken = tPanel.captByWhite.getText();
+        String taken = tPanel.getCaptByWhite();
         assertThat(taken).contains("\u265F");
     }
 
