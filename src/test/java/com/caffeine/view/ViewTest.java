@@ -1,6 +1,7 @@
 // First-Party Imports
 import javax.swing.*;
 import java.awt.Frame;
+import java.util.ArrayList;
 
 // Third-Party Imports
 import org.junit.Test;
@@ -73,5 +74,54 @@ public class ViewTest {
         testSquare.removePiece();
         assertNull(testSquare.getPiece());
     }
-
+	
+	@Test
+	public void testUpdateMoveHistory(){
+		HistoryPanel panel = new HistoryPanel();
+		ArrayList<String> testText = new ArrayList<String>();
+		testText.add("test");
+		String result = panel.getHistoryLabel().getText();
+		assertEquals(result, "Move History");
+		panel.updateMoveHistory(testText);
+		assertEquals(panel.getHistoryLabel().getText(), "<html>Move History<br>1. test<br></html>");
+	}
+	
+	@Test
+	public void testSetCaptByWhite(){
+		TakenPanel panel = new TakenPanel();
+		String testString = "test";
+		panel.setCaptByWhite(testString);
+		assertEquals(panel.getCaptByWhite(),  "<html><p>" + testString + "</p></html>");
+	}
+	
+	@Test
+	public void testSetCaptByBlack(){
+		TakenPanel panel = new TakenPanel();
+		String testString = "test";
+		panel.setCaptByBlack(testString);
+		assertEquals(panel.getCaptByBlack(), "<html><p>" + testString + "</p></html>");
+	}
+	
+	@Test
+	public void testRestarttTimer(){
+		TimerPanel panel = new TimerPanel();
+		panel.restartTimer();
+		assertEquals(panel.getTimeLeft(), 180000);
+		assertFalse(panel.isTimeOut());
+	}
+	
+	@Test
+	public void testSetTimer(){
+		TimerPanel panel = new TimerPanel();
+		panel.setTimer(30);
+		assertEquals(panel.getTimeLeft(), 180000);
+	}
+	
+	@Test
+	public void testSetTimeLeft(){
+		TimerPanel panel = new TimerPanel();
+		panel.setTimeLeft("180000");
+		assertEquals(panel.getTimeLeft(), 180000);
+	}
+	
 }

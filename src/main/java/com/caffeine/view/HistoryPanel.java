@@ -54,4 +54,11 @@ public class HistoryPanel extends JPanel {
         }
         historyLabel.setText(historyLabel.getText() + "</html>");
     }
+	
+	/**
+	 * Returns historyLabel for unit testing purposes.
+	 */
+	 public JLabel getHistoryLabel(){
+		 return historyLabel;
+	 }
 }
