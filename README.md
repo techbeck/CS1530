@@ -39,5 +39,5 @@ To issue a change to the Team Caffeine project repository:
   7. Others will review and comment on the code if neccessary. You can make new
   changes and commits-- whenever you push, the merge request will be updated.
   8. Once the code is validated _and_ verified, the team owner (currently
-  [@jwarner112](http://www.github.com/jwarner112)) will merge into the repo's
-  `master` branch.
+  [@jwarner112](http://www.github.com/jwarner112)) will merge into the`master`
+  branch.

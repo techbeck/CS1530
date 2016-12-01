@@ -122,7 +122,7 @@ public Piece[] pieces = new Piece[32];
 
     /**
      * Returns the mode of the CPU opponent
-     * 
+     *
      * @return  A string representing the mode: easy, medium, or hard
      */
     public String getMode() {
@@ -613,11 +613,9 @@ public Piece[] pieces = new Piece[32];
      */
     public int getGameEndStatus(){
         if(isCheckmate() && !whiteActive){
-            System.out.println("You know white won.");
             gameResult = 1;
         }
         else if(isCheckmate() && whiteActive){
-            System.out.println("Black got this.");
             gameResult = 2;
         }
         else if(isStalemate()){

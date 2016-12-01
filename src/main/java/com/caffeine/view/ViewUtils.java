@@ -70,6 +70,7 @@ public class ViewUtils {
                     break;
             }
         }
+        Core.statusPanel.setText(message);
         JOptionPane.showMessageDialog(Core.window,
             message, "End of Game", JOptionPane.PLAIN_MESSAGE);
         int dialogResult = JOptionPane.showConfirmDialog(Core.window, "Would you like to save your game?",

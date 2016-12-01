@@ -64,14 +64,12 @@ public class UtilsTest {
         for (String fen : validFENs){
             if (!Utils.isValidFEN(fen)){
                 allIsWell = false;
-                System.out.println("## "+fen);
             }
         }
         // If any FEN in invalid set reads TRUE, not all is well.
         for (String fen : invalidFENs){
             if (Utils.isValidFEN(fen)){
                 allIsWell = false;
-                System.out.println("## "+fen);
             }
         }
 
