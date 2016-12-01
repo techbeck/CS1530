@@ -70,12 +70,18 @@ task testJavadoc(type: Javadoc) {
 task integrationTest(type: Test) {
     testClassesDir = sourceSets.integrationTest.output.classesDir
     classpath = sourceSets.integrationTest.runtimeClasspath
+    testLogging {
+        events "PASSED", "STARTED", "FAILED", "SKIPPED"
+    }
 }
 
 // task for unit tests
 task unitTest(type: Test) {
     testClassesDir = sourceSets.unitTest.output.classesDir
     classpath = sourceSets.unitTest.runtimeClasspath
+    testLogging {
+        events "PASSED", "FAILED", "SKIPPED"
+    }
 }
 
 // task for all tests

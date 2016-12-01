@@ -38,7 +38,7 @@ public class BoardListener implements ActionListener {
 
                 selected = squareButton;
                 selected.selectSquare();
-                Core.statusLabel.setText("Selected: " + selected.getName().split(":")[1]);
+                Core.statusPanel.setText("Selected: " + selected.getName().split(":")[1]);
 
                 // Get list of positions the Piece on this BoardSquare can
                 // be moved to. Visually indicates with green background.
@@ -68,37 +68,74 @@ public class BoardListener implements ActionListener {
                     squareButton.setPiece(piece);
                     String oldLoc = (char)(oldFile+65) + "" + (oldRank+1);
                     String newLoc = (char)(newFile+65) + "" + (newRank+1);
-                    Core.statusLabel.setText("User Move: " + oldLoc + "," + newLoc);
+                    Core.statusPanel.setText("User Move: " + oldLoc + "," + newLoc);
                     ViewUtils.refreshBoard();
                     //Check that game has not ended
                     int gameState = Chess.game.getGameEndStatus();
                     if(gameState != 0){
                         Chess.game.endGame(gameState);
+                    } else {
+                        // Do CPU Move in response
+                        String cpuMove = Chess.game.cpuMove();
+                        String[] moveData = cpuMove.split("");
+                        moveData[0] = moveData[0].toUpperCase();
+                        moveData[2] = moveData[2].toUpperCase();
+                        Core.statusPanel.setText("CPU Move: " + moveData[0] + "" + moveData[1] + "," +
+                                                        moveData[2] + "" + moveData[3]);
+                        ViewUtils.refreshBoard();
+                        //Check that game has not ended
+                        gameState = Chess.game.getGameEndStatus();
+                        if(gameState != 0){
+                            Chess.game.endGame(gameState);
+                        }
                     }
-                    // Do CPU Move in response
-                    String cpuMove = Chess.game.cpuMove();
-                    String[] moveData = cpuMove.split("");
-                    moveData[0] = moveData[0].toUpperCase();
-                    moveData[2] = moveData[2].toUpperCase();
-                    Core.statusLabel.setText("CPU Move: " + moveData[0] + "" + moveData[1] + "," + moveData[2] + "" + moveData[3]);
-                    ViewUtils.refreshBoard();
-                    gameState = Chess.game.getGameEndStatus();
-                    if(gameState != 0){
-                        Chess.game.endGame(gameState);
+                    
+                } else if (piece.getType().equals(Core.pawn)) {
+                    if (Chess.game.userWhite() && newRank == 7 || !Chess.game.userWhite() && newRank == 0) {
+                        // Edge-case: Promotion
+                        if (Chess.game.tryPromotion(oldRank,oldFile,newRank,newFile,'r')) {
+                            // only offers promotion if it would be a valid move
+                            String[] options = new String[] {"Queen", "Knight", "Rook", "Bishop"};
+                            String choice = (String) JOptionPane.showInputDialog(Core.window, "Choose Type",
+                                    "Choose Type for Promotion", JOptionPane.QUESTION_MESSAGE,
+                                    null, options, options[0]);
+                            if (choice != null) {
+                                char type;
+                                if (choice.equals("Queen")) type = 'q';
+                                else if (choice.equals("Knight")) type = 'n';
+                                else if (choice.equals("Rook")) type = 'r';
+                                else type = 'b';
+                                Core.statusPanel.setText("Promotion to " + choice);
+                                Chess.game.moveP(oldRank,oldFile,newRank,newFile,type);
+                                ViewUtils.refreshBoard();
+                                //Check that game has not ended
+                                int gameState = Chess.game.getGameEndStatus();
+                                if(gameState != 0){
+                                    Chess.game.endGame(gameState);
+                                } else {
+                                    // Do CPU Move in response
+                                    String cpuMove = Chess.game.cpuMove();
+                                    String[] moveData = cpuMove.split("");
+                                    moveData[0] = moveData[0].toUpperCase();
+                                    moveData[2] = moveData[2].toUpperCase();
+                                    Core.statusPanel.setText("CPU Move: " + moveData[0] + "" +
+                                     moveData[1] + "," + moveData[2] + "" + moveData[3]);
+                                    ViewUtils.refreshBoard();
+                                    //Check that game has not ended
+                                    gameState = Chess.game.getGameEndStatus();
+                                    if(gameState != 0){
+                                        Chess.game.endGame(gameState);
+                                    }
+                                }
+                            }
+                        }
                     }
-                } else { Core.statusLabel.setText("Invalid move"); }
+                } else {
+                    Core.statusPanel.setText("Invalid move");
+                }
             }
 
-            // Un-highlight all previously highlighted BoardSquares that were
-            // valid positions.
-            if (Core.showLegalMoves){
-                for (String move : Core.possibleMoves){
-                    Integer[] raf = Utils.translate(move); // Rank And File
-                    BoardSquare square = Core.squares[7-raf[0]][raf[1]];
-                    square.resetSquare();
-                }
-                Core.possibleMoves.clear();
-            }
+            ViewUtils.hidePossibilities();
 
             selected.unselectSquare();
             selected = null;

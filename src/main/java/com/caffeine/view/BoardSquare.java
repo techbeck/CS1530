@@ -113,6 +113,8 @@ public class BoardSquare extends JButton {
 
     /**
      *  Changes the text color of a square to the indicated color.
+     *
+     * @param newColor the color to be applied to the text
      */
     public void highlightSquareText(Color newColor){
         setForeground(newColor);
@@ -120,6 +122,8 @@ public class BoardSquare extends JButton {
 
     /**
      *  Changes the background color of a square to the indicated color.
+     *
+     *  @param newColor the color to be applied to the square
      */
     public void highlightSquareBackground(Color newColor){
         setBackground(newColor);

@@ -20,7 +20,7 @@ public class FileManager {
         try {
             output = new PrintWriter(file);
         } catch (IOException io) {
-            Core.statusLabel.setText("Unable to save to file.");
+            Core.statusPanel.setText("Unable to save to file.");
             return;
         }
         output.println("[Event \"" + Chess.game.pgnTags.get("Event") + "\"]");
@@ -94,7 +94,7 @@ public class FileManager {
         try {
             input = new Scanner(file);
         } catch (IOException io) {
-            Core.statusLabel.setText("Unable to load from file.");
+            Core.statusPanel.setText("Unable to load from file.");
             return;
         }
         String fileLine = "";
@@ -107,7 +107,7 @@ public class FileManager {
                 userSide = fileLine.split(" ")[0].substring(1);
             if (fileLine.contains("Result")) {
                 if (!fileLine.contains("*")) {
-                    Core.statusLabel.setText("Unable to load from file. - Not in progress.");
+                    Core.statusPanel.setText("Unable to load from file. - Not in progress.");
                     return;
                 }
             }
@@ -124,7 +124,7 @@ public class FileManager {
         }
         String fen = fileLine.split("\"")[1];
         if (!Utils.isValidFEN(fen)) {
-            Core.statusLabel.setText("Unable to load from file. - Invalid FEN String.");
+            Core.statusPanel.setText("Unable to load from file. - Invalid FEN String.");
             return;
         }
         ViewUtils.refreshBoard();
@@ -133,6 +133,8 @@ public class FileManager {
         Chess.game = new Game();
         Chess.game.startGame();
         Chess.game.setSide(userSide);
+        if (userSide.equals("White")) Chess.game.whiteActive = true;
+        else Chess.game.whiteActive = false;
         Chess.game.loadFEN(fen);
         Chess.game.setMode(mode);
         input.nextLine();

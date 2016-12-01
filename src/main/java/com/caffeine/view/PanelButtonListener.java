@@ -34,7 +34,7 @@ public class PanelButtonListener implements ActionListener {
 
     private void react(ActionEvent e) {
 
-        JLabel statusLabel = Core.statusLabel;
+        StatusPanel statusPanel = Core.statusPanel;
         JFrame window = Core.window;
         BoardSquare[][] squares = Core.squares;
 
@@ -45,17 +45,7 @@ public class PanelButtonListener implements ActionListener {
             if (Chess.game.gameStarted) {
                 int dialogResult = JOptionPane.showConfirmDialog(window, "Would you like to save your current game first?","Warning", JOptionPane.YES_NO_CANCEL_OPTION);
                 if (dialogResult == JOptionPane.YES_OPTION) {
-                    int returnVal = fc.showSaveDialog(window);
-                    if (returnVal == JFileChooser.APPROVE_OPTION) {
-                        String fileName = fc.getSelectedFile().getName();
-                        if (fileName.toLowerCase().endsWith(".pgn")){
-                            statusLabel.setText("Saving game to file: " + fileName.toLowerCase());
-                            FileManager.save(fileName.toLowerCase());
-                        } else{
-                            statusLabel.setText("Saving game to file: " + fileName.toLowerCase() + ".pgn");
-                            FileManager.save(fileName.toLowerCase()+".pgn");
-                        }
-                    }
+                    Core.saveButton.doClick();
                 } else if (dialogResult == JOptionPane.CANCEL_OPTION) {
                     return;
                 }
@@ -66,12 +56,12 @@ public class PanelButtonListener implements ActionListener {
                 String fileName = fc.getSelectedFile().getName();
                 if (fileName.toLowerCase().endsWith(".pgn")){
 
-                    statusLabel.setText("Loading game from file: " + fileName.toLowerCase());
+                    statusPanel.setText("Loading game from file: " + fileName.toLowerCase());
                     FileManager.load(fileName.toLowerCase());
 
                 } else{
 
-                    statusLabel.setText("Loading game from file: " + fileName.toLowerCase() + ".pgn");
+                    statusPanel.setText("Loading game from file: " + fileName.toLowerCase() + ".pgn");
                     FileManager.load(fileName.toLowerCase()+".pgn");
 
                 }
@@ -83,15 +73,15 @@ public class PanelButtonListener implements ActionListener {
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     String fileName = fc.getSelectedFile().getName();
                     if (fileName.toLowerCase().endsWith(".pgn")){
-                        statusLabel.setText("Saving game to file: " + fileName.toLowerCase());
+                        statusPanel.setText("Saving game to file: " + fileName.toLowerCase());
                         FileManager.save(fileName.toLowerCase());
                     } else{
-                        statusLabel.setText("Saving game to file: " + fileName.toLowerCase() + ".pgn");
+                        statusPanel.setText("Saving game to file: " + fileName.toLowerCase() + ".pgn");
                         FileManager.save(fileName.toLowerCase()+".pgn");
                     }
                 }
             } else {
-                statusLabel.setText("No current game to save");
+                statusPanel.setText("No current game to save");
             }
 
         } else if (button.getText().equals("New Game")) {
@@ -99,19 +89,31 @@ public class PanelButtonListener implements ActionListener {
             if (Chess.game.gameStarted) {
                 int dialogResult = JOptionPane.showConfirmDialog(window, "Would you like to save your current game first?","Warning", JOptionPane.YES_NO_CANCEL_OPTION);
                 if (dialogResult == JOptionPane.YES_OPTION) {
-                    int returnVal = fc.showSaveDialog(window);
-                    if (returnVal == JFileChooser.APPROVE_OPTION) {
-                        String fileName = fc.getSelectedFile().getName();
-                        if (fileName.toLowerCase().endsWith(".pgn")){
-                            statusLabel.setText("Saving game to file: " + fileName.toLowerCase());
-                            FileManager.save(fileName.toLowerCase());
-                        } else{
-                            statusLabel.setText("Saving game to file: " + fileName.toLowerCase() + ".pgn");
-                            FileManager.save(fileName.toLowerCase()+".pgn");
-                        }
-                    }
+                    Core.saveButton.doClick();
                 } else if (dialogResult == JOptionPane.CANCEL_OPTION) {
                     return;
+                }
+
+                int choice = JOptionPane.showConfirmDialog(window, "Would you like to change game options first?","Warning", JOptionPane.YES_NO_CANCEL_OPTION);
+                if (choice == JOptionPane.YES_OPTION) {
+                    Chess.game.gameStarted = false;
+                    String[] options = new String[] {"Timer", "Mode", "Both", "Cancel"};
+                    choice = JOptionPane.showOptionDialog(window, "Choose an option to change", "Choose Option",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+                    switch (choice) {
+                        case -1: return;
+                        case 0:
+                            Core.setMoveTimer.doClick();
+                            break;
+                        case 1:
+                            Core.changeMode.doClick();
+                            break;
+                        case 2:
+                            Core.setMoveTimer.doClick();
+                            Core.changeMode.doClick();
+                            break;
+                        case 3: return;
+                    }
                 }
             }
 
@@ -127,15 +129,20 @@ public class PanelButtonListener implements ActionListener {
                     Chess.game = new Game();
                     Chess.game.startGame();
                     Chess.game.setSide("black");
-                    statusLabel.setText("Game Started - Now playing as Black");
+                    statusPanel.setText("Game Started - Now playing as Black");
                     // CPU moves immediately
                     String cpuMove = Chess.game.cpuMove();
+                    String[] moveData = cpuMove.split("");
+                    moveData[0] = moveData[0].toUpperCase();
+                    moveData[2] = moveData[2].toUpperCase();
+                    Core.statusPanel.setText("CPU Move: " + moveData[0] + "" + moveData[1] + "," +
+                                                moveData[2] + "" + moveData[3]);
                     break;
                 case 1:
                     Chess.game = new Game();
                     Chess.game.startGame();
                     Chess.game.setSide("white");
-                    statusLabel.setText("Game Started - Now playing as White");
+                    statusPanel.setText("Game Started - Now playing as White");
                     break;
                 case 2:
                     return;
@@ -168,11 +175,11 @@ public class PanelButtonListener implements ActionListener {
 
                     // Can't have both sides same color
                     if (newColor.equals(Core.whiteColor)) {
-                        statusLabel.setText("Can't have both sides same color");
+                        statusPanel.setText("Can't have both sides same color");
                         return;
                     }
 
-                    statusLabel.setText("Changed color of black pieces");
+                    statusPanel.setText("Changed color of black pieces");
                     for (int i = 0; i < 8; i++) {   // iterate through all rows and columns of board
                         for (int j = 0; j < 8; j++) {
                             // Change color of only black pieces
@@ -192,11 +199,11 @@ public class PanelButtonListener implements ActionListener {
 
                     // Can't have both sides same color
                     if (newColor.equals(Core.blackColor)) {
-                        statusLabel.setText("Can't have both sides same color");
+                        statusPanel.setText("Can't have both sides same color");
                         return;
                     }
 
-                    statusLabel.setText("Changed color of white pieces");
+                    statusPanel.setText("Changed color of white pieces");
                     for (int i = 0; i < 8; i++) {   // iterate through all rows and columns of board
                         for (int j = 0; j < 8; j++) {
                             // Change color of only white pieces
@@ -230,7 +237,7 @@ public class PanelButtonListener implements ActionListener {
             else return;
 
             Core.currentTheme = themeChoice;
-            statusLabel.setText("Changed color theme to " + theme);
+            statusPanel.setText("Changed color theme to " + theme);
 
             Color backCol = Color.decode(Core.themes[Core.currentTheme][0]);
             Color panelCol = Color.decode(Core.themes[Core.currentTheme][1]);
