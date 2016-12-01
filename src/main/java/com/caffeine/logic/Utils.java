@@ -184,13 +184,13 @@ public class Utils {
         return (move1 && move2);
     }
 
-    // Translates Board position to Integer pair, e.g. "A3" to {2,0}.
-    //   NOTE THAT RANK & FILE ARE REVERSED BETWEEN POSITION AND INT ARRAY.
-    //
-    // Board Position: String of length 2 marking File, then Rank. e.g. "e2".
-    // Integer Pair: An Integer array of length 2 marking Rank, then File.
-    //
-    // Returns null if invalid position.
+    /**
+     *  Translates Board position to Integer pair, e.g. "A3" to {2,0}.
+     *  RANK AND FILE ARE REVERSED BETWEEN POSITION AND INT ARRAY.
+     *
+     * @param position String of length 2 marking File, then Rank. e.g. "e2".
+     * @return int array of length 2 marking Rank and File. null if invalid
+     */
     public static Integer[] translate(String position){
         if (!isValidBoardPosition(position)){ return null; }
         return new Integer[]{
@@ -199,13 +199,13 @@ public class Utils {
         };
     }
 
-    // Translates Integer pair to Board position, e.g. {3,6} to "F4".
-    //   NOTE THAT RANK & FILE ARE REVERSED BETWEEN POSITION AND INT ARRAY.
-    //
-    // Board Position: String of length 2 marking File, then Rank. e.g. "e2".
-    // Integer Pair: An Integer array of length 2 marking Rank, then File.
-    //
-    // Returns null if it would translate to invalid board position.
+    /**
+     * Translates Integer pair to Board position, e.g. {3,6} to "F4".
+     * RANK AND FILE ARE REVERSED BETWEEN POSITION AND INT ARRAY.
+     *
+     * @param  index int array of length 2 marking Rank and File
+     * @return String of length 2 marking File, then Rank. null if invalid
+     */
     public static String translate(Integer[] index){
         if (index.length != 2){ return null; }
         if (index[0] < 0 || index[0] > 7){ return null; }
@@ -216,13 +216,13 @@ public class Utils {
         );
     }
 
-    // Translates Two integers (Rank and then File to a Board position.
-    //
-    // Board Position: String of length 2 marking File, then Rank. e.g. "e2".
-    // Rank: An int within [0-7] (incl) marking a ROW on a Chess board.
-    // File: An int within [0-7] (incl) marking a COL on a Chess board.
-    //
-    // Returns null if it would translate to invalid board position.
+    /**
+     * Translates Two integers (Rank and then File) to a Board position.
+     *
+     * @param   rank int within [0-7] (incl) marking a ROW on a Chess board.
+     * @param   file int within [0-7] (incl) marking a COL on a Chess board.
+     * @return  String of length 2 marking File, then Rank.
+     */
     public static String translate(Integer rank, Integer file){
         if (rank < 0 || rank > 7){ return null; }
         if (file < 0 || file > 7){ return null; }
@@ -233,9 +233,10 @@ public class Utils {
     }
 
     /**
-     * Converts from type KQRBNPkqrbnp to equivalent Unicode characters
+     * Converts from char type KQRBNPkqrbnp to equivalent Unicode characters
      *
      * @param type  the type to be converted
+     * @return unicode character for chess piece. null if no matching piece
      */
     public static String typeToUnicode(char type) {
         switch(type) {
@@ -266,6 +267,7 @@ public class Utils {
      * Converts from type KQRBNPkqrbnp to equivalent side black/white
      *
      * @param type  the type to be converted
+     * @return color-swapped character (white to black, or vice-versa)
      */
     public static String typeToSide(char type) {
         if (((int) type) < 90) return "white";

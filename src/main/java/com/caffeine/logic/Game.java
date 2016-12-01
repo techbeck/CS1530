@@ -59,7 +59,7 @@ public class Game {
     }
 
     /**
-     * Initialize PGN tags
+     *  Initialize PGN tags
      */
     public void initializePGN() {
         pgnTags = new HashMap<String,String>();
@@ -71,7 +71,7 @@ public class Game {
     }
 
     /**
-     * Starts the game.
+     *  Starts the game.
      */
     public void startGame() {
         gameStarted = true;
@@ -99,20 +99,20 @@ public class Game {
     }
 
     /**
-     * Sets the mode based on the integer passed in.
-     * Default is easy.
+     *  Sets the mode based on the integer passed in.
+     *  Default is easy.
      *
-     * @param mode  The integer to determine which mode to set.
+     *  @param mode  The integer to determine which mode to set.
      */
      public void setMode(int mode){
          if (mode >= 0 || mode <= 2){ this.mode = mode; }
      }
 
     /**
-     * Sets the mode based on the string passed in.
-     * Default is easy.
+     *  Sets the mode based on the string passed in.
+     *  Default is easy.
      *
-     * @param mode  The string to determine which mode to set.
+     *  @param mode  The string to determine which mode to set.
      */
     public void setMode(String mode) {
         if (mode.equals("hard") || mode.equals("Hard")) setMode(2);
@@ -121,8 +121,8 @@ public class Game {
     }
 
     /**
-     * Returns the mode of the CPU opponent
-     * 
+     * Returns the mode of the CPU opponent.
+     *
      * @return  A string representing the mode: easy, medium, or hard
      */
     public String getMode() {
@@ -132,7 +132,7 @@ public class Game {
     }
 
     /**
-     *  Getter for whether the user is playing as white or black
+     *  Getter for whether the user is playing as white or black.
      *
      *  @return true if the user is playing as white, false if black
      */
@@ -141,7 +141,7 @@ public class Game {
     }
 
     /**
-     *  Getter for whether the white side is active
+     *  Getter for whether the white side is active.
      *
      *  @return true if the white side is active, false if black
      */
@@ -150,9 +150,9 @@ public class Game {
     }
 
     /**
-     * Add the piece passed in to one of the captured strings.
+     *  Add the piece passed in to one of the captured strings.
      *
-     * @param taken  The piece taken.
+     *  @param taken  The piece taken.
      */
     public void takePiece(Piece taken) {
         pieces.remove(taken);
@@ -163,7 +163,7 @@ public class Game {
     }
 
     /**
-     *  Adds a piece to the list of black pieces taken
+     *  Adds a piece to the list of black pieces taken.
      *
      *  @param piece The newly taken black piece
      */
@@ -173,7 +173,7 @@ public class Game {
     }
 
     /**
-     *  Adds a piece to the list of white pieces taken
+     *  Adds a piece to the list of white pieces taken.
      *
      *  @param piece The newly taken white piece
      */
@@ -183,23 +183,24 @@ public class Game {
     }
 
     /**
-     *  Getter for the current list of pieces taken by black
-     * @return list of captured white pieces as a String
+     *  Getter for the current list of pieces taken by black.
+     *  @return list of captured white pieces as a String
      */
     public String getCaptByBlack() {
         return captByBlack;
     }
 
     /**
-     *  Getter for the current list of pieces taken by white
-     * @return list of captured black pieces as a String
+     *  Getter for the current list of pieces taken by white.
+     *
+     *  @return list of captured black pieces as a String
      */
     public String getCaptByWhite() {
         return captByWhite;
     }
 
     /**
-     *  Adds a move to the move history panel
+     *  Adds a move to the move history panel.
      *
      *  @param currMove  The newly made move
      */
@@ -208,8 +209,11 @@ public class Game {
         Core.historyPanel.updateMoveHistory(moveHistory);
     }
 
+
     /**
-     * Ends the game
+     * Ends the game.
+     *
+     * @param result Int that signifies the result of the game
      */
     public void endGame(int result) {
         boolean timerEnded = Core.timerPanel.isTimeOut();
@@ -227,7 +231,8 @@ public class Game {
     }
 
     /**
-     *  Move a piece from one set of coordinates to another
+     *  Move a piece from one set of coordinates to another.
+     *
      *  @param  oldRank The current horizontal coordinate
      *  @param  oldFile The current vertical coordinate
      *  @param  newRank The new horizontal coordinate to move to
@@ -246,17 +251,19 @@ public class Game {
     }
 
     /**
-     *  Move a piece from one set of coordinates to another
+     *  Move a piece from one set of coordinates to another.
+     *
      *  @param  oldRank The current horizontal coordinate
      *  @param  oldFile The current vertical coordinate
      *  @param  newRank The new horizontal coordinate to move to
      *  @param  newFile The new vertical coordinate to move to
+     *  @param  type    Chosen piece to promote to (blank if regular move)
      *  @return true if move is successful, false otherwise
      */
     public boolean moveP(int oldRank, int oldFile, int newRank, int newFile, char type) {
         String oldLoc = (char)(oldFile+97) + "" + (oldRank+1);
         String newLoc = (char)(newFile+97) + "" + (newRank+1);
-        
+
         if (Chess.engine.move(oldLoc+newLoc+type)) {
             doMove(oldRank, oldFile, newRank, newFile);
             return true;
@@ -278,14 +285,15 @@ public class Game {
         int oldFile = (int) moveData[0] - 'a';
         int newRank = (int) moveData[3] - '1';
         int newFile = (int) moveData[2] - 'a';
-        
+
         doMove(oldRank, oldFile, newRank, newFile);
 
         return move;
     }
 
     /**
-     * Do the move functionality: taking pieces, en passant checking, setting pieces array
+     *  Do the move functionality: taking pieces, en passant checking, setting pieces array
+     *
      *  @param  oldRank The current horizontal coordinate
      *  @param  oldFile The current vertical coordinate
      *  @param  newRank The new horizontal coordinate to move to
@@ -360,7 +368,10 @@ public class Game {
 
 
     /**
-     *  Tells whether or not a move is possible.
+     *  Determines whether or not a move is possible .
+     *
+     *  @param newMove  The move attempting to take place
+     *  @return true if possible, false otherwise
      */
     public boolean tryMove(String newMove){
         if (!Utils.isValidMove(newMove)){ return false; }
@@ -373,8 +384,12 @@ public class Game {
     }
 
     /**
-     *  Tells whether or not a move is possible. Convenient alias w/ two
+     *  Determines whether or not a move is possible. Convenient alias w/ two
      *  positions on a board.
+     *
+     *  @param from Where the piece was
+     *  @param to   Where the pieces is try to go
+     *  @return true if possible, false otherwise
      */
     public boolean tryMove(String from, String to){
         if (from == null || to == null){ return false; }
@@ -382,7 +397,12 @@ public class Game {
     }
 
     /**
-     *  Tells whether or not a move is possible. Convenient alias
+     * Determines whether or not a move is possible. Convenient alias.
+     * @param   oldRank Current X coordinate
+     * @param   oldFile Current Y coordinate
+     * @param   newRank New X coordinate
+     * @param   newFile New Y coordinate
+     * @return  true if possible, false otherwise
      */
     public boolean tryMove(int oldRank, int oldFile, int newRank, int newFile){
         String oldPos = Utils.translate(oldRank, oldFile);
@@ -391,7 +411,13 @@ public class Game {
     }
 
     /**
-     * Tells whether or not a promotion is possible.
+     * Determines whether or not a promotion is possible.
+     * @param   oldRank Current X coordinate
+     * @param   oldFile Current Y coordinate
+     * @param   newRank New X coordinate
+     * @param   newFile New Y coordinate
+     * @param   type    Chosen piece to promote to
+     * @return  true if possible, false otherwise
      */
     public boolean tryPromotion(int oldRank, int oldFile, int newRank, int newFile, char type) {
         String oldPos = Utils.translate(oldRank, oldFile);
@@ -410,7 +436,7 @@ public class Game {
      *  Gets the piece at a given position
      *  @param  rank    The given x coordinate
      *  @param  file    The given y coordinate
-     *  @return a Piece if a Piece exists at the given position, null if not
+     *  @return a Piece if it exists at the given position, null if not
      */
     public Piece getPieceMatching(int rank, int file) {
         for (Piece p : pieces) {
